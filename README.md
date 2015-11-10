@@ -11,3 +11,10 @@ This is the lecture notes for NTU Train Course of R Project
 
 
 ## Data Collection
+
+
+## Reference
+* R in Action, Robert I. Kabacoff
+* The Art of R Programming, Norman Matloff
+
+&copy; Tony Yao-Jen Kuo 2015
