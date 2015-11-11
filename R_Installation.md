@@ -38,4 +38,6 @@ git config --global user.name "YOUR NAME"
 git config --global user.email "YOUR EMAIL ADDRESS"
 ```
 
+### 大功告成囉!
+
 &copy; Tony Yao-Jen Kuo 2015
