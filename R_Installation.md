@@ -13,11 +13,11 @@ This is the lecture notes for NTU Train Course of R Project Lecture 1
 
 ## GitHub
 
-* 最受歡迎的版本控制工具!
-* Coursera的Data Scientist Toolbox推薦!
-* 本課程的作業繳交請使用GitHub!
-* 程式碼不會走樣!
-* 本課程的講義內容會持續更新, 歡迎Follow!
+* 最受歡迎的版本控制工具
+* Coursera的Data Scientist Toolbox推薦
+* 本課程的作業繳交請使用GitHub
+* 程式碼不會歪腰
+* 講義內容會持續更新, 歡迎follow, fork, pull-request
 
 ### GitHub Desktop
 
@@ -38,6 +38,6 @@ git config --global user.name "YOUR NAME"
 git config --global user.email "YOUR EMAIL ADDRESS"
 ```
 
-### 大功告成囉!
+大功告成囉!
 
 &copy; Tony Yao-Jen Kuo 2015
