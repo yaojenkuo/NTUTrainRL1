@@ -1,0 +1,88 @@
+---
+title: "RL1_2"
+author: "Yao-Jen Kuo"
+date: "Friday, November 13, 2015"
+output: html_document
+---
+
+# NTUTrainRL1
+This is the lecture notes for NTU Train Course of R Project Lecture 1
+
+## Data Manipulation
+
+### 建立一個Data Frame來練習
+
+```{r}
+name <- c("Monkey D. Luffy", "Roronoa Zoro", "Nami", "Sanji")
+occupation <- c("Captain", "Swordsman", "Navigator", "Chef")
+bounty <- c(500000000, 320000000, 66000000, NA)
+age <- c(19, 21, 20, 21)
+birthday <- c("5/5/1996", "11/11/1994", "7/3/1995", "3/2/1994")
+strength <- c(99, 90, 15, 80)
+intelligence <- c(20, 30, 90, 40)
+strawHatPirate <- data.frame(name, occupation, bounty, age, birthday, strength, intelligence, stringsAsFactors=FALSE)
+```
+
+### 建立新的變數(欄位)
+
+* 數值欄位的運算
+
+```{r}
+strawHatPirate <- transform(
+  strawHatPirate,
+  ratingSum = strength + intelligence,#這裡不能用 <- 因為是transform函式的option
+  ratingAvg = (strength + intelligence)/2#這裡不能用 <- 因為是transform函式的option
+  )
+strawHatPirate
+```
+
+* 數值欄位的歸類
+  * 如果你是SAS使用者，這就像if then else
+  * 如果你是SQL使用者，這就像case when
+
+```{r}
+strawHatPirate <- within(strawHatPirate, {
+  bountyLevel <- NA
+  bountyLevel[bounty<100000000] <- "Low"
+  bountyLevel[bounty>100000000 & bounty<500000000] <- "Medium"
+  bountyLevel[bounty>=500000000] <- "High"
+}
+  )
+strawHatPirate
+```
+
+### 重新命名變數(欄位)
+
+```{r}
+names(strawHatPirate)#印出所有的變數
+names(strawHatPirate)[6] <- "attack"#將strength改名為attack
+strawHatPirate
+names(strawHatPirate)[8:9] <- c("sumRating", "avgRating")#一次重新命名2個變數名
+strawHatPirate
+```
+
+### 遺漏值
+
+```{r}
+is.na(strawHatPirate$bounty)#檢視bounty有沒有遺漏值
+sum(strawHatPirate$bounty)#有NA不能算
+sum(strawHatPirate$bounty, na.rm=TRUE)#as in remove
+```
+
+### 日期值
+
+```{r}
+str(strawHatPirate$birthday)
+strawHatPirate$birthdayAsDate <- as.Date(strawHatPirate$birthday, "%m/%d/%Y")#Y for 4-digit, y for 2-digit
+str(strawHatPirate$birthdayAsDate)
+max(strawHatPirate$birthdayAsDate)#轉換成日期格式後可以下max或min
+min(strawHatPirate$birthdayAsDate)#轉換成日期格式後可以下max或min
+```
+
+### 排序
+
+## Reference
+* R in Action, Robert I. Kabacoff
+* The Art of R Programming, Norman Matloff
+
+&copy; Tony Yao-Jen Kuo 2015

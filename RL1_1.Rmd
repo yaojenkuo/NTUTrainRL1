@@ -2,12 +2,7 @@
 title: "RL1_1"
 author: "Yao-Jen Kuo"
 date: "Friday, November 13, 2015"
-output: 
-  html_document:
-    theme: united
-    toc: true
-    toc_depth: 2
-    highlight: tango
+output: html_document
 ---
 
 # NTUTrainRL1
@@ -27,7 +22,7 @@ characterVector <- c("one", "two", "three")#文字Vector
 logicalVector <- c(TRUE, TRUE, TRUE, FALSE, TRUE, FALSE)#二元邏輯Vector
 mixedVector <- c(1, "two", TRUE)#文字Vector
 class(mixedVector)#檢查mixedVector的類別
-str(mixedVector)#檢查mixedVector的結構
+str(mixedVector)#檢查mixedVector的結構as in structure
 ```
 
 * Vector中的元素稱為Scalar
@@ -62,7 +57,6 @@ rep(9,5)#產生一個有5個9的向量, as in repetition
 
 ### Matrix
 
-* Matrix就是二維的Vector
 * 一個mxn的matrix指的是matrix有m列、n欄
 
 ```{r}
@@ -99,8 +93,8 @@ str(onePiece)#檢查onePiece物件的結構
 onePiece@grey[300, 600]#看一下(300, 600)這個像素的亮度
 locator()#這是R的內建函式，可以找到圖片坐標
 noUsopp <- onePiece
-noUsopp@grey[68.91861:301.05464, 219.0638:311.9182] <- 1#把騙人布用白色遮掉
-plot(noUsopp)#看看結果
+noUsopp@grey[68.91861:301.05464, 219.0638:311.9182] <- 1#把騙人布用國防布蓋掉
+plot(noUsopp)#看看結果，好像沒有蓋好蓋滿QQ
 ```
 
 ![No Usopp](image/noUsopp.jpeg)
@@ -128,7 +122,7 @@ array[1, 2, 3]#取出第三個matrix中位於第一列第二欄的元素
 
 ### Data Frame
 
-* Data Frame是非常重要的資料結構，如果你是SAS/SPSS/Stat的使用者，這就是Dataset。
+* Data Frame是非常重要的資料結構，如果你是SAS/SPSS/Stata的使用者，你可以想成是Dataset。
 * 一個Data Frame中可以包含不同資料類別的欄位
 
 ```{r}
