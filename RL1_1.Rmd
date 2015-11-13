@@ -8,9 +8,6 @@ output:
     toc: true
     toc_depth: 2
     highlight: tango
-    fig_width: 9
-    fig_height: 4
-    fig_caption: false
 ---
 
 # NTUTrainRL1
@@ -105,6 +102,57 @@ patientData[1:2]#把patientData第一與第二欄取出來
 patientData$age#把patientData中的age變數取出來
 patientData[c("patientID", "age")]#把patientData第一與第二欄取出來
 patientData$age[1]#把patientData第二欄的第一筆資料取出來
+table(patientData$diabetes, patientData$status)#針對其中2個變數作樞紐分析表
+summary(patientData$age)#把age變數的描述性統計印出來
+```
+
+* 省略每次都要打資料集名稱的2種方法
+
+  * 使用Attach, Detach
+  
+```{r}
+attach(patientData)
+summary(age)
+detach(patientData)
+```
+  
+  * 或使用With
+  
+```{r}
+with(patientData,{
+  summary(age)
+})
+```
+
+* 整理一些好用的data frame函數
+
+```{r}
+length(mtcars)#mtcars有多少個欄位
+dim(mtcars)#mtcars有幾列幾欄as in dimension
+str(mtcars)#as in structure檢視mtcars的結構
+class(mtcars)#檢視mtcars的類別
+head(mtcars)#檢視mtcars的前六列
+tail(mtcars, 8)#檢視mtcars的後八列
+names(mtcars)[9]#檢視mtcars的第九個欄位名稱
+```
+
+### Lists
+
+* 清單是R的資料類型中最複雜的，一般不太會用到
+* 清單可以包含Vectors, Matrice, Data Frame與Lists
+
+```{r}
+g <- "My First List"
+h <- c(25, 26, 18, 39)
+j <- matrix(1:10, nrow=5)
+k <- c("one", "two", "three")
+myList <- list(title=g, ages=h, j, k)#幫g, h命名
+myList#把mylist印出來看看
+myList[2]#第二個物件，包含名稱
+myList[[2]]#Vector h
+myList["ages"]#第二個物件，包含名稱
+myList[["ages"]]#Vector h
+myList[[3]][4,2]#第三個物件matrix j的第四列第二欄元素
 ```
 
 ## Reference
