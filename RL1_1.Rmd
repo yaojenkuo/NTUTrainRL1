@@ -40,6 +40,16 @@ numericVector[-1]#取出除了第一個元素以外的Scalars
 numericVector[2:lengthNumVector]#取出除了第一個元素以外的Scalars
 ```
 
+* 除了用c()，seq()、rep()也可以幫你輕鬆製作Vector
+
+```{r}
+seq(from=12, to=90, by=3)#產生一個從12到90公差為3的向量
+seq(from=100, to=1000, length=10)#產生一個從100到1000，Scalar個數為10的向量
+rep(9,5)#產生一個有5個9的向量
+```
+
+* Vector
+
 ### Matrix
 
 * Matrix就是二維的Vector
