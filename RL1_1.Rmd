@@ -1,0 +1,114 @@
+---
+title: "RL1_1"
+author: "Yao-Jen Kuo"
+date: "Friday, November 13, 2015"
+output: 
+  html_document:
+    theme: united
+    toc: true
+    toc_depth: 2
+    highlight: tango
+    fig_width: 9
+    fig_height: 4
+    fig_caption: false
+---
+
+# NTUTrainRL1
+This is the lecture notes for NTU Train Course of R Project Lecture 1
+
+## Data Types
+
+### Vector
+
+* Vector可以包含數字、文字或二元邏輯資料
+* 如果包含不同類型的資料，會記錄成文字
+* 在R中我們可以使用`=`來指派變數，也可以使用`<-`。
+
+```{r}
+numericVector <- c(1, 2, 5, 3, 6, -2, 4)#數字Vector
+characterVector <- c("one", "two", "three")#文字Vector
+logicalVector <- c(TRUE, TRUE, TRUE, FALSE, TRUE, FALSE)#二元邏輯Vector
+mixedVector <- c(1, "two", TRUE)#文字Vector
+class(mixedVector)#檢查mixedVector的類別
+str(mixedVector)#檢查mixedVector的結構
+```
+
+* Vector中的元素稱為Scalar
+
+```{r}
+lengthNumVector <- length(numericVector)#指派數字Vector的長度給lengthNumVector
+numericVector[1]#取出數字Vector的第一個元素1
+numericVector[2:4]#取出數字Vector的第二、三與四個元素2、5、3
+numericVector[-1]#取出除了第一個元素以外的Scalars
+numericVector[2:lengthNumVector]#取出除了第一個元素以外的Scalars
+```
+
+### Matrix
+
+* Matrix就是二維的Vector
+* 一個m x n的matrix指的是matrix有m列、n欄
+
+```{r}
+vector <- c(1:12)#這裡也可以使用seq(1:12), seq as in sequence
+matrix <- matrix(vector, nrow=4, ncol=3, byrow=TRUE)#預設byrow是FALSE
+matrix#把matrix印出來看看
+matrix <- matrix(vector, nrow=4, ncol=3)#byrow用預設
+matrix#再把matrix印出來看看
+```
+
+* 讓我們用(m, n)的概念把matrix中的元素取出來
+
+```{r}
+matrix[1,]#取出matrix中的第一列
+matrix[,2]#取出matrix中的第二欄
+matrix[3,3]#取出matrix中位於第三列第三欄的元素
+```
+
+### Array
+
+* Array就是多維的Matrice
+
+```{r}
+x <- c("X1", "X2")#每個matrix都有2列
+y <- c("Y1", "Y2", "Y3")#每個matrix都有3欄
+z <- c("Z1", "Z2", "Z3", "Z4")#有4個matrix
+array <- array(1:24, c(2, 3, 4), dimnames=list(x, y, z))
+array#把array印出來看看
+```
+
+* 讓我們用(x, y, z)的概念把matrix中的元素取出來
+
+```{r}
+array[1, , ]#取出四個matrice的第一列
+array[ ,2, ]#取出四個matrice的第二欄
+array[ , ,3]#取出第三個matrix
+array[1, 2, 3]#取出第三個matrix中位於第一列第二欄的元素
+```
+
+### Data Frame
+
+* Data Frame是非常重要的資料結構，如果你是SAS/SPSS/Stat的使用者，這就是Dataset。
+* 一個Data Frame中可以包含不同資料類別的欄位
+
+```{r}
+patientID <- c("P01", "P02", "P03", "P04")
+age <- c(25, 34, 28, 52)
+diabetes <- c("Type1", "Type2", "Type1", "Type1")
+status <- c("Poor", "Improved", "Excellent", "Poor")
+patientData <- data.frame(patientID, age, diabetes, status)
+```
+
+* 讓我們用(m, n)的概念把Data Frame中的元素取出來
+
+```{r}
+patientData[1:2]#把patientData第一與第二欄取出來
+patientData$age#把patientData中的age變數取出來
+patientData[c("patientID", "age")]#把patientData第一與第二欄取出來
+patientData$age[1]#把patientData第二欄的第一筆資料取出來
+```
+
+## Reference
+* R in Action, Robert I. Kabacoff
+* The Art of R Programming, Norman Matloff
+
+&copy; Tony Yao-Jen Kuo 2015
