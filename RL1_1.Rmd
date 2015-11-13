@@ -110,19 +110,19 @@ summary(patientData$age)#把age變數的描述性統計印出來
 
   * 使用Attach, Detach
   
-```{r}
-attach(patientData)
-summary(age)
-detach(patientData)
-```
+  ```{r}
+  attach(patientData)
+  summary(age)
+  detach(patientData)
+  ```
   
   * 或使用With
   
-```{r}
-with(patientData,{
-  summary(age)
-})
-```
+  ```{r}
+  with(patientData,{
+    summary(age)
+  })
+  ```
 
 * 整理一些好用的data frame函數
 
