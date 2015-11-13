@@ -48,12 +48,22 @@ seq(from=100, to=1000, length=10)#產生一個從100到1000，Scalar個數為10�
 rep(9,5)#產生一個有5個9的向量
 ```
 
-* Vector
+* Vector的應用
+  * 最常應用在迴圈中
+  ```{r}
+  str(mtcars)#看一下mtcars的結構
+  colNames <- names(mtcars)#把mtcars的欄位名抓出來
+  for (index in 1:length(colNames)){
+    print(colNames[index])
+  }
+  ```
+
+* 關於迴圈的寫法，我們會在RL1_3，Basic Programming中大量練習
 
 ### Matrix
 
 * Matrix就是二維的Vector
-* 一個m x n的matrix指的是matrix有m列、n欄
+* 一個mxn的matrix指的是matrix有m列、n欄
 
 ```{r}
 vector <- c(1:12)#這裡也可以使用seq(1:12), seq as in sequence
@@ -70,6 +80,30 @@ matrix[1,]#取出matrix中的第一列
 matrix[,2]#取出matrix中的第二欄
 matrix[3,3]#取出matrix中位於第三列第三欄的元素
 ```
+
+* Matrix的應用 - 灰階圖片處理
+  * 圖片是天生的Matrix
+  * 在灰階圖片中，每個像素儲存亮度
+  * 在彩色圖片中，每個像素儲存紅、綠、藍的強度
+  * 為了簡化問題，我們使用Netpbm grayscale格式的圖片(.pgm)
+
+![One Piece Grayscale](image/onePiece.jpeg)
+
+```{r}
+install.packages("pixmap")#這個範例需要使用pixmap套件
+library(pixmap)
+onePiece <- read.pnm("C:/NTUTrainRL1/image/onePiece.pgm")#把圖片指派給onePiece這個物件
+onePiece#看看onePiece物件
+plot(onePiece)#把onePiece物件畫出來看看
+str(onePiece)#檢查onePiece物件的結構
+onePiece@grey[300, 600]#看一下(300, 600)這個像素的亮度
+locator()#這是R的內建函式，可以找到圖片坐標
+noUsopp <- onePiece
+noUsopp@grey[68.91861:301.05464, 219.0638:311.9182] <- 1#把騙人布用白色遮掉
+plot(noUsopp)#看看結果
+```
+
+![No Usopp](image/noUsopp.jpeg)
 
 ### Array
 
