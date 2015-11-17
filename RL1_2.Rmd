@@ -79,7 +79,45 @@ max(strawHatPirate$birthdayAsDate)#轉換成日期格式後可以下max或min
 min(strawHatPirate$birthdayAsDate)#轉換成日期格式後可以下max或min
 ```
 
+### 轉換格式
+
+```{r}
+is.numeric(age)#判斷age變數是否為數值
+as.character(age)#轉換age為字串
+is.numeric(age)#判斷age變數是否為數值
+is.character(age)#判斷age變數是否為字串
+```
+
+判斷|轉換
+----|----
+is.numeric()|as.numeric()
+is.character()|as.character()
+is.vector()|as.vector()
+is.matrix()|as.matrix()
+is.data.frame()|as.data.frame()
+is.factor()|as.factor()
+is.logical()|as.logical()
+
 ### 排序
+
+預設是遞增排序，加負號可以改為遞減排序
+
+```{r}
+strawHatPirate[order(strawHatPirate$age),]#用年齡遞增排序
+strawHatPirate[order(-strawHatPirate$intelligence, strawHatPirate$strength),]#先用智力遞減排序再用力量遞增排序
+```
+
+### 加欄位
+
+### 加列數(Append)
+
+### 篩選(Subset)
+
+* 保留變數(Keep variables)
+
+* 刪除變數(Drop vairables)
+
+* 選擇列數(Select rows)
 
 ## Reference
 * R in Action, Robert I. Kabacoff
