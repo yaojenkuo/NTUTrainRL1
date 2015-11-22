@@ -109,15 +109,74 @@ strawHatPirate[order(-strawHatPirate$intelligence, strawHatPirate$strength),]#�
 
 ### 加欄位
 
+* 單純加欄位
+
+```{r}
+favoriteFood <- c("Meat", "Sea King Meat", "Orange", "Pasta")#新增喜歡的食物
+strawHatPirate2 <- cbind(strawHatPirate, favoriteFood)#cbind as in column bind
+```
+
+* Join
+
+創造一個惡魔果實清單的dataframe
+
+```{r}
+name2 <- c("Monkey D. Luffy", "Tony Tony Chopper", "Nico Robin", "Brook")
+devilFruit <- c("Rubber", "Human", "Flower", "Underworld")
+devilFruitList <- data.frame(name2, devilFruit, stringsAsFactors=FALSE)
+```
+
+	* Inner Join
+  ```{r}
+  devilFruitStrawHatPirate <- merge(strawHatPirate, devilFruitList, by.x="name", by.y="name2")#預設就是inner join
+  ```
+  
+	* Left Join
+  ```{r}
+  devilFruitStrawHatPirate <- merge(strawHatPirate, devilFruitList, by.x="name", by.y="name2", all.x=TRUE)#使用all.x=TRUE的option
+  ```
+  
+	* Right Join
+  ```{r}
+  devilFruitStrawHatPirate <- merge(strawHatPirate, devilFruitList, by.x="name", by.y="name2", all.y=TRUE)#使用all.y=TRUE的option
+  ```
+	* Full Join
+  devilFruitStrawHatPirate <- merge(strawHatPirate, devilFruitList, by.x="name", by.y="name2", all.x=TRUE, all.y=TRUE)#使用all.x=TRUE與all.y=TRUE的option
+
 ### 加列數(Append)
+
+```{r}
+chopper <- c("Tony Tony Chopper", "Doctor", 50, 17, "12/24/1998", 50, 80)
+strawHatPirate2 <- rbind(strawHatPirate, chopper)
+```
 
 ### 篩選(Subset)
 
 * 保留變數(Keep variables)
 
+```{r}
+strawHatPirate3 <- strawHatPirate2[, c(1:3)]#取前3個變數
+strawHatPirate3 <- strawHatPirate2[, c("name", "occupation", "bounty")]#取前3個變數
+```
+
 * 刪除變數(Drop vairables)
 
+```{r}
+strawHatPirate4 <- strawHatPirate2[, c(-1:-3)]#刪除前3個變數
+deleteVars <- names(strawHatPirate2) %in% c("name", "occupation", "bounty")#logical test
+strawHatPirate4 <- strawHatPirate2[!deleteVars]#刪除前3個變數
+```
+
 * 選擇列數(Select rows)
+
+```{r}
+strawHatPirate5 <- strawHatPirate2[1:3, ]#選擇前3列
+attach(strawHatPirate2)
+strawHatPirate5 <- strawHatPirate2[occupation=="Captain",]
+detach(strawHatPirate2)
+```
+
+### 在R中使用SQL語法 - sqldf
 
 ## Reference
 * R in Action, Robert I. Kabacoff
