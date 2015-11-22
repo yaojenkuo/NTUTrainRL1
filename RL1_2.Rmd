@@ -127,21 +127,21 @@ devilFruitList <- data.frame(name2, devilFruit, stringsAsFactors=FALSE)
 ```
 
   * Inner Join
-    ```{r}
-    devilFruitStrawHatPirate <- merge(strawHatPirate, devilFruitList, by.x="name", by.y="name2")#預設就是inner join
-    ```
+```{r}
+devilFruitStrawHatPirate <- merge(strawHatPirate, devilFruitList, by.x="name", by.y="name2")#預設就是inner join
+```
   * Left Join
-    ```{r}
-    devilFruitStrawHatPirate <- merge(strawHatPirate, devilFruitList, by.x="name", by.y="name2", all.x=TRUE)#使用all.x=TRUE的option
-    ```
+```{r}
+devilFruitStrawHatPirate <- merge(strawHatPirate, devilFruitList, by.x="name", by.y="name2", all.x=TRUE)#使用all.x=TRUE的option
+```
   * Right Join
-    ```{r}
-      devilFruitStrawHatPirate <- merge(strawHatPirate, devilFruitList, by.x="name", by.y="name2", all.y=TRUE)#使用all.y=TRUE的option
-    ```
+```{r}
+devilFruitStrawHatPirate <- merge(strawHatPirate, devilFruitList, by.x="name", by.y="name2", all.y=TRUE)#使用all.y=TRUE的option
+```
   * Full Join
-    ```{r}
-      devilFruitStrawHatPirate <- merge(strawHatPirate, devilFruitList, by.x="name", by.y="name2", all.x=TRUE, all.y=TRUE)#使用all.x=TRUE與all.y=TRUE的option
-    ```
+```{r}
+devilFruitStrawHatPirate <- merge(strawHatPirate, devilFruitList, by.x="name", by.y="name2", all.x=TRUE, all.y=TRUE)#使用all.x=TRUE與all.y=TRUE的option
+```
 
 ### 加列數(Append)
 
