@@ -127,21 +127,21 @@ devilFruitList <- data.frame(name2, devilFruit, stringsAsFactors=FALSE)
 ```
 
 	* Inner Join
-  ```{r}
-  devilFruitStrawHatPirate <- merge(strawHatPirate, devilFruitList, by.x="name", by.y="name2")#預設就是inner join
-  ```
-  
+```{r}
+devilFruitStrawHatPirate <- merge(strawHatPirate, devilFruitList, by.x="name", by.y="name2")#預設就是inner join
+```
 	* Left Join
-  ```{r}
-  devilFruitStrawHatPirate <- merge(strawHatPirate, devilFruitList, by.x="name", by.y="name2", all.x=TRUE)#使用all.x=TRUE的option
-  ```
-  
+```{r}
+devilFruitStrawHatPirate <- merge(strawHatPirate, devilFruitList, by.x="name", by.y="name2", all.x=TRUE)#使用all.x=TRUE的option
+```
 	* Right Join
-  ```{r}
+```{r}
   devilFruitStrawHatPirate <- merge(strawHatPirate, devilFruitList, by.x="name", by.y="name2", all.y=TRUE)#使用all.y=TRUE的option
-  ```
+```
 	* Full Join
+```{r}
   devilFruitStrawHatPirate <- merge(strawHatPirate, devilFruitList, by.x="name", by.y="name2", all.x=TRUE, all.y=TRUE)#使用all.x=TRUE與all.y=TRUE的option
+```
 
 ### 加列數(Append)
 
@@ -171,12 +171,21 @@ strawHatPirate4 <- strawHatPirate2[!deleteVars]#刪除前3個變數
 
 ```{r}
 strawHatPirate5 <- strawHatPirate2[1:3, ]#選擇前3列
-attach(strawHatPirate2)
-strawHatPirate5 <- strawHatPirate2[occupation=="Captain",]
-detach(strawHatPirate2)
+strawHatPirate5 <- strawHatPirate2[strawHatPirate2$occupation=='Captain', ]
+strawHatPirate5 <- strawHatPirate2[strawHatPirate2$age>17 & strawHatPirate2$strength>30, ]#2個篩選條件使用&連接
 ```
 
-### 在R中使用SQL語法 - sqldf
+### 在R中使用SQL語法 - sqldf套件
+
+SQL的使用者在SAS中可以使用
+
+```{r}
+install.packages("sqldf")
+library(sqldf)
+strawHatPirate6 <- sqldf("select name, occupation, bounty, age from strawHatPirate2 where age>17 order by bounty")
+sqldf("select avg(age) as avgAge from strawHatPirate2")
+sqldf("select strawHatPirate2.name, devilFruitList.devilFruit from strawHatPirate2 inner join devilFruitList on strawHatPirate2.name=devilFruitList.name2")
+```
 
 ## Reference
 * R in Action, Robert I. Kabacoff
