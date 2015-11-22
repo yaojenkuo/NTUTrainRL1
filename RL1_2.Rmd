@@ -126,22 +126,22 @@ devilFruit <- c("Rubber", "Human", "Flower", "Underworld")
 devilFruitList <- data.frame(name2, devilFruit, stringsAsFactors=FALSE)
 ```
 
-	* Inner Join
-```{r}
-devilFruitStrawHatPirate <- merge(strawHatPirate, devilFruitList, by.x="name", by.y="name2")#預設就是inner join
-```
-	* Left Join
-```{r}
-devilFruitStrawHatPirate <- merge(strawHatPirate, devilFruitList, by.x="name", by.y="name2", all.x=TRUE)#使用all.x=TRUE的option
-```
-	* Right Join
-```{r}
-  devilFruitStrawHatPirate <- merge(strawHatPirate, devilFruitList, by.x="name", by.y="name2", all.y=TRUE)#使用all.y=TRUE的option
-```
-	* Full Join
-```{r}
-  devilFruitStrawHatPirate <- merge(strawHatPirate, devilFruitList, by.x="name", by.y="name2", all.x=TRUE, all.y=TRUE)#使用all.x=TRUE與all.y=TRUE的option
-```
+  * Inner Join
+    ```{r}
+    devilFruitStrawHatPirate <- merge(strawHatPirate, devilFruitList, by.x="name", by.y="name2")#預設就是inner join
+    ```
+  * Left Join
+    ```{r}
+    devilFruitStrawHatPirate <- merge(strawHatPirate, devilFruitList, by.x="name", by.y="name2", all.x=TRUE)#使用all.x=TRUE的option
+    ```
+  * Right Join
+    ```{r}
+      devilFruitStrawHatPirate <- merge(strawHatPirate, devilFruitList, by.x="name", by.y="name2", all.y=TRUE)#使用all.y=TRUE的option
+    ```
+  * Full Join
+    ```{r}
+      devilFruitStrawHatPirate <- merge(strawHatPirate, devilFruitList, by.x="name", by.y="name2", all.x=TRUE, all.y=TRUE)#使用all.x=TRUE與all.y=TRUE的option
+    ```
 
 ### 加列數(Append)
 
@@ -177,7 +177,7 @@ strawHatPirate5 <- strawHatPirate2[strawHatPirate2$age>17 & strawHatPirate2$stre
 
 ### 在R中使用SQL語法 - sqldf套件
 
-SQL的使用者在SAS中可以使用
+SQL的使用者在SAS中可以使用proc sql;在R中可以使用sqldf套件。
 
 ```{r}
 install.packages("sqldf")
