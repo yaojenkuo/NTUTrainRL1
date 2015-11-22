@@ -109,14 +109,14 @@ strawHatPirate[order(-strawHatPirate$intelligence, strawHatPirate$strength),]#�
 
 ### 加欄位
 
-* 單純加欄位
+#### 單純加欄位
 
 ```{r}
 favoriteFood <- c("Meat", "Sea King Meat", "Orange", "Pasta")#新增喜歡的食物
 strawHatPirate2 <- cbind(strawHatPirate, favoriteFood)#cbind as in column bind
 ```
 
-* Join
+#### Join
 
 創造一個惡魔果實清單的dataframe
 
@@ -126,19 +126,19 @@ devilFruit <- c("Rubber", "Human", "Flower", "Underworld")
 devilFruitList <- data.frame(name2, devilFruit, stringsAsFactors=FALSE)
 ```
 
-  - Inner Join
+* Inner Join
 ```{r}
 devilFruitStrawHatPirate <- merge(strawHatPirate, devilFruitList, by.x="name", by.y="name2")#預設就是inner join
 ```
-  - Left Join
+* Left Join
 ```{r}
 devilFruitStrawHatPirate <- merge(strawHatPirate, devilFruitList, by.x="name", by.y="name2", all.x=TRUE)#使用all.x=TRUE的option
 ```
-  - Right Join
+* Right Join
 ```{r}
 devilFruitStrawHatPirate <- merge(strawHatPirate, devilFruitList, by.x="name", by.y="name2", all.y=TRUE)#使用all.y=TRUE的option
 ```
-  - Full Join
+* Full Join
 ```{r}
 devilFruitStrawHatPirate <- merge(strawHatPirate, devilFruitList, by.x="name", by.y="name2", all.x=TRUE, all.y=TRUE)#使用all.x=TRUE與all.y=TRUE的option
 ```
