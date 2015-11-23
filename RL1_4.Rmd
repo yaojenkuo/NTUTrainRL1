@@ -5,11 +5,11 @@ This is the lecture notes for NTU Train Course of R Project Lecture 1_4
 
 ### 讀取.csv
 
-### 讀取.txt
-
 ### 讀取excel檔案
 
 ### 讀取sas資料集
+
+### 讀取XML
 
 ### Crawler
 
