@@ -92,15 +92,46 @@ apply()是R語言中有名且好用的功能，apply()家族包含apply()、lapp
 
 * For Loop
 
-
+```{r}
+x <- 1:10
+for (index in x){
+  print(index^2)
+}
+```
 
 * While Loop
 
+```{r}
+# 第一種寫法
+index <- 1
+while(index<=10){
+  print(index <- index+1)
+}
+
+# 第二種寫法
+index <- 1
+while(TRUE){
+  print(index <- index+1)
+  if (index>10) break
+}
+```
 
 
 #### if-else
 
-
+```{r}
+# 結合for迴圈
+countOdd <- function(x){
+  count <- 0
+  for(index in x){
+    if(index %% 2 ==1){
+      count <- count+1
+    }
+  }
+  return (count)
+}
+countOdd(c(1:9))
+```
 
 ## Reference
 * R in Action, Robert I. Kabacoff
