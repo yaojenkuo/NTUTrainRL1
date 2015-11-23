@@ -47,7 +47,44 @@ apply()是R語言中有名且好用的功能，apply()家族包含apply()、lapp
 
 * lapply() and sapply()
 
+  * lapply()將函數應用到list。
+  
+  ```{r}
+  list1 <- list(1:5, 11:15)#創造一個包含兩個vector的list
+  lapply(list1, median)#應用median函數到list1
+  ```
+  
+  * sapply()的用法相似，但是產出vector而非list
+  
+  ```{r}
+  sapply(list1, median)#應用median函數到list1
+  ```
+  
+  * 應用lapply()或sapply()到data frame
+  ```{r}
+  #用草帽海賊團data frame來示範
+  name <- c("Monkey D. Luffy", "Roronoa Zoro", "Nami", "Sanji")
+  occupation <- c("Captain", "Swordsman", "Navigator", "Chef")
+  bounty <- c(500000000, 320000000, 66000000, NA)
+  age <- c(19, 21, 20, 21)
+  birthday <- c("5/5/1996", "11/11/1994", "7/3/1995", "3/2/1994")
+  strength <- c(99, 90, 15, 80)
+  intelligence <- c(20, 30, 90, 40)
+  strawHatPirate <- data.frame(name, occupation, bounty, age, birthday, strength, intelligence, stringsAsFactors=FALSE)
+  strawHatPirate$birthdayAsDate <- as.Date(strawHatPirate$birthday, "%m/%d/%Y")#Y for 4-digit, y for 2-digit
+  strawHatPirate <- strawHatPirate[ ,-5]
+  lapply(strawHatPirate, sort)#對每個變數都應用sort函數
+  ```
+  
 * tapply()
+
+  * 樞紐分析表
+  
+  ```{r}
+  status <- factor(c("Poor", "Improved", "Excellent", "Poor", "Excellent"))
+  age <- c(20, 33, 55, 72, 61)
+  tapply(age, status, mean)
+  ```
 
 ### 流程控制
 

@@ -48,6 +48,16 @@ rep(9,5)#產生一個有5個9的向量, as in repetition
 
   * 關於迴圈的寫法，我們會在RL1_3，Basic Programming中大量練習
 
+### Factor
+
+* 你可以把Factor視作多了一些資訊的Vector，這些資訊就叫做Level
+* 如果你對資料分析有經驗，這就是Ordinal Variable
+
+```{r}
+status <- c("Poor", "Improved", "Excellent", "Poor")
+statusF <- factor(status)
+```
+
 ### Matrix
 
 * 一個mxn的matrix指的是matrix有m列、n欄
