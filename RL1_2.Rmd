@@ -1,10 +1,3 @@
----
-title: "RL1_2"
-author: "Yao-Jen Kuo"
-date: "Friday, November 13, 2015"
-output: html_document
----
-
 # NTUTrainRL1
 This is the lecture notes for NTU Train Course of R Project Lecture 1
 
