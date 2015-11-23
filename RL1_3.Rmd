@@ -11,29 +11,29 @@ apply()是R語言中有名且好用的功能，apply()家族包含apply()、lapp
 
   * 最基本的的功能，它可以將函數應用到矩陣的列(1)或欄(2)。
 
-```{r}
-matrix <- matrix(1:8, nrow=2)#創造一個2*4的矩陣做範例
-sumRow <- apply(matrix, 1, sum)#把sum應用到各列
-sumColumn <- apply(matrix, 2, sum)#把sum應用到各欄
-meanRow <- apply(matrix, 1, mean)#把mean應用到各列
-meanColumn <- apply(matrix, 2, mean)#把mean應用到各欄
-```
+  ```{r}
+  matrix <- matrix(1:8, nrow=2)#創造一個2*4的矩陣做範例
+  sumRow <- apply(matrix, 1, sum)#把sum應用到各列
+  sumColumn <- apply(matrix, 2, sum)#把sum應用到各欄
+  meanRow <- apply(matrix, 1, mean)#把mean應用到各列
+  meanColumn <- apply(matrix, 2, mean)#把mean應用到各欄
+  ```
 
   * 第三個argument不一定要內建的函數，可以使用自訂函數。
 
-```{r}
-#自己定義一個最大值的函數maximum
-maximum <- function(x){
-  sort(x, decreasing=TRUE)[1]
-}
-maxRow <- apply(matrix, 1, maximum)#把maximum應用到各列
-maxColumn <- apply(matrix, 2, maximum)#把maximum應用到各欄
-```
+  ```{r}
+  #自己定義一個最大值的函數maximum
+  maximum <- function(x){
+    sort(x, decreasing=TRUE)[1]
+  }
+  maxRow <- apply(matrix, 1, maximum)#把maximum應用到各列
+  maxColumn <- apply(matrix, 2, maximum)#把maximum應用到各欄
+  ```
 
   * 應用apply()尋找極端值
   
-```{r}
-```
+  ```{r}
+  ```
 
 * lapply() and sapply()
 
