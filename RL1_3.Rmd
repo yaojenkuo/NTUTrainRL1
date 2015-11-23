@@ -130,7 +130,7 @@ countOdd <- function(x){
   }
   return (count)
 }
-countOdd(c(1:9))
+countOdd(c(1:9))#計算1~9有幾個奇數
 ```
 
 ## Reference
