@@ -1,5 +1,5 @@
-# NTUTrainRL1
-This is the lecture notes for NTU Train Course of R Project Lecture 1
+# NTUTrainRL1_2
+This is the lecture notes for NTU Train Course of R Project Lecture 1_2
 
 ## Data Manipulation
 

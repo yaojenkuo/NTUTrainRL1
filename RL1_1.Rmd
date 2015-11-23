@@ -1,5 +1,5 @@
-# NTUTrainRL1
-This is the lecture notes for NTU Train Course of R Project Lecture 1
+# NTUTrainRL1_1
+This is the lecture notes for NTU Train Course of R Project Lecture 1_1
 
 ## Data Types
 

@@ -1,5 +1,5 @@
-# NTUTrainRL1
-This is the lecture notes for NTU Train Course of R Project Lecture 1
+# NTUTrainRL1_3
+This is the lecture notes for NTU Train Course of R Project Lecture 1_3
 
 ## Basic Programming
 
