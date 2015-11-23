@@ -193,6 +193,18 @@ myList[["ages"]]#Vector h
 myList[[3]][4,2]#第三個物件matrix j的第四列第二欄元素
 ```
 
+### NA與NULL
+
+* 在R中NA與NULL都是代表遺漏值，兩者最大的差異處在於是否會被運算函數包含運算
+
+```{r}
+naExample <- c(88, NA, 12, 92, 33)
+nullExample <- c(88, NULL, 12, 92, 33)
+mean(naExample)#無法運算
+mean(naExample, na.rm=TRUE)#na.rm as in NA removoe
+mean(nullExample)
+```
+
 ## Reference
 * R in Action, Robert I. Kabacoff
 * The Art of R Programming, Norman Matloff

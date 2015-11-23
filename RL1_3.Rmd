@@ -3,6 +3,24 @@ This is the lecture notes for NTU Train Course of R Project Lecture 1
 
 ## Basic Programming
 
+### apply()家族
+
+* apply()
+
+* lapply() and sapply()
+
+* tapply()
+
+### 流程控制
+
+#### 迴圈
+
+* For Loop
+
+* While Loop
+
+#### if-else
+
 
 
 ## Reference
