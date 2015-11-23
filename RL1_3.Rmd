@@ -92,7 +92,11 @@ apply()是R語言中有名且好用的功能，apply()家族包含apply()、lapp
 
 * For Loop
 
+
+
 * While Loop
+
+
 
 #### if-else
 
