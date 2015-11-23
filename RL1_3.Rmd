@@ -30,9 +30,19 @@ apply()是R語言中有名且好用的功能，apply()家族包含apply()、lapp
   maxColumn <- apply(matrix, 2, maximum)#把maximum應用到各欄
   ```
 
-  * 應用apply()尋找極端值
+  * 應用apply()尋找矩陣中的極端值
   
   ```{r}
+  findOutliers <- function(x){
+    findOutlier <- function(xrow){
+      medianXRow <- median(xrow)
+      distance <- abs(xrow-medianXRow)
+      return(which.max(distance))
+    }
+    return(apply(x, 1, findOutlier))
+  }
+  salesMatrix <- matrix(c(1,2,30,1,10,11,50,1,60), nrow=3, byrow=TRUE)
+  findOutliers(salesMatrix)#告訴你第一列的第三個元素、第二列的第一個、第三列的第二個元素是極端值
   ```
 
 * lapply() and sapply()
