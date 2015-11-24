@@ -3,15 +3,49 @@ This is the lecture notes for NTU Train Course of R Project Lecture 1_4
 
 ## Data Collection
 
-### 讀取.csv
+### 讀取csv
 
-### 讀取excel檔案
+這是實務中最常運用的方法，csv as in comma-separated values。
+
+```{r}
+setwd("C:/NTUTrainRL1")
+Sys.setlocale(category = "LC_ALL", locale = "cht")#csv檔是繁體中文
+accidentList <- read.csv("data/funCoastAccident.csv", header=TRUE, sep=",")
+head(accidentList)#看看前6筆資料
+str(accidentList)#看看資料集結構
+```
+
+欄位屬性可以在讀取資料時設定。
+
+```{r}
+accidentList <- read.csv("data/funCoastAccident.csv", header=TRUE, sep=",", row.names="編號", colClasses=c("character", "character", "character", "character", "character", "integer", "factor", "factor"))
+colnames(accidentList) <- c("county", "hospital", "gender", "nationality", "age", "woundType1", "woundType2")
+```
+
+### 讀取excel
+
+我們需要仰賴xlsx套件才能夠讀取excel檔案。
+
+```{r}
+install.packages("xlsx")
+library(xlsx)
+accidentList <- read.xlsx("C:/NTUTrainRL1/data/funCoastAccident.xlsx", 1)
+```
 
 ### 讀取sas資料集
 
-### 讀取XML
+我們需要仰賴Hmisc套件才能夠讀取excel檔案。
+
+```{r}
+library(Hmisc)
+datadir <- "C:/NTUTrainRL1/data"
+sasexe <- "C:/Program Files/SASHome/SASFoundation/9.4/sas.exe"
+accidentList <- sas.get(libraryName=datadir, member="funcoastaccident", sasprog=sasexe)
+```
 
 ### Crawler
+
+
 
 ## Reference
 * R in Action, Robert I. Kabacoff
