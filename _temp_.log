@@ -1,0 +1,310 @@
+1                                                             SAS 系統                         2015年11月24日星期二 下午05時33分20秒
+
+NOTE: 無法開啟 SASUSER.REGSTRY。將會開啟 WORK.REGSTRY。
+NOTE: 在工作階段結束時所有的登錄變更都會遺失。
+
+WARNING: Unable to copy SASUSER registry to WORK registry. Because of this, you will not see registry customizations during this 
+         session.
+NOTE: 無法開啟 SASUSER.PROFILE。將會開啟 WORK.PROFILE。
+NOTE: 在工作階段結束時所有的設定檔變更都會遺失。
+NOTE: Copyright (c) 2002-2012 by SAS Institute Inc., Cary, NC, USA. 
+NOTE: SAS (r) Proprietary Software 9.4 (TS1M2 DBCS3170) 
+      已授權給 Chen Alen-E68029, 站台 70068130.
+NOTE: 此工作階段正在 X64_7PRO  平台上執行。
+
+
+
+NOTE: 更新後的分析產品:
+      
+      SAS/STAT 13.2
+      SAS/ETS 13.2
+      SAS/OR 13.2
+      SAS/IML 13.2
+      SAS/QC 13.2
+
+NOTE: 其他主機資訊:
+
+ X64_7PRO WIN 6.1.7601 Service Pack 1 Workstation
+
+NOTE: 已使用 SAS 初始化:
+      實際時間           1.13 秒
+      CPU 時間            0.71 秒
+      
+1          %LET DEFAULTE=latin1;
+2          /* Macro sas_get (modified by F. Harrell 30Jan90, Bill Dunlap Dec90, FH Mar92,
+3          			FH Apr95 (extend LENGTH smiss))
+4              Sets up for conversion of SAS dataset to S dataset.
+5              Arguments:
+6          	dataset - name of SAS dataset
+7          	temp1	- Name of temporary dataset to contain data dictionar (unquoted)
+8          		  default=/tmp/file.1
+9          	temp2	- Name of temporary dataset to contain ASCII version of SAS
+10         		  dataset (unquoted)
+11         		  default=/tmp/file.2
+12         	temp3   - Name of temporary dataset to contain ASCII file with S
+13         		  program to store format values and labels
+14         	temp4   - Name of temporary dataset to contain ASCII file with
+15         		  locations of special missing values
+16         	dates	- SAS to store date variables in SAS format ( # days from 1/1/60)
+17         		  (default)
+18         		- YEARFRAC to store as days from 1/1/1900, divided by 365.25
+19         		- YEARFRAC2 to store as year + fraction of current year
+20         		- YYMMDD to store as numeric YYMMDD
+21         	vars    - list of variable in dataset that you want returned to S
+22                           (unquoted, separate variable names with spaces)  If empty,
+23                           then return all variables.
+24                 ifs     - sequence of SAS subsetting if statements, (unquoted,
+25                           separated by semicolons).
+26         	formats - 0 (default) - do not create file on temp3 containing S
+27         		  statements to store format values and labels, 1 do create
+28         	specmiss- 0 (default).  Set to 1 to write a data file on temp4 with
+29         		  the fields: variable name, special missing value code,
+30         		  observation number
+31         	defencod - default encoding of dataset if it does not specify
+32                                                                                       */
+33         %macro sas_get(dataset,  temp1, temp2, temp3, temp4, dates=SAS, vars=, ifs=,
+34         	formats=0, specmiss=0, defencod=&DEFAULTE);
+35         OPTIONS NOFMTERR;
+36         %LET DSID=%SYSFUNC(open(&dataset,i));
+37         %LET ENCODE=%SCAN(%SYSFUNC(ATTRC(&DSID,ENCODING)),1);
+38         %IF &ENCODE=Default %THEN %LET dataset=&dataset(encoding=&defencod);
+39         %IF %QUOTE(&temp1)=  %THEN %LET temp1=/tmp/file.1;
+40         %IF %QUOTE(&temp2)=  %THEN %LET temp2=/tmp/file.2;
+41         %IF %QUOTE(&temp3)=  %THEN %LET temp3=/tmp/file.3;
+42         %IF %QUOTE(&temp4)=  %THEN %LET temp4=/tmp/file.4;
+43         %LET dates=%UPCASE(&dates);
+44         %LET ifs=%SCAN(%QUOTE(&ifs),1,'');
+45         %LET _s_=_sav_;
+46         /* BILL: Can these 2 subsets be combined into one pass of the data? -Frank*/
+47         /* Subset by observation first */
+48         %IF %QUOTE(&ifs)^= %THEN %DO;
+2                                             SAS 系統          2015年11月24日星期二 下午05時33分20秒
+
+49          data _osub_ ;
+50           set &dataset ;
+51           &ifs ;
+52          %LET dataset=_osub_ ;
+53          %END;
+54         /* Then subset by variable */
+55         %IF &vars^= %THEN %DO;
+56          data _vsub_ ;
+57           set &dataset ;
+58           keep &vars ;
+59          %LET dataset=_vsub_ ;
+60          %END;
+61         proc contents data=&dataset out=&_s_(KEEP=name type length label format nobs
+62          varnum) noprint;
+63         %IF &formats=1 %THEN %DO;
+64            PROC FORMAT LIBRARY=LIBRARY CNTLOUT=f(KEEP=fmtname type start end label);
+65            DATA f; SET f; RETAIN n 0; n+1; IF type="C" THEN fmtname="$"||fmtname;
+66            PROC SORT DATA=f OUT=f(DROP=n); BY fmtname n;
+67           *Sort by n instead of start for numerics so 13 sorts after 2;
+68           *Dont consider formats containing ANY range of values;
+69           *Dont consider formats that dont have at least one non-missing (if
+70            numeric) starting value.  This gets rid of formats that are used
+71            only to label special missing values;
+72            DATA f2; SET f; BY fmtname; RETAIN anyrange 0 anynmiss 0;
+73               IF FIRST.fmtname THEN DO;anyrange=0;anynmiss=0;END;
+74               IF start^=end THEN anyrange=1;
+75               IF TYPE="C" THEN anynmiss=1;
+76               ELSE IF (start+0)>. THEN anynmiss=1;
+77               IF LAST.fmtname & anynmiss & ^anyrange THEN OUTPUT; KEEP fmtname;
+78            DATA f; MERGE f f2(IN=in2); BY fmtname; IF in2;
+79               IF TYPE="N" THEN DO; IF (start+0)>.;  *S cannot handle special missings;
+80                  END;
+81               RENAME fmtname=format start=value; DROP end;
+82            PROC SORT DATA=&_s_(KEEP=format) OUT=sform; BY format;
+83            DATA sform; SET sform; BY format; IF LAST.format;
+84            DATA f; MERGE sform(IN=in1) f(IN=in2); BY format;
+85               IF in1 & in2;
+86            *This keeps formats ever used by any variable;
+87            DATA _NULL_; SET f END=_eof_; BY format;
+88               ARRAY val{*} $ 16 val1-val500; ARRAY lab{*} $ 40 lab1-lab500;
+89               RETAIN done 0 nform 0 nval 0 val1-val500 " " lab1-lab500 " " bk -1;
+90               FILE "&temp3" LRECL=4096;
+91               IF FIRST.format THEN DO;
+92                  IF ^done THEN PUT 'list(' @@;  done=1;
+93                  nform=nform+1; nval=0;
+94                  format=TRANSLATE(format,".abcdefghijklmnopqrstuvwxyz",
+95                                          "_ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+96                   IF nform=1 THEN PUT '"' format +bk '"=list(' @@;
+97                  ELSE PUT ', "' format +bk '"=list(' @@;
+98                  END;
+99               nval=nval+1;
+100              IF nval>500 THEN DO; ERROR ">500 format values not allowed";ABORT ABEND;
+101                 END;
+102              val{nval}=compress(value)||""; lab{nval}=label;
+103              IF LAST.format THEN DO;
+104                 PUT "values=c(" @@;
+105                 DO i=1 TO nval; IF i>1 THEN PUT "," @@;
+106                    IF type="N" THEN PUT val{i} +bk @@;
+107                    ELSE PUT '"' val{i} +bk '"'  @@;
+108                    END;
+109                 PUT "),labels=c(" @@;
+110                 DO i=1 TO nval; IF i>1 THEN PUT "," @@;
+111                    PUT '"' lab{i} +bk '"' @@;
+112                    END;
+113                 PUT "))";
+114                 END;
+115              IF _eof_ THEN PUT ")";
+116           %END;
+117        PROC SORT DATA=&_s_;BY varnum;
+118        data _null_;
+119         set &_s_ end=eof;
+120         FILE "&temp1";  RETAIN _bk_ -1;
+121         if _n_ = 1 then do;
+122        %IF &specmiss=0 %THEN %LET ofile=_NULL_;
+123        %ELSE %LET ofile=smiss(KEEP=vname val obs);
+124          put "data &ofile; set &dataset end=eof;";
+125          put '  file "&temp2" RECFM=D LRECL=4096;';
+126          put "  retain __delim 18 _bk_ -1 obs 0; LENGTH _xx_ $ 20 obs 5;obs+1; ";
+3                                             SAS 系統          2015年11月24日星期二 下午05時33分20秒
+
+127        %IF &specmiss=1 %THEN %DO;
+128          put "LENGTH vname $ 8 val $ 1;"; %END;
+129          end;
+130         IF type=2 THEN DO;
+131          PUT 'FORMAT ' name ';' @;
+132          PUT 'IF ' name '=" " THEN PUT __delim IB1. @;';
+133        /* $char added F.H. 24Mar92, dropped  +_bk_ before __delim */
+134        /* $CHAR. removed FEH 2Aug92, added null FORMAT above, added back +_bk_ */
+135          PUT 'ELSE PUT ' name '+_bk_ __delim IB1. @;';
+136          END;
+137         ELSE DO;
+138          PUT 'IF ' name '<=.Z THEN _xx_="NA";' @;
+139          PUT 'ELSE _xx_=LEFT(PUT(' @;
+140          format=UPCASE(format);
+141          IF format="DATE"|format="MMDDYY"|format="YYMMDD"|
+142        format="DDMMYY"|format="YYQ"|format="MONYY"|format="JULIAN" THEN DO;
+143           %IF &dates=SAS %THEN
+144            PUT name ",BEST18.)";
+145           %ELSE %IF &dates=YYMMDD %THEN
+146            PUT name ",YYMMDD6.)";
+147           %ELSE %IF &dates=YEARFRAC %THEN
+148            PUT "(" name "-MDY(1,1,1900))/365.25,7.3)";
+149           %ELSE %IF &dates=YEARFRAC2 %THEN %DO;
+150            PUT "YEAR(" name ")-1900+(" name "-MDY(1,1,YEAR(" name ")))/" @;
+151            PUT "(MDY(12,31,YEAR(" name "))-MDY(1,1,YEAR(" name "))+1),7.3)";
+152            %END;
+153           ;
+154           END;	
+155          ELSE DO;PUT name ",BEST18.)" @;END;
+156          PUT ');  PUT _xx_ +_bk_ __delim IB1. @;';  *Added +_bk_ 2Aug92;
+157        %IF &specmiss=1 %THEN %DO;
+158          put 'IF .A<=' name '<=.Z THEN DO;
+159           vname="' name +_bk_ '"; val=put(' name ',1.); OUTPUT; END;';
+160          %END;
+161          END;
+162        if eof then PUT 'PUT; RUN;';
+163        run;
+164        %include "&temp1";
+165        data _null_; set &_s_;
+166         retain __delim 18 _bk_ -1;
+167         file "&temp1" LRECL=4096;
+168         name=TRANSLATE(name,".abcdefghijklmnopqrstuvwxyz",
+169        		     "_ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+170         format=TRANSLATE(format,".abcdefghijklmnopqrstuvwxyz",
+171                                 "_ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+172         put name +_bk_ __delim IB1. type +_bk_ __delim IB1. length +_bk_ __delim IB1.
+173          format +_bk_ __delim IB1. label +_bk_ __delim IB1. nobs +_bk_ __delim IB1.;
+174        run;
+175        %IF &specmiss=1 %THEN %DO;
+176         PROC SORT DATA=smiss OUT=smiss;BY vname val obs;
+177         DATA _NULL_; SET smiss;FILE "&temp4" RECFM=D LRECL=30;
+178         RETAIN _bk_ -1 __delim 18;
+179         vname=TRANSLATE(vname,".abcdefghijklmnopqrstuvwxyz",
+180        		       "_ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+181         PUT vname +_bk_ __delim IB1. val +_bk_ __delim IB1. obs +_bk_ __delim IB1.;
+182         RUN;
+183         %END;
+184        %mend sas_get;
+185        libname temp 'C:/NTUTrainRL1/data';
+NOTE: 已成功指派資料館名稱 TEMP，如下所述: 
+      引擎:        V9 
+      實體名稱: C:\NTUTrainRL1\data
+186        libname library 'C:/NTUTrainRL1/data';
+NOTE: 資料館名稱 LIBRARY 所參考的實體資料館與 TEMP 相同。
+NOTE: 已成功指派資料館名稱 LIBRARY，如下所述: 
+      引擎:        V9 
+      實體名稱: C:\NTUTrainRL1\data
+187        %sas_get(temp.funcoastaccident,
+188          C:\Users\twntok\AppData\Local\Temp\Rtmp61d2Oj\SaS34c77a45f0b.1.sas,
+189          C:\Users\twntok\AppData\Local\Temp\Rtmp61d2Oj\SaS34c77a45f0b.2.sas,
+190          C:\Users\twntok\AppData\Local\Temp\Rtmp61d2Oj\SaS34c77a45f0b.4.sas,
+191          C:\Users\twntok\AppData\Local\Temp\Rtmp61d2Oj\SaS34c77a45f0b.5.sas,
+192          dates=sas,
+193          vars=,
+194          ifs='',
+195          formats=0
+196        ,  specmiss=0);
+
+4                                             SAS 系統          2015年11月24日星期二 下午05時33分20秒
+
+NOTE: 資料集 WORK._SAV_ 有 8 個觀測值和 7 個變數。
+NOTE: 已使用 PROCEDURE CONTENTS (總處理時間):
+      實際時間           0.09 秒
+      CPU 時間            0.09 秒
+      
+
+
+NOTE: 已從資料集 WORK._SAV_. 讀取 8 個觀測值
+NOTE: 資料集 WORK._SAV_ 有 8 個觀測值和 7 個變數。
+NOTE: 已使用 PROCEDURE SORT (總處理時間):
+      實際時間           0.01 秒
+      CPU 時間            0.01 秒
+      
+
+
+NOTE: 檔案 "C:\Users\twntok\AppData\Local\Temp\Rtmp61d2Oj\SaS34c77a45f0b.1.sas" 為:
+      檔案名稱=C:\Users\twntok\AppData\Local\Temp\Rtmp61d2Oj\SaS34c77a45f0b.1.sas,
+      RECFM=V,LRECL=32767,檔案大小 (位元組)=0,
+      上次修改時間=2015年11月24日 17時33分21秒,
+      建立時間=2015年11月24日 17時33分21秒
+
+NOTE: 19 個記錄已寫入檔案 "C:\Users\twntok\AppData\Local\Temp\Rtmp61d2Oj\SaS34c77a45f0b.1.sas"。
+      最小記錄長度為 9。
+      最大記錄長度為 93。
+NOTE: 已從資料集 WORK._SAV_. 讀取 8 個觀測值
+NOTE: 已使用 DATA 陳述式 (總處理時間):
+      實際時間           0.01 秒
+      CPU 時間            0.01 秒
+      
+
+
+NOTE: 檔案 "C:\Users\twntok\AppData\Local\Temp\Rtmp61d2Oj\SaS34c77a45f0b.2.sas" 為:
+      檔案名稱=C:\Users\twntok\AppData\Local\Temp\Rtmp61d2Oj\SaS34c77a45f0b.2.sas,
+      RECFM=V,LRECL=4096,檔案大小 (位元組)=0,
+      上次修改時間=2015年11月24日 17時33分21秒,
+      建立時間=2015年11月24日 17時33分21秒
+
+NOTE: 515 個記錄已寫入檔案 "C:\Users\twntok\AppData\Local\Temp\Rtmp61d2Oj\SaS34c77a45f0b.2.sas"。
+      最小記錄長度為 39。
+      最大記錄長度為 53。
+NOTE: 已從資料集 TEMP.FUNCOASTACCIDENT. 讀取 515 個觀測值
+NOTE: 已使用 DATA 陳述式 (總處理時間):
+      實際時間           0.01 秒
+      CPU 時間            0.03 秒
+      
+
+
+NOTE: 檔案 "C:\Users\twntok\AppData\Local\Temp\Rtmp61d2Oj\SaS34c77a45f0b.1.sas" 為:
+      檔案名稱=C:\Users\twntok\AppData\Local\Temp\Rtmp61d2Oj\SaS34c77a45f0b.1.sas,
+      RECFM=V,LRECL=4096,檔案大小 (位元組)=0,
+      上次修改時間=2015年11月24日 17時33分21秒,
+      建立時間=2015年11月24日 17時33分21秒
+
+NOTE: 8 個記錄已寫入檔案 "C:\Users\twntok\AppData\Local\Temp\Rtmp61d2Oj\SaS34c77a45f0b.1.sas"。
+      最小記錄長度為 19。
+      最大記錄長度為 28。
+NOTE: 已從資料集 WORK._SAV_. 讀取 8 個觀測值
+NOTE: 已使用 DATA 陳述式 (總處理時間):
+      實際時間           0.00 秒
+      CPU 時間            0.00 秒
+      
+
+
+NOTE: SAS Institute Inc., SAS Campus Drive, Cary, NC USA 27513-2414
+NOTE: 已使用 SAS 系統:
+      實際時間           1.47 秒
+      CPU 時間            0.95 秒
+      

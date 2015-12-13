@@ -180,6 +180,10 @@ sqldf("select avg(age) as avgAge from strawHatPirate2")
 sqldf("select strawHatPirate2.name, devilFruitList.devilFruit from strawHatPirate2 inner join devilFruitList on strawHatPirate2.name=devilFruitList.name2")
 ```
 
+### plyr套件
+
+### reshape套件
+
 ## Reference
 * R in Action, Robert I. Kabacoff
 * The Art of R Programming, Norman Matloff
