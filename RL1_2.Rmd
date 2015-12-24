@@ -197,16 +197,22 @@ avgAgeByGender <- ddply(strawHatPirate7, c("gender"), summarise, avgAge=round(me
 
 ### reshape2套件
 
-經常處理資料的資料分析人員常常面臨資料集轉置(transpose)的問題，reshape2套件透過melt函數與dcast函數能夠幫助我們處理轉置問題，這樣子說明也許很抽象，讓我們來看一下怎麼轉置草帽海賊團的資料集。
+* 資料分析人員常常面臨資料集轉置(transpose)的問題
+* SQL的使用者可能是使用union, SAS的使用者可能是使用proc transpose
+* R的使用者利用reshape2套件透過melt函數與dcast函數能夠幫助我們處理資料轉置的問題，說明也許很抽象，讓我們來看一下怎麼轉置草帽海賊團的資料集。
 
 #### melt函數
 
+最常見的應用是繪畫有2條X軸相同的折線圖。
+
 ```{r}
 library(reshape2)
-strawHatPirate8 <- melt(strawHatPirate, id=c("name"), measure=c("strength", "intelligence"))
+strawHatPirate8 <- melt(strawHatPirate, id=c("name"), measure=c("strength", "intelligence"))# 把兩個數值欄位轉到一個欄位底下，並多一個類別欄位來區隔這兩種數值
 ```
 
 #### dcast函數
+
+還原為兩個數值欄位。
 
 ```{r}
 strawHatPirate9 <- dcast(strawHatPirate8, name~variable)
