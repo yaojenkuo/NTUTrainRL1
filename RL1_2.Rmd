@@ -195,7 +195,11 @@ avgAgeByGender <- ddply(strawHatPirate7, c("gender"), summarise, avgAge=round(me
 
 上述示範使用ddply這個函數，dd代表輸入dataframe輸出dataframe，所以，使用ldply函數代表輸入list輸出dataframe。
 
-### reshape套件
+### reshape2套件
+
+經常處理資料的資料分析人員常常面臨資料集轉置(transpose)的問題，reshape2套件透過melt函數與dcast函數能夠幫助我們處理轉置問題，這樣子說明也許很抽象，讓我們來看一個實際的例子。
+
+
 
 ## Reference
 * R in Action, Robert I. Kabacoff
