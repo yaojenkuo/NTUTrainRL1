@@ -182,6 +182,19 @@ sqldf("select strawHatPirate2.name, devilFruitList.devilFruit from strawHatPirat
 
 ### plyr套件
 
+* 對於SQL的使用者來說，就想成是GROUP BY的功能!
+* 對於EXCEL的使用者來說，就想成是樞紐分析表的功能!
+
+```{r}
+gender <- c("Male", "Male", "Female", "Male")
+strawHatPirate7 <- cbind(strawHatPirate, gender)#新增性別欄位
+library(plyr)#載入plyr套件
+avgAgeByGender <- ddply(strawHatPirate7, c("gender"), function(df)round(mean(df$age),2))#寫法1
+avgAgeByGender <- ddply(strawHatPirate7, c("gender"), summarise, avgAge=round(mean(age),2))#寫法2
+```
+
+上述示範使用ddply這個函數，dd代表輸入dataframe輸出dataframe，所以，使用ldply函數代表輸入list輸出dataframe。
+
 ### reshape套件
 
 ## Reference
