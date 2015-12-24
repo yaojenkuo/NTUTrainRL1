@@ -189,7 +189,7 @@ sqldf("select strawHatPirate2.name, devilFruitList.devilFruit from strawHatPirat
 gender <- c("Male", "Male", "Female", "Male")
 strawHatPirate7 <- cbind(strawHatPirate, gender)#新增性別欄位
 library(plyr)#載入plyr套件
-avgAgeByGender <- ddply(strawHatPirate7, c("gender"), function(df)round(mean(df$age),2))#寫法1
+avgBountyByGender <- ddply(strawHatPirate7, c("gender"), function(df)round(mean(df$bounty, na.rm=T),2))#寫法1
 avgAgeByGender <- ddply(strawHatPirate7, c("gender"), summarise, avgAge=round(mean(age),2))#寫法2
 ```
 
@@ -197,9 +197,20 @@ avgAgeByGender <- ddply(strawHatPirate7, c("gender"), summarise, avgAge=round(me
 
 ### reshape2套件
 
-經常處理資料的資料分析人員常常面臨資料集轉置(transpose)的問題，reshape2套件透過melt函數與dcast函數能夠幫助我們處理轉置問題，這樣子說明也許很抽象，讓我們來看一個實際的例子。
+經常處理資料的資料分析人員常常面臨資料集轉置(transpose)的問題，reshape2套件透過melt函數與dcast函數能夠幫助我們處理轉置問題，這樣子說明也許很抽象，讓我們來看一下怎麼轉置草帽海賊團的資料集。
 
+#### melt函數
 
+```{r}
+library(reshape2)
+strawHatPirate8 <- melt(strawHatPirate, id=c("name"), measure=c("strength", "intelligence"))
+```
+
+#### dcast函數
+
+```{r}
+strawHatPirate9 <- dcast(strawHatPirate8, name~variable)
+```
 
 ## Reference
 * R in Action, Robert I. Kabacoff
