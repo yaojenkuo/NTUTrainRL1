@@ -45,7 +45,21 @@ accidentList <- sas.get(libraryName=datadir, member="funcoastaccident", sasprog=
 
 ### Crawler
 
+首先我們需要知道網站把資料藏在什麼地方用什麼方法傳輸資料
 
+* js
+* document
+* web storage
+* XML
+
+再來是用什麼方法傳輸資料
+
+* GET方法
+* POST方法
+
+最後是如何用R把資料抓起來
+
+* XML Package
 
 ## Reference
 * R in Action, Robert I. Kabacoff
