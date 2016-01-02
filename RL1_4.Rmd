@@ -61,6 +61,11 @@ accidentList <- sas.get(libraryName=datadir, member="funcoastaccident", sasprog=
 
 * XML Package
 
+```{r}
+install.packages("XML")
+library(XML)
+```
+
 ## Reference
 * R in Action, Robert I. Kabacoff
 * The Art of R Programming, Norman Matloff
