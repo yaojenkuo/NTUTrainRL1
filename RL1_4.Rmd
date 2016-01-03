@@ -43,28 +43,16 @@ sasexe <- "C:/Program Files/SASHome/SASFoundation/9.4/sas.exe"
 accidentList <- sas.get(libraryName=datadir, member="funcoastaccident", sasprog=sasexe)
 ```
 
-### Crawler
+### 抓取網頁資料
+網頁爬蟲是一個專門的研究領域，這裡只有時間很快地簡介，有興趣的學員可以去選修木刻思專門為蟲友開的課程。
 
-首先我們需要知道網站把資料藏在什麼地方用什麼方法傳輸資料
+#### 工欲善其事
 
-* js
-* document
-* web storage
-* XML
+我們要先裝一些好用的網頁瀏覽器外掛來幫助我們爬網頁:
 
-再來是用什麼方法傳輸資料
+#### Connector
 
-* GET方法
-* POST方法
-
-最後是如何用R把資料抓起來
-
-* XML Package
-
-```{r}
-install.packages("XML")
-library(XML)
-```
+#### Parser
 
 ## Reference
 * R in Action, Robert I. Kabacoff
