@@ -47,12 +47,35 @@ accidentList <- sas.get(libraryName=datadir, member="funcoastaccident", sasprog=
 網頁爬蟲是一個專門的研究領域，這裡只有時間很快地簡介，有興趣的學員可以去選修木刻思專門為蟲友開的課程。
 
 #### 工欲善其事
-
-我們要先裝一些好用的網頁瀏覽器外掛來幫助我們爬網頁:
+我們要先裝一些好用的網頁瀏覽器外掛來幫助我們爬網頁。
+* CHROME
+  * Quick Javascript Switcher
+  * XPATH Helper
+  * EditThisCookie
+  * JSONView
+* FIREFOX
+  * Cookies Manager+
+  * HackBar
 
 #### Connector
 
+網頁資料藏在哪裡?
+* Documents
+* XHR
+* Script
+* Websockets
+
+來練習一下!
+* [7-11全國分店]()
+* [奇摩股市]()
+* [批踢踢八卦版]()
+* [PCHome購物中心]()
+
 #### Parser
+
+* CSS Selector
+
+* XPath
 
 ## Reference
 * R in Action, Robert I. Kabacoff
