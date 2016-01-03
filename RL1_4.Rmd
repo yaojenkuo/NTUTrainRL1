@@ -49,13 +49,13 @@ accidentList <- sas.get(libraryName=datadir, member="funcoastaccident", sasprog=
 #### 工欲善其事
 我們要先裝一些好用的網頁瀏覽器外掛來幫助我們爬網頁。
 * CHROME
-  * Quick Javascript Switcher
-  * XPATH Helper
-  * EditThisCookie
-  * JSONView
+  * [Quick Javascript Switcher](https://chrome.google.com/webstore/detail/quick-javascript-switcher/geddoclleiomckbhadiaipdggiiccfje)
+  * [XPATH Helper](https://chrome.google.com/webstore/detail/xpath-helper/hgimnogjllphhhkhlmebbmlgjoejdpjl?hl=zh-TW)
+  * [EditThisCookie](https://chrome.google.com/webstore/detail/editthiscookie/fngmhnnpilhplaeedifhccceomclgfbg?hl=zh-TW)
+  * [JSONView](https://chrome.google.com/webstore/detail/jsonview/chklaanhfefbnpoihckbnefhakgolnmc?hl=zh-TW)
 * FIREFOX
-  * Cookies Manager+
-  * HackBar
+  * [Cookies Manager+](https://addons.mozilla.org/zh-tw/firefox/addon/cookies-manager-plus/)
+  * [HackBar](https://addons.mozilla.org/zh-tw/firefox/addon/hackbar/)
 
 #### Connector
 
@@ -66,10 +66,10 @@ accidentList <- sas.get(libraryName=datadir, member="funcoastaccident", sasprog=
 * Websockets
 
 來練習一下!
-* [7-11全國分店]()
-* [奇摩股市]()
-* [批踢踢八卦版]()
-* [PCHome購物中心]()
+* [7-11全國分店](http://emap.pcsc.com.tw/emap.aspx)
+* [奇摩股市](https://tw.stock.yahoo.com/d/s/major_2330.html)
+* [批踢踢八卦版](https://www.ptt.cc/ask/over18?from=%2Fbbs%2FGossiping%2Findex.html)
+* [PCHome購物中心](http://ecshweb.pchome.com.tw/search/v3.3/?q=macbook&scope=all)
 
 #### Parser
 
