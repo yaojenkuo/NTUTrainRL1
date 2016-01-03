@@ -44,7 +44,10 @@ accidentList <- sas.get(libraryName=datadir, member="funcoastaccident", sasprog=
 ```
 
 ### 抓取網頁資料
-網頁爬蟲是一個專門的研究領域，這裡只有時間很快地簡介，有興趣的學員可以去選修木刻思專門為蟲友開的課程。
+網頁爬蟲是一個專門的研究領域，這裡只有時間很快地簡介，有興趣的學員可以去選修專門為蟲友開的課程。一個完整的爬蟲流程通常會有以下這三個程序:
+1. Connector
+2. Parser
+3. Database(在本單元中不涵蓋)
 
 #### 工欲善其事
 我們要先裝一些好用的網頁瀏覽器外掛來幫助我們爬網頁。
@@ -72,10 +75,17 @@ accidentList <- sas.get(libraryName=datadir, member="funcoastaccident", sasprog=
 * [PCHome購物中心](http://ecshweb.pchome.com.tw/search/v3.3/?q=macbook&scope=all)
 
 #### Parser
-
+我們已經知道整包資料在哪裡，但多數時候我們不需要其他雜七雜八的資料，可以使用兩種Selector方法只把我們想要的資料選取出來。
 * CSS Selector
+* XPath Selector
 
-* XPath
+來練習一下!
+* [7-11全國分店](http://emap.pcsc.com.tw/emap.aspx)
+* [奇摩股市](https://tw.stock.yahoo.com/d/s/major_2330.html)
+* [批踢踢八卦版](https://www.ptt.cc/ask/over18?from=%2Fbbs%2FGossiping%2Findex.html)
+* [PCHome購物中心](http://ecshweb.pchome.com.tw/search/v3.3/?q=macbook&scope=all)
+
+#### R
 
 ## Reference
 * R in Action, Robert I. Kabacoff
