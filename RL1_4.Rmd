@@ -34,7 +34,7 @@ accidentList <- read.xlsx("C:/NTUTrainRL1/data/funCoastAccident.xlsx", 1)
 
 ### 讀取sas資料集
 
-我們需要仰賴Hmisc套件才能夠讀取excel檔案。
+我們需要仰賴Hmisc套件才能夠讀取sas資料集。
 
 ```{r}
 library(Hmisc)
@@ -45,6 +45,7 @@ accidentList <- sas.get(libraryName=datadir, member="funcoastaccident", sasprog=
 
 ### 抓取網頁資料
 網頁爬蟲是一個專門的研究領域，這裡只有時間很快地簡介，有興趣的學員可以去選修專門為蟲友開的課程。一個完整的爬蟲流程通常會有以下這三個程序:
+
 1. Connector
 2. Parser
 3. Database(在本單元中不涵蓋)
@@ -62,13 +63,13 @@ accidentList <- sas.get(libraryName=datadir, member="funcoastaccident", sasprog=
 
 #### Connector
 
-網頁資料藏在哪裡?
-* Documents
-* XHR
-* Script
-* Websockets
+網頁資料藏在哪裡? 首先在Chrome瀏覽網頁中按F12
+* Doc(Documents)
+* XHR(XHR and Fetch)
+* JS(Scripts)
+* WS(Websockets)
 
-來練習一下!
+來練習一下！
 * [7-11全國分店](http://emap.pcsc.com.tw/emap.aspx)
 * [奇摩股市](https://tw.stock.yahoo.com/d/s/major_2330.html)
 * [批踢踢八卦版](https://www.ptt.cc/ask/over18?from=%2Fbbs%2FGossiping%2Findex.html)
