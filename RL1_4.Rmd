@@ -97,10 +97,11 @@ accidentList <- sas.get(libraryName=datadir, member="funcoastaccident", sasprog=
 * XPath Selector
 
 來練習一下!
-* [7-11全國分店](http://emap.pcsc.com.tw/emap.aspx)
+
 * [奇摩股市](https://tw.stock.yahoo.com/d/s/major_2330.html)
 * [批踢踢八卦版](https://www.ptt.cc/ask/over18?from=%2Fbbs%2FGossiping%2Findex.html)
-* [PCHome購物中心](http://ecshweb.pchome.com.tw/search/v3.3/?q=macbook&scope=all)
+* [PCHome購物中心](http://ecshweb.pchome.com.tw/search/v3.3/?q=sony&scope=all)
+* [7-11全國分店](http://emap.pcsc.com.tw/emap.aspx)
 
 #### R
 
