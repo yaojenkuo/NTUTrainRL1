@@ -76,11 +76,12 @@ accidentList <- sas.get(libraryName=datadir, member="funcoastaccident", sasprog=
 * [批踢踢八卦版](https://www.ptt.cc/ask/over18?from=%2Fbbs%2FGossiping%2Findex.html)
   * Doc
   * index.html
-* [PCHome購物中心](http://ecshweb.pchome.com.tw/search/v3.3/?q=macbook&scope=all)
+* [PCHome購物中心](http://ecshweb.pchome.com.tw/search/v3.3/?q=sony&scope=all)
   * XHR
   * results?q=sony&page=1&sort=rnk/dc
   * Request Method:GET(較簡單可以看到資料內容)
-  * http://ecshweb.pchome.com.tw/search/v3.3/all/results?q=sony&page=1&sort=rnk/dc(可以看到JSON格式的資料內容)
+  * http://ecshweb.pchome.com.tw/search/v3.3/all/results?q=sony&page=1&sort=rnk/dc
+  * 可以看到JSON格式的資料內容
 * [7-11全國分店](http://emap.pcsc.com.tw/emap.aspx)
   * XHR
   * EMapSDK.aspx
