@@ -55,7 +55,6 @@ accidentList <- sas.get(libraryName=datadir, member="funcoastaccident", sasprog=
 * CHROME
   * [Quick Javascript Switcher](https://chrome.google.com/webstore/detail/quick-javascript-switcher/geddoclleiomckbhadiaipdggiiccfje)
   * [XPATH Helper](https://chrome.google.com/webstore/detail/xpath-helper/hgimnogjllphhhkhlmebbmlgjoejdpjl?hl=zh-TW)
-  * [EditThisCookie](https://chrome.google.com/webstore/detail/editthiscookie/fngmhnnpilhplaeedifhccceomclgfbg?hl=zh-TW)
   * [JSONView](https://chrome.google.com/webstore/detail/jsonview/chklaanhfefbnpoihckbnefhakgolnmc?hl=zh-TW)
 * FIREFOX
   * [Cookies Manager+](https://addons.mozilla.org/zh-tw/firefox/addon/cookies-manager-plus/)
@@ -63,17 +62,33 @@ accidentList <- sas.get(libraryName=datadir, member="funcoastaccident", sasprog=
 
 #### Connector
 
-網頁資料藏在哪裡? 首先在Chrome瀏覽網頁中按F12
+網頁資料藏在哪裡? 首先在Chrome瀏覽網頁中按F12叫出Chrome開發者介面, 點選Network。
 * Doc(Documents)
 * XHR(XHR and Fetch)
 * JS(Scripts)
 * WS(Websockets)
 
 來練習一下！
-* [7-11全國分店](http://emap.pcsc.com.tw/emap.aspx)
+
 * [奇摩股市](https://tw.stock.yahoo.com/d/s/major_2330.html)
+  * Doc
+  * major_2330.html
 * [批踢踢八卦版](https://www.ptt.cc/ask/over18?from=%2Fbbs%2FGossiping%2Findex.html)
+  * Doc
+  * index.html
 * [PCHome購物中心](http://ecshweb.pchome.com.tw/search/v3.3/?q=macbook&scope=all)
+  * XHR
+  * results?q=sony&page=1&sort=rnk/dc
+  * Request Method:GET(較簡單可以看到資料內容)
+  * http://ecshweb.pchome.com.tw/search/v3.3/all/results?q=sony&page=1&sort=rnk/dc(可以看到JSON格式的資料內容)
+* [7-11全國分店](http://emap.pcsc.com.tw/emap.aspx)
+  * XHR
+  * EMapSDK.aspx
+  * Request Method:POST(較複雜才可以看到資料內容)
+  * 打開Firefox按F9打開開發者介面
+  * URL處貼Request URL
+  * Post data處貼Form Data view source
+  * 可以看到XML格式的資料內容
 
 #### Parser
 我們已經知道整包資料在哪裡，但多數時候我們不需要其他雜七雜八的資料，可以使用兩種Selector方法只把我們想要的資料選取出來。
