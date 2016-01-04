@@ -95,6 +95,8 @@ accidentList <- sas.get(libraryName=datadir, member="funcoastaccident", sasprog=
 我們已經知道整包資料在哪裡，但多數時候我們不需要其他雜七雜八的資料，可以使用兩種Selector方法只把我們想要的資料選取出來。
 * CSS Selector
 * XPath Selector
+  * 按Ctrl+Shift+X叫出XPath Helper
+  * 按住Shift將滑鼠游標移至網頁欲抓取的資料處
 
 來練習一下!
 
@@ -109,9 +111,9 @@ accidentList <- sas.get(libraryName=datadir, member="funcoastaccident", sasprog=
   * XPath Selector
     
 * [PCHome購物中心](http://ecshweb.pchome.com.tw/search/v3.3/?q=sony&scope=all)
-  * CSS Selector
+  * CSS Selector抓商品價格: h6>strong
     
-  * XPath Selector
+  * XPath Selector抓商品價格: //h6/strong
     
 * [7-11全國分店](http://emap.pcsc.com.tw/emap.aspx)
   * CSS Selector
