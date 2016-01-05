@@ -46,8 +46,6 @@ rep(9,5)#產生一個有5個9的向量, as in repetition
   }
   ```
 
-  * 關於迴圈的寫法，我們會在RL1_3，Basic Programming中大量練習
-
 ### Factor
 
 * 你可以把Factor視作多了一些資訊的Vector，這些資訊就叫做Level
@@ -60,7 +58,7 @@ statusF <- factor(status)
 
 ### Matrix
 
-* 一個mxn的matrix指的是matrix有m列、n欄
+* 一個m*n的matrix指的是matrix有m列、n欄
 
 ```{r}
 vector <- c(1:12)#這裡也可以使用seq(1:12), seq as in sequence
@@ -136,7 +134,7 @@ status <- c("Poor", "Improved", "Excellent", "Poor")
 patientData <- data.frame(patientID, age, diabetes, status)
 ```
 
-* 讓我們用(m, n)的概念把Data Frame中的元素取出來
+* 讓我們用m*n的概念把Data Frame中的元素取出來
 
 ```{r}
 patientData[1:2]#把patientData第一與第二欄取出來

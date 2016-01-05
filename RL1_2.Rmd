@@ -203,11 +203,11 @@ avgAgeByGender <- ddply(strawHatPirate7, c("gender"), summarise, avgAge=round(me
 
 #### melt函數
 
-最常見的應用是繪畫有2條X軸相同的折線圖。
+把兩個數值欄位轉到一個欄位底下，並多一個類別欄位來區隔這兩種數值。
 
 ```{r}
 library(reshape2)
-strawHatPirate8 <- melt(strawHatPirate, id=c("name"), measure=c("strength", "intelligence"))# 把兩個數值欄位轉到一個欄位底下，並多一個類別欄位來區隔這兩種數值
+strawHatPirate8 <- melt(strawHatPirate, id=c("name"), measure=c("strength", "intelligence"))
 ```
 
 #### dcast函數

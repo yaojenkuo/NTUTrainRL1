@@ -3,6 +3,8 @@ This is the homework for NTU Train Course of R Project Lecture 1
 
 ## Airbnb X Kaggle
 
+https://www.kaggle.com/c/airbnb-recruiting-new-user-bookings
+
 https://github.com/yaojenkuo/airbnbAtKaggle/blob/master/README.md
 
 ## 作業
