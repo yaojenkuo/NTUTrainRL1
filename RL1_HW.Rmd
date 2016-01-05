@@ -6,7 +6,7 @@ This is the homework for NTU Train Course of R Project Lecture 1
 https://github.com/yaojenkuo/airbnbAtKaggle/blob/master/README.md
 
 ## 作業
-將train_users_2.csv與sessions.csv整合成可以跑分群演算法的ABT(Analysis Base Table)，並上傳至自己的GitHub。
+將train_users_2.csv與sessions.csv整合成可以跑分群演算法的ABT(Analysis Base Table)，並將整理資料的程式上傳至自己的GitHub Repository。
 
 ## Reference
 * Kaggle
