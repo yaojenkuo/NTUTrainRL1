@@ -1,0 +1,15 @@
+# NTUTrainRL1_HW
+This is the homework for NTU Train Course of R Project Lecture 1
+
+## Airbnb X Kaggle
+
+https://github.com/yaojenkuo/airbnbAtKaggle/blob/master/README.md
+
+## 作業
+將train_users_2.csv與sessions.csv整合成可以跑分群演算法的ABT(Analysis Base Table)，並上傳至自己的GitHub。
+
+## Reference
+* Kaggle
+* Airbnb
+
+&copy; Tony Yao-Jen Kuo 2016
