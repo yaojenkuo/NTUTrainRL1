@@ -104,8 +104,8 @@ accidentList <- sas.get(libraryName=datadir, member="funcoastaccident", sasprog=
 來練習一下!
 
 * [奇摩股市](https://tw.stock.yahoo.com/d/s/major_2330.html)
-  * CSS Selector抓個股當日主力進出: td.ttt:nth-child(1)
-  * XPath Selector抓個股當日主力進出: //td[@class='ttt']
+  * CSS Selector抓個股當日買超券商: td.ttt:nth-child(1)
+  * XPath Selector抓個股當日買超券商: //td[@class='ttt'][1]
     
 * [批踢踢八卦版](https://www.ptt.cc/ask/over18?from=%2Fbbs%2FGossiping%2Findex.html)
   * CSS Selector抓文章標題: div.title>a
@@ -116,7 +116,7 @@ accidentList <- sas.get(libraryName=datadir, member="funcoastaccident", sasprog=
   * XPath Selector抓商品價格: //h6/strong
     
 * [7-11全國分店](http://emap.pcsc.com.tw/emap.aspx)
-  * CSS Selector抓門市情報: 
+  * CSS Selector抓門市情報: td>table.mytb_1
   * XPath Selector抓門市情報: //td[@class='alt'][2]
     
 #### R
