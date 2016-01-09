@@ -56,6 +56,7 @@ accidentList <- sas.get(libraryName=datadir, member="funcoastaccident", sasprog=
   * [Quick Javascript Switcher](https://chrome.google.com/webstore/detail/quick-javascript-switcher/geddoclleiomckbhadiaipdggiiccfje)
   * [XPATH Helper](https://chrome.google.com/webstore/detail/xpath-helper/hgimnogjllphhhkhlmebbmlgjoejdpjl?hl=zh-TW)
   * [JSONView](https://chrome.google.com/webstore/detail/jsonview/chklaanhfefbnpoihckbnefhakgolnmc?hl=zh-TW)
+  * [SelectorGadget](https://chrome.google.com/webstore/detail/selectorgadget/mhjhnkcfbdhnjickkkdbjoemdmbfginb?hl=en)
 * FIREFOX
   * [Cookies Manager+](https://addons.mozilla.org/zh-tw/firefox/addon/cookies-manager-plus/)
   * [HackBar](https://addons.mozilla.org/zh-tw/firefox/addon/hackbar/)
@@ -94,7 +95,8 @@ accidentList <- sas.get(libraryName=datadir, member="funcoastaccident", sasprog=
 #### Parser
 我們已經知道整包資料在哪裡，但多數時候我們不需要其他雜七雜八的資料，可以使用兩種Selector方法只把我們想要的資料選取出來。
 * CSS Selector
-  * `document.querySelectorAll("CSS Selector Here")`
+  * 使用SelectorGadget外掛
+  * 按F12叫出console使用`document.querySelectorAll("CSS Selector Here")`驗證
 * XPath Selector
   * 按Ctrl+Shift+X叫出XPath Helper
   * 按住Shift將滑鼠游標移至網頁欲抓取的資料處
@@ -102,7 +104,7 @@ accidentList <- sas.get(libraryName=datadir, member="funcoastaccident", sasprog=
 來練習一下!
 
 * [奇摩股市](https://tw.stock.yahoo.com/d/s/major_2330.html)
-  * CSS Selector抓個股當日主力進出: td.ttt
+  * CSS Selector抓個股當日主力進出: td.ttt:nth-child(1)
   * XPath Selector抓個股當日主力進出: //td[@class='ttt']
     
 * [批踢踢八卦版](https://www.ptt.cc/ask/over18?from=%2Fbbs%2FGossiping%2Findex.html)
