@@ -66,9 +66,9 @@ trapezium <- function(upper, bottom, height=10){
   area <- (upper+bottom)*height/2
   return(area)
 }
-trapezium(5, 7)
-trapezium(bottom=7, upper=5)
-trapezium(bottom=7, upper=5, height=100)
+trapezium(5, 7)#依照順序
+trapezium(bottom=7, upper=5)#依命名
+trapezium(bottom=7, upper=5, height=100)#可以改預設
 ```
 
 ### apply() Family
