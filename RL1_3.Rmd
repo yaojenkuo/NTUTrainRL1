@@ -19,21 +19,21 @@ functionName <- function(parameter1, parameter2, ...){
 
 ```{r}
 #有下return()
-Pythagorean <- function(a, b){
+pythagorean <- function(a, b){
   c <- sqrt(a^2 + b^2)
   return(c)
 }
-Pythagorean(3, 4)
-Pythagorean(5, 12)
+pythagorean(3, 4)
+pythagorean(5, 12)
 ```
 
 ```{r}
 #沒有下return()
-Pythagorean <- function(a, b){
+pythagorean <- function(a, b){
   sqrt(a^2 + b^2)
 }
-Pythagorean(3, 4)
-Pythagorean(5, 12)
+pythagorean(3, 4)
+pythagorean(5, 12)
 ```
 
 平均數的例子:
@@ -57,6 +57,18 @@ minimumFunction <- function(input){
 }
 vector1 <- 10:100
 minimumFunction(vector1)
+```
+
+梯形面積的例子:
+
+```{r}
+trapezium <- function(upper, bottom, height=10){
+  area <- (upper+bottom)*height/2
+  return(area)
+}
+trapezium(5, 7)
+trapezium(bottom=7, upper=5)
+trapezium(bottom=7, upper=5, height=100)
 ```
 
 ### apply() Family
