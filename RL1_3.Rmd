@@ -3,6 +3,38 @@ This is the lecture notes for NTU Train Course of R Project Lecture 1_3
 
 ## Basic Programming
 
+### Funtion
+
+基本的函數語法為:
+```{r}
+functionName <- function(parameter1, parameter2, ...){
+  #Some statements here
+  return() #Return something
+}
+```
+如果沒有下`return()`，函數會回傳最後一行程式的產出。
+
+畢氏定理的例子:
+
+```{r}
+#有下return()
+Pythagorean <- function(a, b){
+  c <- sqrt(a^2 + b^2)
+  return(c)
+}
+Pythagorean(3, 4)
+Pythagorean(5, 12)
+```
+
+```{r}
+#沒有下return()
+Pythagorean <- function(a, b){
+  sqrt(a^2 + b^2)
+}
+Pythagorean(3, 4)
+Pythagorean(5, 12)
+```
+
 ### apply() Family
 
 apply()是R語言中有名且好用的功能，apply()家族包含apply()、lapply()、sapply()與tapply()，把apply()家族學好，對資料整理有很大的幫助。
@@ -118,8 +150,21 @@ while(TRUE){
 
 #### if-else
 
+基本的if-else語法為:
+
 ```{r}
-# 結合for迴圈
+if (an expression returns TRUE or FALSE) {
+    # do something
+} else if (another expression returns TRUE or FALSE) {
+    # do something
+} else {
+    # do something
+}
+```
+
+計算一個Vector中奇數的個數(結合function、if-else與for迴圈的例子):
+
+```{r}
 countOdd <- function(x){
   count <- 0
   for(index in x){
