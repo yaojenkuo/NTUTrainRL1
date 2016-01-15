@@ -73,7 +73,7 @@ trapezium(bottom=7, upper=5, height=100)#可以改預設
 
 ### apply() Family
 
-apply()是R語言中有名且好用的功能，apply()家族包含apply()、lapply()、sapply()與tapply()，把apply()家族學好，對資料整理有很大的幫助。
+apply()是R語言中有名且好用的遞迴功能，apply()家族包含apply()、lapply()、sapply()與tapply()，把apply()家族學好，對不愛寫迴圈的資料分析師有很大的幫助。
 
 * apply()
 
@@ -170,7 +170,13 @@ for (index in x){
 
   * Nested Loop
   ```{r}
-  
+  nestDemo <- matrix(numeric(), nrow=3, ncol=3)#創造一個3X3的空矩陣
+  for (index1 in 1:nrow(nestDemo)){
+    for (index2 in 1:ncol(nestDemo)){
+      nestDemo[index1, index2] <- index1*index2
+    }
+  }
+  nestDemo
   ```
 
 * While Loop
@@ -202,6 +208,22 @@ if (an expression returns TRUE or FALSE) {
 } else {
     # do something
 }
+```
+
+計算圓形的面積或是圓周(結合function與if-else的例子):
+
+```{r}
+circleCalculate <- function(radius, areaCal=TRUE){
+  circleArea <- pi*(radius^2)
+  circleCircum <- 2*pi*radius
+  if (areaCal==TRUE){
+    return (circleArea)
+  } else {
+    return (circleCircum)
+  }
+}
+circleCalculate(3)#預設計算圓面積
+circleCalculate(areaCal=FALSE, radius=3)#areaCal=FALSE計算圓周
 ```
 
 計算一個Vector中奇數的個數(結合function、if-else與for迴圈的例子):
