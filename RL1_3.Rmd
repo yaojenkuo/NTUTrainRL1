@@ -169,6 +169,7 @@ for (index in x){
 ```
 
   * Nested Loop
+  
   ```{r}
   nestDemo <- matrix(numeric(), nrow=3, ncol=3)#創造一個3X3的空矩陣
   for (index1 in 1:nrow(nestDemo)){
