@@ -38,16 +38,6 @@ g(f(2))#5x+10
 * Forward-Pipe方式`%>%`
 
 ```{r}
-# 有一個f(x)=5x的函數
-f <- function(x){
-  answer <- 5*x
-  return(answer)
-}
-# 有一個g(x)=x+10的函數
-g <- function(x){
-  answer <- x+10
-  return(answer)
-}
 install.packages("magrittr")
 library(magrittr)
 2 %>% f#5x
