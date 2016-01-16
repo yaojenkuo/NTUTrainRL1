@@ -64,7 +64,9 @@ pythagorean <- function(a, b){
   sqrt(a^2 + b^2)
 }
 pythagorean(3, 4)
+3 %>% pythagorean(.,4)
 pythagorean(5, 12)
+12 %>% pythagorean(5,.)
 ```
 
 平均數的例子:
