@@ -5,7 +5,8 @@ This is the lecture notes for NTU Train Course of R Project Lecture 1_3
 
 ### Funtion
 
-基本的函數語法為:
+* Almost **Everything** that happens in R is a function call!
+* SAS的使用者可以想成是Macro，基本的函數語法為:
 
 ```{r}
 functionName <- function(parameter1, parameter2, ...){
@@ -14,6 +15,43 @@ functionName <- function(parameter1, parameter2, ...){
 }
 ```
 如果沒有下`return()`，函數會回傳最後一行程式的產出。
+
+要呼叫函數的時候有兩種方式:
+
+* 傳統方式
+
+```{r}
+# 有一個f(x)=5x的函數
+f <- function(x){
+  answer <- 5*x
+  return(answer)
+}
+# 有一個g(x)=x+10的函數
+g <- function(x){
+  answer <- x+10
+  return(answer)
+}
+f(2)#5x
+g(f(2))#5x+10
+```
+
+* Forward-Pipe方式`%>%`
+
+```{r}
+f <- function(x){
+  answer <- 5*x
+  return(answer)
+}
+# 有一個g(x)=x+10的函數
+g <- function(x){
+  answer <- x+10
+  return(answer)
+}
+install.packages("magrittr")
+library(magrittr)
+2 %>% f#5x
+2 %>% f %>% g#5x+10
+```
 
 畢氏定理的例子:
 
@@ -24,7 +62,9 @@ pythagorean <- function(a, b){
   return(c)
 }
 pythagorean(3, 4)
+3 %>% pythagorean(.,4)
 pythagorean(5, 12)
+12 %>% pythagorean(5,.)
 ```
 
 ```{r}
