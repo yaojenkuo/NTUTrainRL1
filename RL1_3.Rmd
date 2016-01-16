@@ -38,6 +38,7 @@ g(f(2))#5x+10
 * Forward-Pipe方式`%>%`
 
 ```{r}
+# 有一個f(x)=5x的函數
 f <- function(x){
   answer <- 5*x
   return(answer)
@@ -110,90 +111,6 @@ trapezium(5, 7)#依照順序
 trapezium(bottom=7, upper=5)#依命名
 trapezium(bottom=7, upper=5, height=100)#可以改預設
 ```
-
-### apply() Family
-
-apply()是R語言中有名且好用的遞迴功能，apply()家族包含apply()、lapply()、sapply()與tapply()，把apply()家族學好，對不愛寫迴圈的資料分析師有很大的幫助。
-
-* apply()
-
-  * 最基本的的功能，它可以將函數應用到矩陣的列(1)或欄(2)。
-
-  ```{r}
-  matrix <- matrix(1:8, nrow=2)#創造一個2*4的矩陣做範例
-  sumRow <- apply(matrix, 1, sum)#把sum應用到各列
-  sumColumn <- apply(matrix, 2, sum)#把sum應用到各欄
-  meanRow <- apply(matrix, 1, mean)#把mean應用到各列
-  meanColumn <- apply(matrix, 2, mean)#把mean應用到各欄
-  ```
-
-  * 第三個argument不一定要內建的函數，可以使用自訂函數。
-
-  ```{r}
-  #自己定義一個最大值的函數maximum
-  maximum <- function(x){
-    result <- sort(x, decreasing=TRUE)[1]
-    return(result)
-  }
-  maxRow <- apply(matrix, 1, maximum)#把maximum應用到各列
-  maxColumn <- apply(matrix, 2, maximum)#把maximum應用到各欄
-  ```
-
-  * 應用apply()尋找矩陣中各列的極端值
-  
-  ```{r}
-  findOutliers <- function(x){
-    findOutlier <- function(xrow){
-      medianXRow <- median(xrow)
-      distance <- abs(xrow-medianXRow)
-      return(which.max(distance))
-    }
-    return(apply(x, 1, findOutlier))
-  }
-  salesMatrix <- matrix(c(1,2,30,1,10,11,50,1,60), nrow=3, byrow=TRUE)
-  findOutliers(salesMatrix)#告訴你第一列的第三個元素、第二列的第一個、第三列的第二個元素是極端值
-  ```
-
-* lapply() and sapply()
-
-  * lapply()將函數應用到list。
-  
-  ```{r}
-  list1 <- list(1:5, 11:15)#創造一個包含兩個vector的list
-  lapply(list1, median)#應用median函數到list1
-  ```
-  
-  * sapply()的用法相似，但是產出vector而非list
-  
-  ```{r}
-  sapply(list1, median)#應用median函數到list1
-  ```
-  
-  * 應用lapply()或sapply()到data frame
-  ```{r}
-  #用草帽海賊團data frame來示範
-  name <- c("Monkey D. Luffy", "Roronoa Zoro", "Nami", "Sanji")
-  occupation <- c("Captain", "Swordsman", "Navigator", "Chef")
-  bounty <- c(500000000, 320000000, 66000000, NA)
-  age <- c(19, 21, 20, 21)
-  birthday <- c("5/5/1996", "11/11/1994", "7/3/1995", "3/2/1994")
-  strength <- c(99, 90, 15, 80)
-  intelligence <- c(20, 30, 90, 40)
-  strawHatPirate <- data.frame(name, occupation, bounty, age, birthday, strength, intelligence, stringsAsFactors=FALSE)
-  strawHatPirate$birthdayAsDate <- as.Date(strawHatPirate$birthday, "%m/%d/%Y")#Y for 4-digit, y for 2-digit
-  strawHatPirate <- strawHatPirate[ ,-5]
-  lapply(strawHatPirate, sort)#對每個變數都應用sort函數
-  ```
-  
-* tapply()
-
-  * 樞紐分析表
-  
-  ```{r}
-  status <- factor(c("Poor", "Improved", "Excellent", "Poor", "Excellent"))
-  age <- c(20, 33, 55, 72, 61)
-  tapply(age, status, mean)
-  ```
 
 ### 流程控制
 
@@ -281,6 +198,90 @@ countOdd <- function(x){
 }
 countOdd(c(1:9))#計算1~9有幾個奇數
 ```
+
+### apply() Family
+
+apply()是R語言中有名且好用的遞迴功能，apply()家族包含apply()、lapply()、sapply()與tapply()，把apply()家族學好，對不愛寫迴圈的資料分析師有很大的幫助。
+
+* apply()
+
+  * 最基本的的功能，它可以將函數應用到矩陣的列(1)或欄(2)。
+
+  ```{r}
+  matrix <- matrix(1:8, nrow=2)#創造一個2*4的矩陣做範例
+  sumRow <- apply(matrix, 1, sum)#把sum應用到各列
+  sumColumn <- apply(matrix, 2, sum)#把sum應用到各欄
+  meanRow <- apply(matrix, 1, mean)#把mean應用到各列
+  meanColumn <- apply(matrix, 2, mean)#把mean應用到各欄
+  ```
+
+  * 第三個argument不一定要內建的函數，可以使用自訂函數。
+
+  ```{r}
+  #自己定義一個最大值的函數maximum
+  maximum <- function(x){
+    result <- sort(x, decreasing=TRUE)[1]
+    return(result)
+  }
+  maxRow <- apply(matrix, 1, maximum)#把maximum應用到各列
+  maxColumn <- apply(matrix, 2, maximum)#把maximum應用到各欄
+  ```
+
+  * 應用apply()尋找矩陣中各列的極端值
+  
+  ```{r}
+  findOutliers <- function(x){
+    findOutlier <- function(xrow){
+      medianXRow <- median(xrow)
+      distance <- abs(xrow-medianXRow)
+      return(which.max(distance))
+    }
+    return(apply(x, 1, findOutlier))
+  }
+  salesMatrix <- matrix(c(1,2,30,1,10,11,50,1,60), nrow=3, byrow=TRUE)
+  findOutliers(salesMatrix)#告訴你第一列的第三個元素、第二列的第一個、第三列的第二個元素是極端值
+  ```
+
+* lapply() and sapply()
+
+  * lapply()將函數應用到list。
+  
+  ```{r}
+  list1 <- list(1:5, 11:15)#創造一個包含兩個vector的list
+  lapply(list1, median)#應用median函數到list1
+  ```
+  
+  * sapply()的用法相似，但是產出vector而非list
+  
+  ```{r}
+  sapply(list1, median)#應用median函數到list1
+  ```
+  
+  * 應用lapply()或sapply()到data frame
+  ```{r}
+  #用草帽海賊團data frame來示範
+  name <- c("Monkey D. Luffy", "Roronoa Zoro", "Nami", "Sanji")
+  occupation <- c("Captain", "Swordsman", "Navigator", "Chef")
+  bounty <- c(500000000, 320000000, 66000000, NA)
+  age <- c(19, 21, 20, 21)
+  birthday <- c("5/5/1996", "11/11/1994", "7/3/1995", "3/2/1994")
+  strength <- c(99, 90, 15, 80)
+  intelligence <- c(20, 30, 90, 40)
+  strawHatPirate <- data.frame(name, occupation, bounty, age, birthday, strength, intelligence, stringsAsFactors=FALSE)
+  strawHatPirate$birthdayAsDate <- as.Date(strawHatPirate$birthday, "%m/%d/%Y")#Y for 4-digit, y for 2-digit
+  strawHatPirate <- strawHatPirate[ ,-5]
+  lapply(strawHatPirate, sort)#對每個變數都應用sort函數
+  ```
+  
+* tapply()
+
+  * 樞紐分析表
+  
+  ```{r}
+  status <- factor(c("Poor", "Improved", "Excellent", "Poor", "Excellent"))
+  age <- c(20, 33, 55, 72, 61)
+  tapply(age, status, mean)
+  ```
 
 ## Reference
 * R in Action, Robert I. Kabacoff
