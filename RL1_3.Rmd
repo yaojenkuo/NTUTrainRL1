@@ -3,7 +3,7 @@ This is the lecture notes for NTU Train Course of R Project Lecture 1_3
 
 ## Basic Programming
 
-### Funtion
+### Function
 
 * Almost **Everything** that happens in R is a function call!
 * SAS的使用者可以想成是Macro，基本的函數語法為:
@@ -121,8 +121,8 @@ for (index in x){
   
   ```{r}
   nestDemo <- matrix(numeric(), nrow=3, ncol=3)#創造一個3X3的空矩陣
-  for (index1 in 1:nrow(nestDemo)){
-    for (index2 in 1:ncol(nestDemo)){
+  for (index1 in 1:dim(nestDemo)[1]){
+    for (index2 in 1:dim(nestDemo)[2]){
       nestDemo[index1, index2] <- index1*index2
     }
   }
@@ -174,6 +174,26 @@ circleCalculate <- function(radius, areaCal=TRUE){
 }
 circleCalculate(3)#預設計算圓面積
 circleCalculate(areaCal=FALSE, radius=3)#areaCal=FALSE計算圓周
+```
+
+計算正方體的體積、表面積或邊長總合:
+
+```{r}
+cubeCalculate <- function(d, volumeCal){
+  volume <- d^3
+  surface <- 6*(d^2)
+  totalD <- 12*d
+  if (volumeCal==1){
+    return(volume)
+  } else if (volumeCal==2){
+    return(surface)
+  } else if (volumeCal==3){
+    return(totalD)
+  }
+}
+cubeCalculate(3, 1)#算體積3^3=27
+cubeCalculate(3, 2)#算表面積(3^2)*6=54
+cubeCalculate(3, 3)#算總邊長12*3=36
 ```
 
 計算一個Vector中奇數的個數(結合function、if-else與for迴圈的例子):
