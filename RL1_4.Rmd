@@ -29,7 +29,9 @@ colnames(accidentList) <- c("county", "hospital", "gender", "nationality", "age"
 ```{r}
 install.packages("xlsx")
 library(xlsx)
-accidentList <- read.xlsx("C:/NTUTrainRL1/data/funCoastAccident.xlsx", 1)
+accidentList <- read.xlsx("C:/NTUTrainRL1/data/funCoastAccident.xlsx", 1, encoding = "UTF-8")#encoding issue here
+View(accidentList)
+#有學員的rJava套件裝不起來
 ```
 
 ### 讀取sas資料集
@@ -37,6 +39,7 @@ accidentList <- read.xlsx("C:/NTUTrainRL1/data/funCoastAccident.xlsx", 1)
 我們需要仰賴Hmisc套件才能夠讀取sas資料集。
 
 ```{r}
+install.packages("Hmisc")
 library(Hmisc)
 datadir <- "C:/NTUTrainRL1/data"
 sasexe <- "C:/Program Files/SASHome/SASFoundation/9.4/sas.exe"
@@ -136,7 +139,7 @@ library(rvest)
 library(stringr)
 
 Sys.setlocale(category = "LC_ALL", locale = "")
-area <- "台北市"
+area <- "新北市"
 url <- sprintf("http://www.etwarm.com.tw/object_list.php?area=%s",URLencode(area))#把URLencode(area)代入%s
 
 # Get the max index看總共有幾頁要爬
@@ -153,7 +156,7 @@ urls <- paste0(urls, 1:max_index)#concatenate and remove blank
 
 # Get data開始抓資料
 houses <- data.frame()
-# for (i in 1:length(urls)) {
+# for (i in 1:max_index) {
 # 先抓前3頁就好比較快
 for (i in 1:3) {
     etwarm <- read_html(urls[i]) 
@@ -167,7 +170,7 @@ for (i in 1:3) {
         html_text %>% 
         str_replace_all(",", "") %>% 
         as.numeric()
-    temp <- data.frame(district = district, price = price * 10000)#
+    temp <- data.frame(districtDF = district, priceDF = price * 10000)#還原單位
     houses = rbind(houses, temp) #每抓一頁就往下append
     Sys.sleep(abs(rnorm(1))) #不要一直抓
     print(urls[i]) #告訴user這次抓了哪幾頁
