@@ -130,13 +130,14 @@ accidentList <- sas.get(libraryName=datadir, member="funcoastaccident", sasprog=
 #### 東森房屋範例
 
 ```{r}
+library(magrittr)
 library(httr)
 library(rvest)
 library(stringr)
 
-Sys.setlocale(category = "LC_ALL", locale = "CHT")
+Sys.setlocale(category = "LC_ALL", locale = "")
 area <- "台北市"
-url <- sprintf("http://www.etwarm.com.tw/object_list.php?area=%s", URLencode(area))#把URLencode(area)代入%s
+url <- sprintf("http://www.etwarm.com.tw/object_list.php?area=%s",URLencode(area))#把URLencode(area)代入%s
 
 # Get the max index看總共有幾頁要爬
 max_index <- read_html(url) %>% 
@@ -166,12 +167,13 @@ for (i in 1:3) {
         html_text %>% 
         str_replace_all(",", "") %>% 
         as.numeric()
-    temp <- data.frame(district = district,
-                      price = price * 10000)  
+    temp <- data.frame(district = district, price = price * 10000)#
     houses = rbind(houses, temp) #每抓一頁就往下append
     Sys.sleep(abs(rnorm(1))) #不要一直抓
-    print(urls[i]) #告訴user這次抓了哪幾張
+    print(urls[i]) #告訴user這次抓了哪幾頁
 }
+Sys.setlocale(category = "LC_ALL", locale = "cht")
+View(houses)
 ```
 
 #### 7-Eleven門市資訊範例
@@ -182,18 +184,14 @@ library(XML)
 library(stringr)
 
 get_stores <- function(city, town) {
-    res <- POST("http://emap.pcsc.com.tw/EMapSDK.aspx",
-               body = list(commandid="SearchStore", 
-                           city = city,
-                           town = town))
-    stores <- xmlParse(content(res, as = "text")) %>% 
+    pcsc <- POST("http://emap.pcsc.com.tw/EMapSDK.aspx", body = list(commandid = "SearchStore", city = city, town = town))
+    stores <- xmlParse(content(pcsc, as = "text")) %>% 
         .["//GeoPosition"] %>% 
         xmlToDataFrame
     return(stores)
-}
-
-stores <- get_stores("台北市", "大安區")
-stores
+}#從Firefox開發者介面觀察
+storeDaan <- get_stores("台北市", "大安區")
+View(storeDaan)
 ```
 
 ## Reference
