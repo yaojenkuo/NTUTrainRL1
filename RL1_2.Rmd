@@ -8,7 +8,7 @@ This is the lecture notes for NTU Train Course of R Project Lecture 1_2
 ```{r}
 name <- c("Monkey D. Luffy", "Roronoa Zoro", "Nami", "Sanji")
 occupation <- c("Captain", "Swordsman", "Navigator", "Chef")
-bounty <- c(500000000, 320000000, 66000000, NA)
+bounty <- as.numeric(c(500000000, 320000000, 66000000, NA))
 age <- c(19, 21, 20, 21)
 birthday <- c("5/5/1996", "11/11/1994", "7/3/1995", "3/2/1994")
 strength <- c(99, 90, 15, 80)
@@ -76,9 +76,9 @@ min(strawHatPirate$birthdayAsDate)#轉換成日期格式後可以下max或min
 
 ```{r}
 is.numeric(age)#判斷age變數是否為數值
-as.character(age)#轉換age為字串
-is.numeric(age)#判斷age變數是否為數值
-is.character(age)#判斷age變數是否為字串
+ageChar <- as.character(age)#轉換age為字串
+is.numeric(ageChar)#判斷ageChar變數是否為數值
+is.character(ageChar)#判斷ageChar變數是否為字串
 ```
 
 判斷|轉換
@@ -175,9 +175,9 @@ SQL的使用者在SAS中可以使用proc sql;在R中可以使用sqldf套件。
 ```{r}
 install.packages("sqldf")
 library(sqldf)
-strawHatPirate6 <- sqldf("select name, occupation, bounty, age from strawHatPirate2 where age>17 order by bounty")
-sqldf("select avg(age) as avgAge from strawHatPirate2")
-sqldf("select strawHatPirate2.name, devilFruitList.devilFruit from strawHatPirate2 inner join devilFruitList on strawHatPirate2.name=devilFruitList.name2")
+strawHatPirate6 <- sqldf("select name, occupation, bounty, age from strawHatPirate where age>17 order by bounty asc")
+sqldf("select avg(age) as avgAge from strawHatPirate")
+sqldf("select strawHatPirate.name, devilFruitList.devilFruit from strawHatPirate inner join devilFruitList on strawHatPirate.name=devilFruitList.name2")
 ```
 
 ### plyr套件
@@ -203,11 +203,11 @@ avgAgeByGender <- ddply(strawHatPirate7, c("gender"), summarise, avgAge=round(me
 
 #### melt函數
 
-最常見的應用是繪畫有2條X軸相同的折線圖。
+把兩個數值欄位轉到一個欄位底下，並多一個類別欄位來區隔這兩種數值。
 
 ```{r}
 library(reshape2)
-strawHatPirate8 <- melt(strawHatPirate, id=c("name"), measure=c("strength", "intelligence"))# 把兩個數值欄位轉到一個欄位底下，並多一個類別欄位來區隔這兩種數值
+strawHatPirate8 <- melt(strawHatPirate, id=c("name"), measure=c("strength", "intelligence"))
 ```
 
 #### dcast函數

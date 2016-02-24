@@ -3,9 +3,217 @@ This is the lecture notes for NTU Train Course of R Project Lecture 1_3
 
 ## Basic Programming
 
+### Function
+
+* Almost **Everything** that happens in R is a function call!
+* SAS的使用者可以想成是Macro，基本的函數語法為:
+
+```{r}
+functionName <- function(parameter1, parameter2, ...){
+  #Some statements here
+  return() #Return something
+}
+```
+如果沒有下`return()`，函數會回傳最後一行程式的產出。
+
+要呼叫函數的時候有兩種方式:
+
+* 傳統方式
+
+```{r}
+# 有一個f(x)=5x的函數
+f <- function(x){
+  answer <- 5*x
+  return(answer)
+}
+# 有一個g(x)=x+10的函數
+g <- function(x){
+  answer <- x+10
+  return(answer)
+}
+f(2)#5x
+g(f(2))#5x+10
+```
+
+* Forward-Pipe方式`%>%`
+
+```{r}
+install.packages("magrittr")
+library(magrittr)
+2 %>% f#5x
+2 %>% f %>% g#5x+10
+```
+
+畢氏定理的例子:
+
+```{r}
+#有下return()
+pythagorean <- function(a, b){
+  c <- sqrt(a^2 + b^2)
+  return(c)
+}
+pythagorean(3, 4)
+3 %>% pythagorean(.,4)
+pythagorean(5, 12)
+12 %>% pythagorean(5,.)
+```
+
+```{r}
+#沒有下return()
+pythagorean <- function(a, b){
+  sqrt(a^2 + b^2)
+}
+pythagorean(3, 4)
+3 %>% pythagorean(.,4)
+pythagorean(5, 12)
+12 %>% pythagorean(5,.)
+```
+
+平均數的例子:
+
+```{r}
+meanFunction <- function(input){
+  inputLength <- length(input)
+  avg <- sum(input)/inputLength
+  return(avg)
+}
+vector1 <- 1:100
+meanFunction(vector1)
+```
+
+最小值的例子:
+
+```{r}
+minimumFunction <- function(input){
+  result <- sort(input, decreasing=FALSE)[1]
+  return(result)
+}
+vector1 <- 10:100
+minimumFunction(vector1)
+```
+
+梯形面積的例子:
+
+```{r}
+trapezium <- function(upper, bottom, height=10){
+  area <- (upper+bottom)*height/2
+  return(area)
+}
+trapezium(5, 7)#依照順序
+trapezium(bottom=7, upper=5)#依命名
+trapezium(bottom=7, upper=5, height=100)#可以改預設
+```
+
+### 流程控制
+
+#### 迴圈
+
+* For Loop
+
+```{r}
+x <- 1:10
+for (index in x){
+  print(index^2)
+}
+```
+
+  * Nested Loop
+  
+  ```{r}
+  nestDemo <- matrix(numeric(), nrow=3, ncol=3)#創造一個3X3的空矩陣
+  for (index1 in 1:dim(nestDemo)[1]){
+    for (index2 in 1:dim(nestDemo)[2]){
+      nestDemo[index1, index2] <- index1*index2
+    }
+  }
+  nestDemo
+  ```
+
+* While Loop
+
+```{r}
+# 第一種寫法
+index <- 1
+while(index<=10){
+  print(index <- index+1)
+}
+
+# 第二種寫法
+index <- 1
+while(TRUE){
+  print(index <- index+1)
+  if (index>10) break
+}
+```
+
+#### if-else
+
+基本的if-else語法為:
+
+```{r}
+if (an expression returns TRUE or FALSE) {
+    # do something
+} else if (another expression returns TRUE or FALSE) {
+    # do something
+} else {
+    # do something
+}
+```
+
+計算圓形的面積或是圓周(結合function與if-else的例子):
+
+```{r}
+circleCalculate <- function(radius, areaCal=TRUE){
+  circleArea <- pi*(radius^2)
+  circleCircum <- 2*pi*radius
+  if (areaCal==TRUE){
+    return (circleArea)
+  } else {
+    return (circleCircum)
+  }
+}
+circleCalculate(3)#預設計算圓面積
+circleCalculate(areaCal=FALSE, radius=3)#areaCal=FALSE計算圓周
+```
+
+計算正方體的體積、表面積或邊長總合:
+
+```{r}
+cubeCalculate <- function(d, volumeCal){
+  volume <- d^3
+  surface <- 6*(d^2)
+  totalD <- 12*d
+  if (volumeCal==1){
+    return(volume)
+  } else if (volumeCal==2){
+    return(surface)
+  } else if (volumeCal==3){
+    return(totalD)
+  }
+}
+cubeCalculate(3, 1)#算體積3^3=27
+cubeCalculate(3, 2)#算表面積(3^2)*6=54
+cubeCalculate(3, 3)#算總邊長12*3=36
+```
+
+計算一個Vector中奇數的個數(結合function、if-else與for迴圈的例子):
+
+```{r}
+countOdd <- function(x){
+  count <- 0
+  for(index in x){
+    if(index %% 2 ==1){
+      count <- count+1
+    }
+  }
+  return (count)
+}
+countOdd(c(1:9))#計算1~9有幾個奇數
+```
+
 ### apply() Family
 
-apply()是R語言中有名且好用的功能，apply()家族包含apply()、lapply()、sapply()與tapply()，把apply()家族學好，對資料整理有很大的幫助。
+apply()是R語言中有名且好用的遞迴功能，apply()家族包含apply()、lapply()、sapply()與tapply()，把apply()家族學好，對不愛寫迴圈的資料分析師有很大的幫助。
 
 * apply()
 
@@ -24,13 +232,14 @@ apply()是R語言中有名且好用的功能，apply()家族包含apply()、lapp
   ```{r}
   #自己定義一個最大值的函數maximum
   maximum <- function(x){
-    sort(x, decreasing=TRUE)[1]
+    result <- sort(x, decreasing=TRUE)[1]
+    return(result)
   }
   maxRow <- apply(matrix, 1, maximum)#把maximum應用到各列
   maxColumn <- apply(matrix, 2, maximum)#把maximum應用到各欄
   ```
 
-  * 應用apply()尋找矩陣中的極端值
+  * 應用apply()尋找矩陣中各列的極端值
   
   ```{r}
   findOutliers <- function(x){
@@ -85,52 +294,6 @@ apply()是R語言中有名且好用的功能，apply()家族包含apply()、lapp
   age <- c(20, 33, 55, 72, 61)
   tapply(age, status, mean)
   ```
-
-### 流程控制
-
-#### 迴圈
-
-* For Loop
-
-```{r}
-x <- 1:10
-for (index in x){
-  print(index^2)
-}
-```
-
-* While Loop
-
-```{r}
-# 第一種寫法
-index <- 1
-while(index<=10){
-  print(index <- index+1)
-}
-
-# 第二種寫法
-index <- 1
-while(TRUE){
-  print(index <- index+1)
-  if (index>10) break
-}
-```
-
-#### if-else
-
-```{r}
-# 結合for迴圈
-countOdd <- function(x){
-  count <- 0
-  for(index in x){
-    if(index %% 2 ==1){
-      count <- count+1
-    }
-  }
-  return (count)
-}
-countOdd(c(1:9))#計算1~9有幾個奇數
-```
 
 ## Reference
 * R in Action, Robert I. Kabacoff

@@ -13,8 +13,7 @@ https://github.com/yaojenkuo/NTUTrainRL1/blob/master/RL1_3.Rmd
 ## Data Collection
 https://github.com/yaojenkuo/NTUTrainRL1/blob/master/RL1_4.Rmd
 
-## Reference
-* R in Action, Robert I. Kabacoff
-* The Art of R Programming, Norman Matloff
+## Homework
+https://github.com/yaojenkuo/NTUTrainRL1/blob/master/RL1_HW.Rmd
 
 &copy; Tony Yao-Jen Kuo 2015
