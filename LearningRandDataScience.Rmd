@@ -151,6 +151,36 @@ revenueCalculator(unit=99)
 revenueCalculator(unit=101)
 ```
 
+## 除了語法基本功以外
+
+- R語言的強項是什麼
+- R語言可以做哪些事
+
+## R語言強項有
+
+
+
+## R語言可以做哪些事
+
+- 蒐集資料
+- 讀取資料
+- 整理資料
+- 視覺化
+- 建模型
+- 做Presentation
+
+## 蒐集資料
+
+## 讀取資料
+
+## 整理資料
+
+## 視覺化
+
+## 建模型
+
+## 做Presentation
+
 ## 講義
 
 - [新手上路](https://github.com/yaojenkuo/RGettingStarted)
