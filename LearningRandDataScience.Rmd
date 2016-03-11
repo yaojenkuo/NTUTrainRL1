@@ -31,7 +31,11 @@ output: slidy_presentation
 
 - [R in Action](https://www.manning.com/books/r-in-action-second-edition)
 
+![R in Action](image/rInAction.jpg)
+
 - [The Art of R Programming](http://www.amazon.com/The-Art-Programming-Statistical-Software/dp/1593273843)
+
+![The Art of R Programming](image/The-Art-of-R-Programming-Matloff-Norman.jpg)
 
 ## 其他學習管道
 
@@ -63,7 +67,7 @@ output: slidy_presentation
 - 如何宣告變數
 - 如何寫if
 - 如何寫迴圈
-- 如何存取vector中的元素
+- 如何存取不同data type中的元素
 - 如何使用function
 - 如何宣告function
 
@@ -89,13 +93,63 @@ print(secondVariable)
 
 ## 如何寫if
 
+```{r}
+revenueCalculator <- function(unitCost=50, unit){
+    revenue <- unitCost * unit
+    if(unit > 100) {
+      revenue <- revenue * 0.8
+    }
+    return(revenue)
+}
+revenueCalculator(unit=99)
+revenueCalculator(unit=101)
+```
+
 ## 如何寫迴圈
 
-## 如何存取vector中的元素
+```{r}
+vector <- seq(1, 10)
+for (index in vector){
+  print(index)
+}
+```
+
+## 如何存取不同data type中的元素
+
+```{r}
+vector1 <- seq(1, 9)
+vector1[1]
+
+matrix <- matrix(vector1, nrow=3)
+matrix[2,3]
+
+vector2 <- seq(10, 18)
+dataFrame <- data.frame(vector1, vector2)
+dataFrame[, 2]
+dataFrame[2, ]
+```
 
 ## 如何使用function
 
+```{r}
+summary(cars)
+library(magrittr)
+cars %>% summary()
+```
+
 ## 如何宣告function
+
+```{r}
+revenueCalculator <- function(unitCost=50, unit){
+    revenue <- unitCost * unit
+    if(unit > 100) {
+      revenue <- revenue * 0.8
+    }
+    return(revenue)
+}
+revenueCalculator(unit=99)
+revenueCalculator(unit=101)
+```
 
 ## 講義
 
