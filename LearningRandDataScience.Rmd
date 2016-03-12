@@ -158,24 +158,103 @@ revenueCalculator(unit=101)
 
 ## R語言強項有
 
-
+- 
 
 ## R語言可以做哪些事
 
 - 蒐集資料
-- 讀取資料
+    - 從檔案
+    - 從網路
 - 整理資料
 - 視覺化
 - 建模型
 - 做Presentation
 
-## 蒐集資料
+## 從檔案蒐集資料
 
-## 讀取資料
+```{r}
+dataCollection1 <- function(language, path, rowsPrint){
+  Sys.setlocale(category="LC_ALL", locale=language)
+  data <- read.csv(path, stringsAsFactors=FALSE)
+  data <<- read.csv(path, stringsAsFactors=FALSE)
+  headRows <- head(data, rowsPrint)
+  return (headRows)
+}
+dataCollection1(language="cht", path="C:/NTUTrainRL1/data/funCoastAccident.csv", rowsPrint=10)
+
+#Sys.setlocale(category = "LC_ALL", locale = "cht")
+#data <- read.csv("C:/NTUTrainRL1/data/funCoastAccident.csv", stringsAsFactors=FALSE)
+#head(data, 10)
+```
+
+## 從網路蒐集資料
+
+```{r}
+# Necessary libraries for a web parser
+neccessaryLibs <- function(libVectors){
+  packages <- libVectors
+  for (index in 1:length(packages)){
+    install.packages(packages[index])
+  }
+  sapply(packages, library, character.only = TRUE)
+}
+
+# yahooRankParser
+yahooRankParser <- function(URL, xpathRank, xpathStock, xpathPrice){
+  doc <- read_html(URL)
+  #columns <- c(xpathRank, xpathStock, xpathPrice)
+  rank <- doc %>% 
+    html_nodes(.,xpath = xpathRank) %>%
+    html_text
+  stock <- doc %>% 
+    html_nodes(.,xpath = xpathStock) %>%
+    html_text %>%
+    iconv(from = "UTF-8", to = "UTF-8")
+  price <- doc %>% 
+    html_nodes(.,xpath = xpathPrice) %>%
+    html_text
+  stockDF <<- data.frame(rank=as.integer(rank), stock=stock, price=as.numeric(price))# return to global environment
+}
+
+# Declaring function parameters
+libVectors <- c("magrittr", "rvest")
+URL <- "https://tw.stock.yahoo.com/d/i/rank.php?t=pri&e=tse"
+xpathRank <- "//table[2]/tbody/tr/td[1]"
+xpathStock <- "//tbody/tr/td[@class='name']"
+xpathPrice <- "//table[2]/tbody/tr/td[3]"
+
+# Executing functions
+neccessaryLibs(libVectors)
+yahooRankParser(URL, xpathRank, xpathStock, xpathPrice)
+head(stockDF)
+```
 
 ## 整理資料
 
+```{r}
+str(stockDF)
+
+# Split stock code and name then combine back to original data frame
+stockDFSplit <- function(){
+  stock <- as.character(stockDF[, "stock"])
+  stockCD <- substr(stock, 1, 4)
+  stockName <- substr(stock, 6, nchar(stock))
+  stockRank <- stockDF[, "rank"]
+  stockPrice <- stockDF[, "price"]
+  stockDFSplit <<- data.frame(rank=stockRank, name=stockName, price=stockPrice, code=stockCD)
+  return(stockDFSplit)
+}
+stockDFSplit()
+```
+
 ## 視覺化
+
+```{r}
+library(plotly)
+
+plotly
+
+```
 
 ## 建模型
 
