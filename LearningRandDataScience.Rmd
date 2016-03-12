@@ -7,7 +7,7 @@ output: slidy_presentation
 
 ## 簡單自我介紹
 
-- yaojenkuo.github.com
+- https://yaojenkuo.github.com
 - tonykuoyj@gmail.com
 
 ## 系統訓練班
@@ -81,7 +81,6 @@ output: slidy_presentation
 
 - 用`<-`指定
 - 或用`=`指定
-- `==`用來作邏輯運算子**等於**
 
 ```{r}
 firstVariable <- 'Hello World!'
@@ -158,7 +157,12 @@ revenueCalculator(unit=101)
 
 ## R語言強項有
 
-- 
+- Free!
+- 每隔幾天就有新的套件!
+- End-to-end資料分析軟體，什麼都會
+- 很多connector
+- 在Windows、Mac與Linux平台都可以運作
+- 有個很棒的IDE:RStudio
 
 ## R語言可以做哪些事
 
@@ -173,32 +177,15 @@ revenueCalculator(unit=101)
 ## 從檔案蒐集資料
 
 ```{r}
-dataCollection1 <- function(language, path, rowsPrint){
-  Sys.setlocale(category="LC_ALL", locale=language)
-  data <- read.csv(path, stringsAsFactors=FALSE)
-  data <<- read.csv(path, stringsAsFactors=FALSE)
-  headRows <- head(data, rowsPrint)
-  return (headRows)
-}
-dataCollection1(language="cht", path="C:/NTUTrainRL1/data/funCoastAccident.csv", rowsPrint=10)
-
-#Sys.setlocale(category = "LC_ALL", locale = "cht")
-#data <- read.csv("C:/NTUTrainRL1/data/funCoastAccident.csv", stringsAsFactors=FALSE)
-#head(data, 10)
+Sys.setlocale(category = "LC_ALL", locale = "cht")
+data <- read.csv("C:/NTUTrainRL1/data/funCoastAccident.csv", stringsAsFactors=FALSE)
+colnames(data) <- c("number", "city", "hospital", "gender", "nationality", "age", "medLV1", "medLV2")
+head(data, 10)
 ```
 
 ## 從網路蒐集資料
 
 ```{r}
-# Necessary libraries for a web parser
-neccessaryLibs <- function(libVectors){
-  packages <- libVectors
-  for (index in 1:length(packages)){
-    install.packages(packages[index])
-  }
-  sapply(packages, library, character.only = TRUE)
-}
-
 # yahooRankParser
 yahooRankParser <- function(URL, xpathRank, xpathStock, xpathPrice){
   doc <- read_html(URL)
@@ -214,17 +201,17 @@ yahooRankParser <- function(URL, xpathRank, xpathStock, xpathPrice){
     html_nodes(.,xpath = xpathPrice) %>%
     html_text
   stockDF <<- data.frame(rank=as.integer(rank), stock=stock, price=as.numeric(price))# return to global environment
-}
+  }
 
 # Declaring function parameters
-libVectors <- c("magrittr", "rvest")
 URL <- "https://tw.stock.yahoo.com/d/i/rank.php?t=pri&e=tse"
 xpathRank <- "//table[2]/tbody/tr/td[1]"
 xpathStock <- "//tbody/tr/td[@class='name']"
 xpathPrice <- "//table[2]/tbody/tr/td[3]"
 
 # Executing functions
-neccessaryLibs(libVectors)
+library(magrittr)
+library(rvest)
 yahooRankParser(URL, xpathRank, xpathStock, xpathPrice)
 head(stockDF)
 ```
@@ -243,7 +230,7 @@ stockDFSplit <- function(){
   stockPrice <- stockDF[, "price"]
   stockDFSplit <<- data.frame(rank=stockRank, name=stockName, price=stockPrice, code=stockCD)
   return(stockDFSplit)
-}
+  }
 stockDFSplit()
 ```
 
@@ -251,14 +238,35 @@ stockDFSplit()
 
 ```{r}
 library(plotly)
+dataComplete <- data[complete.cases(data), ]
+ggplot(dataComplete, aes(x=age))+
+  geom_histogram(fill="pink", colour="black")+
+  facet_grid(medLV2~.)
 
-plotly
+plot_ly(stockDFSplit, x=name, y=price, type="bar", color=name)
 
+library(leaflet)
+helloMap <- leaflet() %>%
+  addTiles() %>% #把預設的地圖圖層加入
+  addMarkers(lng=121.539366, lat=25.017326, popup="National Taiwan University")
+helloMap
 ```
 
 ## 建模型
 
+```{r}
+str(cars)
+scatterPlot <- plot_ly(cars, x=speed, y=dist, type="scatter", mode="markers", name="data points")
+scatterPlot
+fit <- lm(cars$dist~cars$speed)
+scatterPlot <- add_trace(scatterPlot, y=fitted(fit), name="linear model", mode="lines")
+scatterPlot
+```
+
 ## 做Presentation
+
+- ioslides
+- Slidy
 
 ## 講義
 
