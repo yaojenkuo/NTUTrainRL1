@@ -8,6 +8,7 @@ This is the lecture notes for NTU Train Course of R Project Lecture 1_1
 * Vector可以包含數字、文字或二元邏輯資料
 * 如果包含不同類型的資料，會記錄成文字
 * 在R中我們可以使用`=`來指派變數，也可以使用`<-`
+* `<-`可以使用alt+減號快速鍵
 
 ```{r}
 numericVector <- c(1, 2, 5, 3, 6, -2, 4)#數字Vector
