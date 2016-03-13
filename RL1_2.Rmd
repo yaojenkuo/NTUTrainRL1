@@ -97,7 +97,7 @@ is.logical()|as.logical()
 
 ```{r}
 strawHatPirate[order(strawHatPirate$age),]#用年齡遞增排序
-strawHatPirate[order(-strawHatPirate$intelligence, strawHatPirate$strength),]#先用智力遞減排序再用力量遞增排序
+strawHatPirate[order(-strawHatPirate$intelligence, strawHatPirate$attack),]#先用智力遞減排序再用力量遞增排序
 ```
 
 ### 加欄位
