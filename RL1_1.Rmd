@@ -138,8 +138,8 @@ patientData <- data.frame(patientID, age, diabetes, status)
 * 讓我們用m*n的概念把Data Frame中的元素取出來
 
 ```{r}
-patientData[1:2]#把patientData第一與第二欄取出來
-patientData$age#把patientData中的age變數取出來
+patientData[, 1:2]#把patientData第一與第二欄取出來
+patientData[, "age"]#把patientData中的age變數取出來
 patientData[c("patientID", "age")]#把patientData第一與第二欄取出來
 patientData$age[1]#把patientData第二欄的第一筆資料取出來
 table(patientData$diabetes, patientData$status)#針對其中2個變數作樞紐分析表
