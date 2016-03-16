@@ -203,17 +203,39 @@ yahooRankParser <- function(URL, xpathRank, xpathStock, xpathPrice){
   stockDF <<- data.frame(rank=as.integer(rank), stock=stock, price=as.numeric(price))# return to global environment
   }
 
-# Declaring function parameters
-URL <- "https://tw.stock.yahoo.com/d/i/rank.php?t=pri&e=tse"
-xpathRank <- "//table[2]/tbody/tr/td[1]"
-xpathStock <- "//tbody/tr/td[@class='name']"
-xpathPrice <- "//table[2]/tbody/tr/td[3]"
+# Yahoo Stock Rank Parser
+yahooStockRankParser <- function(n){
+  if (n>100){
+    print("Parameter n should be a number between 1 and 100")
+  }else if (n<=0){
+    print("Parameter n should be a number between 1 and 100")
+  }else if (n%%1!=0){
+    print("Parameter n should be an integer")
+  }else{
+    URL <- "https://tw.stock.yahoo.com/d/i/rank.php?t=pri&e=tse&n=100"
+    xpathRank <- "//table[2]/tbody/tr/td[1]"
+    xpathStock <- "//tbody/tr/td[@class='name']"
+    xpathPrice <- "//table[2]/tbody/tr/td[3]"
+    doc <- read_html(URL)
+    rank <- doc %>% 
+      html_nodes(.,xpath = xpathRank) %>%
+      html_text
+    stock <- doc %>% 
+      html_nodes(.,xpath = xpathStock) %>%
+      html_text %>%
+      iconv(from = "UTF-8", to = "UTF-8")
+    price <- doc %>% 
+      html_nodes(.,xpath = xpathPrice) %>%
+      html_text
+    stockTmp <- data.frame(rank=as.integer(rank), stock=stock, price=as.numeric(price))# return to local environment
+    stockDF <<- head(stockTmp, n)
+  }
+}
 
 # Executing functions
 library(magrittr)
 library(rvest)
-yahooRankParser(URL, xpathRank, xpathStock, xpathPrice)
-head(stockDF)
+yahooStockRankParser(n=39)
 ```
 
 ## 整理資料
