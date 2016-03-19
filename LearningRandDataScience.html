@@ -301,50 +301,45 @@ cars %&gt;%<span class="st"> </span><span class="kw">summary</span>()</code></pr
 </div>
 <div class="slide section level2">
 <h1>從網路蒐集資料</h1>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># yahooRankParser</span>
-yahooRankParser &lt;-<span class="st"> </span>function(URL, xpathRank, xpathStock, xpathPrice){
-  doc &lt;-<span class="st"> </span><span class="kw">read_html</span>(URL)
-  <span class="co">#columns &lt;- c(xpathRank, xpathStock, xpathPrice)</span>
-  rank &lt;-<span class="st"> </span>doc %&gt;%<span class="st"> </span>
-<span class="st">    </span><span class="kw">html_nodes</span>(.,<span class="dt">xpath =</span> xpathRank) %&gt;%
-<span class="st">    </span>html_text
-  stock &lt;-<span class="st"> </span>doc %&gt;%<span class="st"> </span>
-<span class="st">    </span><span class="kw">html_nodes</span>(.,<span class="dt">xpath =</span> xpathStock) %&gt;%
-<span class="st">    </span>html_text %&gt;%
-<span class="st">    </span><span class="kw">iconv</span>(<span class="dt">from =</span> <span class="st">&quot;UTF-8&quot;</span>, <span class="dt">to =</span> <span class="st">&quot;UTF-8&quot;</span>)
-  price &lt;-<span class="st"> </span>doc %&gt;%<span class="st"> </span>
-<span class="st">    </span><span class="kw">html_nodes</span>(.,<span class="dt">xpath =</span> xpathPrice) %&gt;%
-<span class="st">    </span>html_text
-  stockDF &lt;&lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">rank=</span><span class="kw">as.integer</span>(rank), <span class="dt">stock=</span>stock, <span class="dt">price=</span><span class="kw">as.numeric</span>(price))<span class="co"># return to global environment</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Yahoo Stock Rank Parser</span>
+yahooStockRankParser &lt;-<span class="st"> </span>function(n){
+  if (!n %in%<span class="st"> </span><span class="dv">1</span>:<span class="dv">100</span>){
+    <span class="kw">print</span>(<span class="st">&quot;Parameter n should be a number between 1 and 100&quot;</span>)
+  }else{
+    URL &lt;-<span class="st"> &quot;https://tw.stock.yahoo.com/d/i/rank.php?t=pri&amp;e=tse&amp;n=100&quot;</span>
+    xpathRank &lt;-<span class="st"> &quot;//table[2]/tbody/tr/td[1]&quot;</span>
+    xpathStock &lt;-<span class="st"> &quot;//tbody/tr/td[@class='name']&quot;</span>
+    xpathPrice &lt;-<span class="st"> &quot;//table[2]/tbody/tr/td[3]&quot;</span>
+    doc &lt;-<span class="st"> </span><span class="kw">read_html</span>(URL, <span class="dt">encoding=</span><span class="st">&quot;cp950&quot;</span>)
+    rank &lt;-<span class="st"> </span>doc %&gt;%<span class="st"> </span>
+<span class="st">      </span><span class="kw">html_nodes</span>(.,<span class="dt">xpath =</span> xpathRank) %&gt;%
+<span class="st">      </span>html_text
+    stock &lt;-<span class="st"> </span>doc %&gt;%<span class="st"> </span>
+<span class="st">      </span><span class="kw">html_nodes</span>(.,<span class="dt">xpath =</span> xpathStock) %&gt;%
+<span class="st">      </span>html_text %&gt;%
+<span class="st">      </span><span class="kw">iconv</span>(<span class="dt">from =</span> <span class="st">&quot;UTF-8&quot;</span>, <span class="dt">to =</span> <span class="st">&quot;UTF-8&quot;</span>)
+    price &lt;-<span class="st"> </span>doc %&gt;%<span class="st"> </span>
+<span class="st">      </span><span class="kw">html_nodes</span>(.,<span class="dt">xpath =</span> xpathPrice) %&gt;%
+<span class="st">      </span>html_text
+    stockTmp &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">rank=</span><span class="kw">as.integer</span>(rank), <span class="dt">stock=</span>stock, <span class="dt">price=</span><span class="kw">as.numeric</span>(price))<span class="co"># return to local environment</span>
+    stockDF &lt;-<span class="st"> </span><span class="kw">head</span>(stockTmp, n)
+    <span class="kw">assign</span>(<span class="st">'stockDF'</span>,stockDF,<span class="dt">envir=</span>.GlobalEnv)
   }
-
-<span class="co"># Declaring function parameters</span>
-URL &lt;-<span class="st"> &quot;https://tw.stock.yahoo.com/d/i/rank.php?t=pri&amp;e=tse&quot;</span>
-xpathRank &lt;-<span class="st"> &quot;//table[2]/tbody/tr/td[1]&quot;</span>
-xpathStock &lt;-<span class="st"> &quot;//tbody/tr/td[@class='name']&quot;</span>
-xpathPrice &lt;-<span class="st"> &quot;//table[2]/tbody/tr/td[3]&quot;</span>
+}
 
 <span class="co"># Executing functions</span>
 <span class="kw">library</span>(magrittr)
 <span class="kw">library</span>(rvest)</code></pre></div>
 <pre><code>## Loading required package: xml2</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">yahooRankParser</span>(URL, xpathRank, xpathStock, xpathPrice)
-<span class="kw">head</span>(stockDF)</code></pre></div>
-<pre><code>##   rank       stock  price
-## 1    1 3008 大立光 2610.0
-## 2    2   6409 旭隼  501.0
-## 3    3 6415 F-矽力  445.0
-## 4    4   1476 儒鴻  419.0
-## 5    5   2059 川湖  392.0
-## 6    6   2231 為升  383.5</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">yahooStockRankParser</span>(<span class="dt">n=</span><span class="dv">51</span>)</code></pre></div>
 </div>
 <div class="slide section level2">
 <h1>整理資料</h1>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str</span>(stockDF)</code></pre></div>
-<pre><code>## 'data.frame':    30 obs. of  3 variables:
+<pre><code>## 'data.frame':    51 obs. of  3 variables:
 ##  $ rank : int  1 2 3 4 5 6 7 8 9 10 ...
-##  $ stock: Factor w/ 30 levels &quot;1476 儒鴻&quot;,&quot;1477 聚陽&quot;,..: 18 23 25 1 6 9 24 26 7 11 ...
-##  $ price: num  2610 501 445 419 392 ...</code></pre>
+##  $ stock: Factor w/ 100 levels &quot;1227 佳格&quot;,&quot;1256 F-鮮活&quot;,..: 42 78 6 80 82 18 79 23 20 34 ...
+##  $ price: num  2560 511 443 438 385 ...</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Split stock code and name then combine back to original data frame</span>
 stockDFSplit &lt;-<span class="st"> </span>function(){
   stock &lt;-<span class="st"> </span><span class="kw">as.character</span>(stockDF[, <span class="st">&quot;stock&quot;</span>])
@@ -357,36 +352,57 @@ stockDFSplit &lt;-<span class="st"> </span>function(){
   }
 <span class="kw">stockDFSplit</span>()</code></pre></div>
 <pre><code>##    rank   name  price code
-## 1     1 大立光 2610.0 3008
-## 2     2   旭隼  501.0 6409
-## 3     3 F-矽力  445.0 6415
-## 4     4   儒鴻  419.0 1476
-## 5     5   川湖  392.0 2059
-## 6     6   為升  383.5 2231
-## 7     7   樺漢  368.0 6414
-## 8     8 F-康友  366.0 6452
-## 9     9 和泰車  357.0 2207
-## 10   10   華碩  286.0 2357
-## 11   11 F-麗豐  281.5 4137
-## 12   12   可成  274.5 2474
-## 13   13 聯發科  241.0 2454
-## 14   14   億豐  237.0 8464
-## 15   15 裕日車  236.0 2227
-## 16   16   研華  235.0 2395
-## 17   17 F-永冠  233.0 1589
-## 18   18 統一超  228.0 2912
-## 19   19 F-美食  220.0 2723
-## 20   20   巨大  217.0 9921
-## 21   21   晶華  213.0 2707
-## 22   22 富邦媒  209.0 8454
-## 23   23   聚陽  200.5 1477
-## 24   24   利勤  200.0 4426
-## 25   25 葡萄王  196.0 1707
-## 26   26   立錡  193.0 6286
-## 27   27 F-亞德  191.5 1590
-## 28   28 可寧衛  182.0 8422
-## 29   29 F-鎧勝  179.0 5264
-## 30   30 F-英利  179.0 2239</code></pre>
+## 1     1 大立光 2560.0 3008
+## 2     2   旭隼  511.0 6409
+## 3     3   儒鴻  443.0 1476
+## 4     4 F-矽力  438.5 6415
+## 5     5 F-康友  385.0 6452
+## 6     6   川湖  382.5 2059
+## 7     7   樺漢  380.0 6414
+## 8     8   為升  375.5 2231
+## 9     9 和泰車  352.5 2207
+## 10   10   可成  294.5 2474
+## 11   11   華碩  290.5 2357
+## 12   12 F-麗豐  282.5 4137
+## 13   13 聯發科  258.0 2454
+## 14   14   研華  244.0 2395
+## 15   15 F-美食  242.0 2723
+## 16   16 F-永冠  233.5 1589
+## 17   17 裕日車  229.5 2227
+## 18   18   億豐  226.0 8464
+## 19   19 統一超  223.5 2912
+## 20   20   巨大  221.0 9921
+## 21   21 富邦媒  219.5 8454
+## 22   22   晶華  214.0 2707
+## 23   23   聚陽  202.5 1477
+## 24   24 葡萄王  196.0 1707
+## 25   25   立錡  193.0 6286
+## 26   26   利勤  192.0 4426
+## 27   27 F-亞德  190.0 1590
+## 28   28   劍麟  185.0 2228
+## 29   29 F-鎧勝  185.0 5264
+## 30   30   豐泰  183.0 9910
+## 31   31 可寧衛  180.0 8422
+## 32   32   祥碩  177.5 5269
+## 33   33 F-英利  175.0 2239
+## 34   34 振樺電  164.0 8114
+## 35   35 F-貿聯  161.0 3665
+## 36   36 台積電  159.5 2330
+## 37   37   上緯  158.5 4733
+## 38   38 美利達  157.0 9914
+## 39   39   上銀  155.5 2049
+## 40   40   伸興  153.5 1558
+## 41   41   聯鈞  153.5 3450
+## 42   42   王品  150.5 2727
+## 43   43   日友  146.5 8341
+## 44   44 台達電  143.5 2308
+## 45   45   廣隆  143.0 1537
+## 46   46   南六  143.0 6504
+## 47   47 一零四  139.5 3130
+## 48   48   超眾  139.5 6230
+## 49   49 F-淘帝  133.0 2929
+## 50   50   聯詠  132.5 3034
+## 51   51 台數科  129.0 6464</code></pre>
 </div>
 <div class="slide section level2">
 <h1>視覺化</h1>
@@ -409,15 +425,15 @@ stockDFSplit &lt;-<span class="st"> </span>function(){
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot_ly</span>(stockDFSplit, <span class="dt">x=</span>name, <span class="dt">y=</span>price, <span class="dt">type=</span><span class="st">&quot;bar&quot;</span>, <span class="dt">color=</span>name)</code></pre></div>
 <pre><code>## Warning in RColorBrewer::brewer.pal(N, &quot;Set2&quot;): n too large, allowed maximum for palette Set2 is 8
 ## Returning the palette you asked for with that many colors</code></pre>
-<p><div id="htmlwidget-2422" style="width:768px;height:576px;" class="plotly html-widget"></div>
-<script type="application/json" data-for="htmlwidget-2422">{"x":{"data":[{"type":"bar","inherit":true,"x":["聯發科"],"y":[241],"name":"聯發科","marker":{"color":"#B3B3B3"}},{"type":"bar","inherit":true,"x":["樺漢"],"y":[368],"name":"樺漢","marker":{"color":"#C0B7AC"}},{"type":"bar","inherit":true,"x":["儒鴻"],"y":[419],"name":"儒鴻","marker":{"color":"#CCBBA4"}},{"type":"bar","inherit":true,"x":["億豐"],"y":[237],"name":"億豐","marker":{"color":"#D8BF9D"}},{"type":"bar","inherit":true,"x":["聚陽"],"y":[200.5],"name":"聚陽","marker":{"color":"#E3C395"}},{"type":"bar","inherit":true,"x":["裕日車"],"y":[236],"name":"裕日車","marker":{"color":"#EBC883"}},{"type":"bar","inherit":true,"x":["葡萄王"],"y":[196],"name":"葡萄王","marker":{"color":"#F2CD6E"}},{"type":"bar","inherit":true,"x":["華碩"],"y":[286],"name":"華碩","marker":{"color":"#F8D257"}},{"type":"bar","inherit":true,"x":["晶華"],"y":[213],"name":"晶華","marker":{"color":"#FED83A"}},{"type":"bar","inherit":true,"x":["富邦媒"],"y":[209],"name":"富邦媒","marker":{"color":"#F1D937"}},{"type":"bar","inherit":true,"x":["統一超"],"y":[228],"name":"統一超","marker":{"color":"#DCD941"}},{"type":"bar","inherit":true,"x":["研華"],"y":[235],"name":"研華","marker":{"color":"#C7D949"}},{"type":"bar","inherit":true,"x":["為升"],"y":[383.5],"name":"為升","marker":{"color":"#B0D851"}},{"type":"bar","inherit":true,"x":["和泰車"],"y":[357],"name":"和泰車","marker":{"color":"#B3CF67"}},{"type":"bar","inherit":true,"x":["利勤"],"y":[200],"name":"利勤","marker":{"color":"#C5BE83"}},{"type":"bar","inherit":true,"x":["旭隼"],"y":[501],"name":"旭隼","marker":{"color":"#D4AB9D"}},{"type":"bar","inherit":true,"x":["立錡"],"y":[193],"name":"立錡","marker":{"color":"#E197B5"}},{"type":"bar","inherit":true,"x":["巨大"],"y":[217],"name":"巨大","marker":{"color":"#DF8DC4"}},{"type":"bar","inherit":true,"x":["可寧衛"],"y":[182],"name":"可寧衛","marker":{"color":"#CB93C6"}},{"type":"bar","inherit":true,"x":["可成"],"y":[274.5],"name":"可成","marker":{"color":"#B699C8"}},{"type":"bar","inherit":true,"x":["川湖"],"y":[392],"name":"川湖","marker":{"color":"#9F9DCA"}},{"type":"bar","inherit":true,"x":["大立光"],"y":[2610],"name":"大立光","marker":{"color":"#999FC4"}},{"type":"bar","inherit":true,"x":["F-麗豐"],"y":[281.5],"name":"F-麗豐","marker":{"color":"#BA9BAB"}},{"type":"bar","inherit":true,"x":["F-鎧勝"],"y":[179],"name":"F-鎧勝","marker":{"color":"#D49792"}},{"type":"bar","inherit":true,"x":["F-康友"],"y":[366],"name":"F-康友","marker":{"color":"#EB9278"}},{"type":"bar","inherit":true,"x":["F-英利"],"y":[179],"name":"F-英利","marker":{"color":"#F88F64"}},{"type":"bar","inherit":true,"x":["F-美食"],"y":[220],"name":"F-美食","marker":{"color":"#DE9F74"}},{"type":"bar","inherit":true,"x":["F-矽力"],"y":[445],"name":"F-矽力","marker":{"color":"#BFAC84"}},{"type":"bar","inherit":true,"x":["F-亞德"],"y":[191.5],"name":"F-亞德","marker":{"color":"#9AB895"}},{"type":"bar","inherit":true,"x":["F-永冠"],"y":[233],"name":"F-永冠","marker":{"color":"#66C2A5"}}],"layout":{"xaxis":{"title":"name"},"yaxis":{"title":"price"},"margin":{"b":40,"l":60,"t":25,"r":10}},"url":null,"width":null,"height":null,"base_url":"https://plot.ly","layout.1":{"xaxis":{"title":"name"},"yaxis":{"title":"price"}},"filename":"name vs. price"},"evals":[],"jsHooks":[]}</script></p>
+<p><div id="htmlwidget-4374" style="width:768px;height:576px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-4374">{"x":{"data":[{"type":"bar","inherit":true,"x":["豐泰"],"y":[183],"name":"豐泰","marker":{"color":"#B3B3B3"}},{"type":"bar","inherit":true,"x":["聯鈞"],"y":[153.5],"name":"聯鈞","marker":{"color":"#BBB5AF"}},{"type":"bar","inherit":true,"x":["聯詠"],"y":[132.5],"name":"聯詠","marker":{"color":"#C2B8AB"}},{"type":"bar","inherit":true,"x":["聯發科"],"y":[258],"name":"聯發科","marker":{"color":"#C9BAA6"}},{"type":"bar","inherit":true,"x":["樺漢"],"y":[380],"name":"樺漢","marker":{"color":"#D0BCA2"}},{"type":"bar","inherit":true,"x":["儒鴻"],"y":[443],"name":"儒鴻","marker":{"color":"#D7BF9E"}},{"type":"bar","inherit":true,"x":["廣隆"],"y":[143],"name":"廣隆","marker":{"color":"#DEC199"}},{"type":"bar","inherit":true,"x":["劍麟"],"y":[185],"name":"劍麟","marker":{"color":"#E4C495"}},{"type":"bar","inherit":true,"x":["億豐"],"y":[226],"name":"億豐","marker":{"color":"#E9C68A"}},{"type":"bar","inherit":true,"x":["聚陽"],"y":[202.5],"name":"聚陽","marker":{"color":"#EDC97E"}},{"type":"bar","inherit":true,"x":["裕日車"],"y":[229.5],"name":"裕日車","marker":{"color":"#F1CC72"}},{"type":"bar","inherit":true,"x":["葡萄王"],"y":[196],"name":"葡萄王","marker":{"color":"#F5CF65"}},{"type":"bar","inherit":true,"x":["超眾"],"y":[139.5],"name":"超眾","marker":{"color":"#F8D258"}},{"type":"bar","inherit":true,"x":["華碩"],"y":[290.5],"name":"華碩","marker":{"color":"#FBD548"}},{"type":"bar","inherit":true,"x":["晶華"],"y":[214],"name":"晶華","marker":{"color":"#FED835"}},{"type":"bar","inherit":true,"x":["富邦媒"],"y":[219.5],"name":"富邦媒","marker":{"color":"#F7D934"}},{"type":"bar","inherit":true,"x":["統一超"],"y":[223.5],"name":"統一超","marker":{"color":"#EBD93A"}},{"type":"bar","inherit":true,"x":["祥碩"],"y":[177.5],"name":"祥碩","marker":{"color":"#DFD93F"}},{"type":"bar","inherit":true,"x":["振樺電"],"y":[164],"name":"振樺電","marker":{"color":"#D3D944"}},{"type":"bar","inherit":true,"x":["美利達"],"y":[157],"name":"美利達","marker":{"color":"#C6D949"}},{"type":"bar","inherit":true,"x":["研華"],"y":[244],"name":"研華","marker":{"color":"#BAD94E"}},{"type":"bar","inherit":true,"x":["為升"],"y":[375.5],"name":"為升","marker":{"color":"#ACD852"}},{"type":"bar","inherit":true,"x":["南六"],"y":[143],"name":"南六","marker":{"color":"#AED35F"}},{"type":"bar","inherit":true,"x":["和泰車"],"y":[352.5],"name":"和泰車","marker":{"color":"#B9C971"}},{"type":"bar","inherit":true,"x":["利勤"],"y":[192],"name":"利勤","marker":{"color":"#C4BF81"}},{"type":"bar","inherit":true,"x":["伸興"],"y":[153.5],"name":"伸興","marker":{"color":"#CDB590"}},{"type":"bar","inherit":true,"x":["旭隼"],"y":[511],"name":"旭隼","marker":{"color":"#D5AA9F"}},{"type":"bar","inherit":true,"x":["立錡"],"y":[193],"name":"立錡","marker":{"color":"#DD9EAD"}},{"type":"bar","inherit":true,"x":["巨大"],"y":[221],"name":"巨大","marker":{"color":"#E492BB"}},{"type":"bar","inherit":true,"x":["台積電"],"y":[159.5],"name":"台積電","marker":{"color":"#E28CC3"}},{"type":"bar","inherit":true,"x":["台數科"],"y":[129],"name":"台數科","marker":{"color":"#D790C5"}},{"type":"bar","inherit":true,"x":["台達電"],"y":[143.5],"name":"台達電","marker":{"color":"#CC93C6"}},{"type":"bar","inherit":true,"x":["可寧衛"],"y":[180],"name":"可寧衛","marker":{"color":"#C096C7"}},{"type":"bar","inherit":true,"x":["可成"],"y":[294.5],"name":"可成","marker":{"color":"#B399C8"}},{"type":"bar","inherit":true,"x":["王品"],"y":[150.5],"name":"王品","marker":{"color":"#A69CC9"}},{"type":"bar","inherit":true,"x":["日友"],"y":[146.5],"name":"日友","marker":{"color":"#989ECA"}},{"type":"bar","inherit":true,"x":["川湖"],"y":[382.5],"name":"川湖","marker":{"color":"#949FC7"}},{"type":"bar","inherit":true,"x":["大立光"],"y":[2560],"name":"大立光","marker":{"color":"#A99DB8"}},{"type":"bar","inherit":true,"x":["上緯"],"y":[158.5],"name":"上緯","marker":{"color":"#BB9BAA"}},{"type":"bar","inherit":true,"x":["上銀"],"y":[155.5],"name":"上銀","marker":{"color":"#CB989B"}},{"type":"bar","inherit":true,"x":["一零四"],"y":[139.5],"name":"一零四","marker":{"color":"#D9968D"}},{"type":"bar","inherit":true,"x":["F-麗豐"],"y":[282.5],"name":"F-麗豐","marker":{"color":"#E6937E"}},{"type":"bar","inherit":true,"x":["F-鎧勝"],"y":[185],"name":"F-鎧勝","marker":{"color":"#F2906F"}},{"type":"bar","inherit":true,"x":["F-貿聯"],"y":[161],"name":"F-貿聯","marker":{"color":"#FA8E63"}},{"type":"bar","inherit":true,"x":["F-淘帝"],"y":[133],"name":"F-淘帝","marker":{"color":"#EB986D"}},{"type":"bar","inherit":true,"x":["F-康友"],"y":[385],"name":"F-康友","marker":{"color":"#DBA176"}},{"type":"bar","inherit":true,"x":["F-英利"],"y":[175],"name":"F-英利","marker":{"color":"#C9A87F"}},{"type":"bar","inherit":true,"x":["F-美食"],"y":[242],"name":"F-美食","marker":{"color":"#B6B089"}},{"type":"bar","inherit":true,"x":["F-矽力"],"y":[438.5],"name":"F-矽力","marker":{"color":"#A1B692"}},{"type":"bar","inherit":true,"x":["F-亞德"],"y":[190],"name":"F-亞德","marker":{"color":"#87BC9B"}},{"type":"bar","inherit":true,"x":["F-永冠"],"y":[233.5],"name":"F-永冠","marker":{"color":"#66C2A5"}}],"layout":{"xaxis":{"title":"name"},"yaxis":{"title":"price"},"margin":{"b":40,"l":60,"t":25,"r":10}},"url":null,"width":null,"height":null,"base_url":"https://plot.ly","layout.1":{"xaxis":{"title":"name"},"yaxis":{"title":"price"}},"filename":"name vs. price"},"evals":[],"jsHooks":[]}</script></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(leaflet)
 helloMap &lt;-<span class="st"> </span><span class="kw">leaflet</span>() %&gt;%
 <span class="st">  </span><span class="kw">addTiles</span>() %&gt;%<span class="st"> </span><span class="co">#把預設的地圖圖層加入</span>
 <span class="st">  </span><span class="kw">addMarkers</span>(<span class="dt">lng=</span><span class="fl">121.539366</span>, <span class="dt">lat=</span><span class="fl">25.017326</span>, <span class="dt">popup=</span><span class="st">&quot;National Taiwan University&quot;</span>)
 helloMap</code></pre></div>
-<p><div id="htmlwidget-7884" style="width:768px;height:576px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-7884">{"x":{"calls":[{"method":"addTiles","args":["http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"maxNativeZoom":null,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"continuousWorld":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":null,"unloadInvisibleTiles":null,"updateWhenIdle":null,"detectRetina":false,"reuseTiles":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap\u003c/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA\u003c/a>"}]},{"method":"addMarkers","args":[25.017326,121.539366,null,null,null,{"clickable":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},"National Taiwan University",null,null]}],"limits":{"lat":[25.017326,25.017326],"lng":[121.539366,121.539366]}},"evals":[],"jsHooks":[]}</script></p>
+<p><div id="htmlwidget-320" style="width:768px;height:576px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-320">{"x":{"calls":[{"method":"addTiles","args":["http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"maxNativeZoom":null,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"continuousWorld":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":null,"unloadInvisibleTiles":null,"updateWhenIdle":null,"detectRetina":false,"reuseTiles":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap\u003c/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA\u003c/a>"}]},{"method":"addMarkers","args":[25.017326,121.539366,null,null,null,{"clickable":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},"National Taiwan University",null,null]}],"limits":{"lat":[25.017326,25.017326],"lng":[121.539366,121.539366]}},"evals":[],"jsHooks":[]}</script></p>
 </div>
 <div class="slide section level2">
 <h1>建模型</h1>
@@ -427,13 +443,13 @@ helloMap</code></pre></div>
 ##  $ dist : num  2 10 4 22 16 10 18 26 34 17 ...</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">scatterPlot &lt;-<span class="st"> </span><span class="kw">plot_ly</span>(cars, <span class="dt">x=</span>speed, <span class="dt">y=</span>dist, <span class="dt">type=</span><span class="st">&quot;scatter&quot;</span>, <span class="dt">mode=</span><span class="st">&quot;markers&quot;</span>, <span class="dt">name=</span><span class="st">&quot;data points&quot;</span>)
 scatterPlot</code></pre></div>
-<p><div id="htmlwidget-204" style="width:768px;height:576px;" class="plotly html-widget"></div>
-<script type="application/json" data-for="htmlwidget-204">{"x":{"data":[{"type":"scatter","inherit":true,"x":[4,4,7,7,8,9,10,10,10,11,11,12,12,12,12,13,13,13,13,14,14,14,14,15,15,15,16,16,17,17,17,18,18,18,18,19,19,19,20,20,20,20,20,22,23,24,24,24,24,25],"y":[2,10,4,22,16,10,18,26,34,17,28,14,20,24,28,26,34,34,46,26,36,60,80,20,26,54,32,40,32,40,50,42,56,76,84,36,46,68,32,48,52,56,64,66,54,70,92,93,120,85],"mode":"markers","name":"data points"}],"layout":{"xaxis":{"title":"speed"},"yaxis":{"title":"dist"},"margin":{"b":40,"l":60,"t":25,"r":10}},"url":null,"width":null,"height":null,"base_url":"https://plot.ly","layout.1":{"xaxis":{"title":"speed"},"yaxis":{"title":"dist"}},"filename":"speed vs. dist"},"evals":[],"jsHooks":[]}</script></p>
+<p><div id="htmlwidget-3660" style="width:768px;height:576px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-3660">{"x":{"data":[{"type":"scatter","inherit":true,"x":[4,4,7,7,8,9,10,10,10,11,11,12,12,12,12,13,13,13,13,14,14,14,14,15,15,15,16,16,17,17,17,18,18,18,18,19,19,19,20,20,20,20,20,22,23,24,24,24,24,25],"y":[2,10,4,22,16,10,18,26,34,17,28,14,20,24,28,26,34,34,46,26,36,60,80,20,26,54,32,40,32,40,50,42,56,76,84,36,46,68,32,48,52,56,64,66,54,70,92,93,120,85],"mode":"markers","name":"data points"}],"layout":{"xaxis":{"title":"speed"},"yaxis":{"title":"dist"},"margin":{"b":40,"l":60,"t":25,"r":10}},"url":null,"width":null,"height":null,"base_url":"https://plot.ly","layout.1":{"xaxis":{"title":"speed"},"yaxis":{"title":"dist"}},"filename":"speed vs. dist"},"evals":[],"jsHooks":[]}</script></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fit &lt;-<span class="st"> </span><span class="kw">lm</span>(cars$dist~cars$speed)
 scatterPlot &lt;-<span class="st"> </span><span class="kw">add_trace</span>(scatterPlot, <span class="dt">y=</span><span class="kw">fitted</span>(fit), <span class="dt">name=</span><span class="st">&quot;linear model&quot;</span>, <span class="dt">mode=</span><span class="st">&quot;lines&quot;</span>)
 scatterPlot</code></pre></div>
-<p><div id="htmlwidget-4202" style="width:768px;height:576px;" class="plotly html-widget"></div>
-<script type="application/json" data-for="htmlwidget-4202">{"x":{"data":[{"type":"scatter","inherit":true,"x":[4,4,7,7,8,9,10,10,10,11,11,12,12,12,12,13,13,13,13,14,14,14,14,15,15,15,16,16,17,17,17,18,18,18,18,19,19,19,20,20,20,20,20,22,23,24,24,24,24,25],"y":[2,10,4,22,16,10,18,26,34,17,28,14,20,24,28,26,34,34,46,26,36,60,80,20,26,54,32,40,32,40,50,42,56,76,84,36,46,68,32,48,52,56,64,66,54,70,92,93,120,85],"mode":"markers","name":"data points"},{"type":"scatter","inherit":true,"x":[4,4,7,7,8,9,10,10,10,11,11,12,12,12,12,13,13,13,13,14,14,14,14,15,15,15,16,16,17,17,17,18,18,18,18,19,19,19,20,20,20,20,20,22,23,24,24,24,24,25],"y":[-1.84945985401474,-1.84945985401462,9.94776642335769,9.94776642335769,13.8801751824818,17.8125839416059,21.7449927007299,21.7449927007299,21.7449927007299,25.677401459854,25.677401459854,29.6098102189781,29.6098102189781,29.6098102189781,29.6098102189781,33.5422189781022,33.5422189781022,33.5422189781022,33.5422189781022,37.4746277372263,37.4746277372263,37.4746277372263,37.4746277372263,41.4070364963504,41.4070364963504,41.4070364963504,45.3394452554745,45.3394452554745,49.2718540145985,49.2718540145985,49.2718540145985,53.2042627737226,53.2042627737226,53.2042627737226,53.2042627737226,57.1366715328467,57.1366715328467,57.1366715328467,61.0690802919708,61.0690802919708,61.0690802919708,61.0690802919708,61.0690802919708,68.933897810219,72.8663065693431,76.7987153284671,76.7987153284671,76.7987153284671,76.7987153284672,80.7311240875912],"mode":"lines","name":"linear model"}],"layout":{"xaxis":{"title":"speed"},"yaxis":{"title":"dist"},"margin":{"b":40,"l":60,"t":25,"r":10}},"url":null,"width":null,"height":null,"base_url":"https://plot.ly","layout.1":{"xaxis":{"title":"speed"},"yaxis":{"title":"dist"}},"filename":"speed vs. dist"},"evals":[],"jsHooks":[]}</script></p>
+<p><div id="htmlwidget-9215" style="width:768px;height:576px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-9215">{"x":{"data":[{"type":"scatter","inherit":true,"x":[4,4,7,7,8,9,10,10,10,11,11,12,12,12,12,13,13,13,13,14,14,14,14,15,15,15,16,16,17,17,17,18,18,18,18,19,19,19,20,20,20,20,20,22,23,24,24,24,24,25],"y":[2,10,4,22,16,10,18,26,34,17,28,14,20,24,28,26,34,34,46,26,36,60,80,20,26,54,32,40,32,40,50,42,56,76,84,36,46,68,32,48,52,56,64,66,54,70,92,93,120,85],"mode":"markers","name":"data points"},{"type":"scatter","inherit":true,"x":[4,4,7,7,8,9,10,10,10,11,11,12,12,12,12,13,13,13,13,14,14,14,14,15,15,15,16,16,17,17,17,18,18,18,18,19,19,19,20,20,20,20,20,22,23,24,24,24,24,25],"y":[-1.84945985401474,-1.84945985401462,9.94776642335769,9.94776642335769,13.8801751824818,17.8125839416059,21.7449927007299,21.7449927007299,21.7449927007299,25.677401459854,25.677401459854,29.6098102189781,29.6098102189781,29.6098102189781,29.6098102189781,33.5422189781022,33.5422189781022,33.5422189781022,33.5422189781022,37.4746277372263,37.4746277372263,37.4746277372263,37.4746277372263,41.4070364963504,41.4070364963504,41.4070364963504,45.3394452554745,45.3394452554745,49.2718540145985,49.2718540145985,49.2718540145985,53.2042627737226,53.2042627737226,53.2042627737226,53.2042627737226,57.1366715328467,57.1366715328467,57.1366715328467,61.0690802919708,61.0690802919708,61.0690802919708,61.0690802919708,61.0690802919708,68.933897810219,72.8663065693431,76.7987153284671,76.7987153284671,76.7987153284671,76.7987153284672,80.7311240875912],"mode":"lines","name":"linear model"}],"layout":{"xaxis":{"title":"speed"},"yaxis":{"title":"dist"},"margin":{"b":40,"l":60,"t":25,"r":10}},"url":null,"width":null,"height":null,"base_url":"https://plot.ly","layout.1":{"xaxis":{"title":"speed"},"yaxis":{"title":"dist"}},"filename":"speed vs. dist"},"evals":[],"jsHooks":[]}</script></p>
 </div>
 <div id="presentation" class="slide section level2">
 <h1>做Presentation</h1>

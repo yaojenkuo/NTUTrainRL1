@@ -38,7 +38,6 @@ g(f(2))#5x+10
 * Forward-Pipe方式`%>%`
 
 ```{r}
-install.packages("magrittr")
 library(magrittr)
 2 %>% f#5x
 2 %>% f %>% g#5x+10
