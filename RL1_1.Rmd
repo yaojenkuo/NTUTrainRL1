@@ -88,7 +88,7 @@ matrix[3,3]#取出matrix中位於第三列第三欄的元素
 ```{r}
 install.packages("pixmap")#這個範例需要使用pixmap套件
 library(pixmap)
-onePiece <- read.pnm("image/onePiece.pgm")#把圖片指派給onePiece這個物件
+onePiece <- read.pnm("c:/NTUTrainRL1/image/onePiece.pgm")#把圖片指派給onePiece這個物件
 onePiece#看看onePiece物件
 plot(onePiece)#把onePiece物件畫出來看看
 str(onePiece)#檢查onePiece物件的結構
