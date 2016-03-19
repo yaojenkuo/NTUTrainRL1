@@ -175,8 +175,8 @@ SQL的使用者在SAS中可以使用proc sql;在R中可以使用sqldf套件。
 ```{r}
 install.packages("sqldf")
 library(sqldf)
-strawHatPirate6 <- sqldf("select name, occupation, bounty, age from strawHatPirate where age>17 order by bounty asc")
-sqldf("select avg(age) as avgAge from strawHatPirate")
+strawHatPirate6 <- sqldf("select name, occupation, bounty, age from strawHatPirate where age>19 order by bounty asc")
+sqldf("select gender, avg(age) as avgAge from strawHatPirate group by gender")
 sqldf("select strawHatPirate.name, devilFruitList.devilFruit from strawHatPirate inner join devilFruitList on strawHatPirate.name=devilFruitList.name2")
 ```
 
@@ -186,11 +186,9 @@ sqldf("select strawHatPirate.name, devilFruitList.devilFruit from strawHatPirate
 * 對於EXCEL的使用者來說，就想成是樞紐分析表的功能!
 
 ```{r}
-gender <- c("Male", "Male", "Female", "Male")
-strawHatPirate7 <- cbind(strawHatPirate, gender)#新增性別欄位
 library(plyr)#載入plyr套件
-avgBountyByGender <- ddply(strawHatPirate7, c("gender"), function(df)round(mean(df$bounty, na.rm=T),2))#寫法1
-avgAgeByGender <- ddply(strawHatPirate7, c("gender"), summarise, avgAge=round(mean(age),2))#寫法2
+avgBountyByGender <- ddply(strawHatPirate, c("gender"), function(df)round(mean(df$bounty, na.rm=T),2))#寫法1
+avgAgeByGender <- ddply(strawHatPirate, c("gender"), summarise, avgAge=round(mean(age),2))#寫法2
 ```
 
 上述示範使用ddply這個函數，dd代表輸入dataframe輸出dataframe，所以，使用ldply函數代表輸入list輸出dataframe。

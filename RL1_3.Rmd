@@ -78,6 +78,7 @@ meanFunction <- function(input){
 }
 vector1 <- 1:100
 meanFunction(vector1)
+vector1 %>% meanFunction()#forward-pipe
 ```
 
 最小值的例子:
@@ -89,6 +90,8 @@ minimumFunction <- function(input){
 }
 vector1 <- 10:100
 minimumFunction(vector1)
+vector1 %>% minimumFunction()#forward-pipe
+```
 ```
 
 梯形面積的例子:
@@ -99,7 +102,9 @@ trapezium <- function(upper, bottom, height=10){
   return(area)
 }
 trapezium(5, 7)#依照順序
-trapezium(bottom=7, upper=5, height=100)#可以改預設, 依命名
+5 %>% trapezium(., 7)#forward-pipe
+trapezium(height=100, bottom=7, upper=5)#可以改預設, 依命名
+7 %>% trapezium(height=100, bottom=., upper=5)#forward-pipe
 ```
 
 ### 流程控制
@@ -165,28 +170,29 @@ circleCalculate <- function(radius, areaCal=TRUE){
   circleArea <- pi*(radius^2)
   circleCircum <- 2*pi*radius
   if (areaCal==TRUE){
-    return (circleArea)
+    return(circleArea)
   } else {
-    return (circleCircum)
+    return(circleCircum)
   }
 }
 circleCalculate(3)#預設計算圓面積
 circleCalculate(areaCal=FALSE, radius=3)#areaCal=FALSE計算圓周
+FALSE %>% circleCalculate(3, .)#forward-pipe
 ```
 
 計算正方體的體積、表面積或邊長總合:
 
 ```{r}
-cubeCalculate <- function(d, volumeCal){
-  volume <- d^3
-  surface <- 6*(d^2)
-  totalD <- 12*d
+cubeCalculate <- function(sideLength, volumeCal){
+  volume <- sideLength^3
+  surface <- 6*(sideLength^2)
+  totalSideLength <- 12*sideLength
   if (volumeCal==1){
     return(volume)
   } else if (volumeCal==2){
     return(surface)
   } else if (volumeCal==3){
-    return(totalD)
+    return(totalSideLength)
   }
 }
 cubeCalculate(3, 1)#算體積3^3=27

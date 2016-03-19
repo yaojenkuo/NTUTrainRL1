@@ -95,7 +95,7 @@ str(onePiece)#檢查onePiece物件的結構
 onePiece@grey[300, 600]#看一下(300, 600)這個像素的亮度
 locator()#這是R的內建函式，可以找到圖片坐標
 noUsopp <- onePiece
-noUsopp@grey[68.91861:301.05464, 219.0638:311.9182] <- 1#把騙人布用國防布蓋掉
+noUsopp@grey[69.95408:310.19518, 203.237:314.3169] <- 1#把騙人布用國防布蓋掉
 plot(noUsopp)#看看結果，好像沒有蓋好蓋滿QQ
 ```
 
