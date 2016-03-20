@@ -20,6 +20,7 @@ str(accidentList)#看看資料集結構
 ```{r}
 accidentList <- read.csv("data/funCoastAccident.csv", header=TRUE, sep=",", row.names="編號", colClasses=c("character", "character", "character", "character", "character", "integer", "factor", "factor"))
 colnames(accidentList) <- c("county", "hospital", "gender", "nationality", "age", "woundType1", "woundType2")
+str(accidentList)
 ```
 
 ### 讀取excel
