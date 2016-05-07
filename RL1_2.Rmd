@@ -21,6 +21,7 @@ strawHatPirate <- data.frame(name, occupation, bounty, age, birthday, strength, 
 * 數值欄位的運算
 
 ```{r}
+?transform
 strawHatPirate <- transform(
   strawHatPirate,
   ratingSum = strength + intelligence,#這裡不能用 <- 因為是transform函式的option

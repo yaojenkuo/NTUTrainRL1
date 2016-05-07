@@ -106,6 +106,14 @@ colNames[lengthColNames]#這樣會很累
 for (i in 1:lengthColNames){
   print(colNames[i])#第i個元素
 }
+
+# iris
+library(magrittr)
+irisColLength <- iris %>% names() %>% length()
+for (i in 1:irisColLength){
+  print(names(iris)[i])
+}
+
 ```
 
 ### Factor
@@ -137,7 +145,7 @@ class(genderFactor)#看genderFactor的類型
 # 檢查是否有順序之分
 genderFactor[1]#這是女性Female
 genderFactor[2]#這是男性Male
-genderFactor[1]>genderFactor[2]#女性是否比男性優秀
+genderFactor[1] > genderFactor[2]#女性是否比男性優秀
 ```
 
 * 相對順序型的Factor就有順序之分
@@ -170,6 +178,7 @@ class(temperatureFactor)#看temperatureFactor的類型
 
 ```{r}
 vector <- c(1:12)#這裡也可以使用seq(1:12)
+?matrix
 matrix <- matrix(vector, nrow=4, ncol=3, byrow=TRUE)#預設byrow是FALSE
 matrix#把matrix印出來看看
 matrix <- matrix(vector, nrow=4, ncol=3)#byrow用預設
@@ -179,9 +188,9 @@ matrix#再把matrix印出來看看
 * 讓我們用(m, n)的概念把matrix中的元素取出來
 
 ```{r}
-matrix[1,]#取出matrix中的第一列
-matrix[,2]#取出matrix中的第二欄
-matrix[3,3]#取出matrix中位於第三列第三欄的元素
+matrix[1, ]#取出matrix中的第一列
+matrix[, 2]#取出matrix中的第二欄
+matrix[3, 3]#取出matrix中位於第三列第三欄的元素
 ```
 
 * Matrix的應用 - 灰階圖片處理
@@ -219,11 +228,13 @@ plot(noUsopp)#看看結果
 patientID <- c("P01", "P02", "P03", "P04")#建立病人ID
 age <- c(25, 34, 28, 52)#建立病人年齡
 diabetes <- c("Type1", "Type2", "Type1", "Type1")#建立糖尿病種類
-status <- c("Poor", "Improved", "Excellent", "Poor")#建立狀況
+status <- c("Poor", "Improved", "Excellent", "Poor") %>% factor(., ordered = TRUE, levels = c("Poor", "Improved", "Excellent"))#建立狀況
+# statusFactor <- factor(status, ordered = TRUE, levels = c("Poor", "Improved", "Excellent"))
 ?data.frame#查看data.frame函數
 patientData <- data.frame(patientID, age, diabetes, status)#組成一個data frame
 patientData#印出來看
 View(patientData)#用RStudio看
+str(patientData)
 ```
 
 * 同樣可以用`[]`把Data Frame中的元素取出來
@@ -280,6 +291,7 @@ myMatrix <- matrix(1:10, nrow=5)
 myDf <- head(mtcars, n=10)
 
 # 沒有名稱的List
+?list
 myList <- list(myVector, myMatrix, myDf)#建立myList
 myList#把mylist印出來看看
 
