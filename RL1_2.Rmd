@@ -66,11 +66,12 @@ sum(strawHatPirate$bounty, na.rm=TRUE)#as in remove
 ### 日期值
 
 ```{r}
-str(strawHatPirate$birthday)
-strawHatPirate$birthdayAsDate <- as.Date(strawHatPirate$birthday, "%m/%d/%Y")#Y for 4-digit, y for 2-digit
-str(strawHatPirate$birthdayAsDate)
-max(strawHatPirate$birthdayAsDate)#轉換成日期格式後可以下max或min
-min(strawHatPirate$birthdayAsDate)#轉換成日期格式後可以下max或min
+str(strawHatPirate$birthday)#轉換前先看原本日期的結構
+?as.Date
+strawHatPirate$birthdayAsDate <- as.Date(strawHatPirate$birthday, "%m/%d/%Y")#大寫Y是4位數年份, 小寫y是2位數年份
+str(strawHatPirate$birthdayAsDate)#轉換後看日期的結構
+max(strawHatPirate$birthdayAsDate)#轉換成日期格式後可以下max
+min(strawHatPirate$birthdayAsDate)#轉換成日期格式後可以下min
 ```
 
 ### 轉換格式
@@ -97,6 +98,7 @@ is.logical()|as.logical()
 預設是遞增排序，加負號可以改為遞減排序
 
 ```{r}
+?order
 strawHatPirate[order(strawHatPirate$age),]#用年齡遞增排序
 strawHatPirate[order(-strawHatPirate$intelligence, strawHatPirate$attack),]#先用智力遞減排序再用力量遞增排序
 ```
@@ -107,7 +109,8 @@ strawHatPirate[order(-strawHatPirate$intelligence, strawHatPirate$attack),]#先�
 
 ```{r}
 favoriteFood <- c("Meat", "Sea King Meat", "Orange", "Pasta")#新增喜歡的食物
-strawHatPirate2 <- cbind(strawHatPirate, favoriteFood)#cbind as in column bind
+?cbind
+strawHatPirate2 <- cbind(strawHatPirate, favoriteFood)#cbind即是column bind
 ```
 
 #### Join
@@ -140,8 +143,9 @@ devilFruitStrawHatPirate <- merge(strawHatPirate, devilFruitList, by.x="name", b
 ### 加列數(Append)
 
 ```{r}
-chopper <- c("Tony Tony Chopper", "Doctor", 50, 17, "12/24/1998", 50, 80)
-strawHatPirate2 <- rbind(strawHatPirate, chopper)
+chopper <- c("Tony Tony Chopper", "Doctor", 50, 17, "12/24/1998", 50, 80)#加入喬巴
+?rbind
+strawHatPirate2 <- rbind(strawHatPirate, chopper)#rbind即是row bind
 ```
 
 ### 篩選(Subset)
@@ -174,25 +178,14 @@ strawHatPirate5 <- strawHatPirate2[strawHatPirate2$age>17 & strawHatPirate2$stre
 SQL的使用者在SAS中可以使用proc sql;在R中可以使用sqldf套件。
 
 ```{r}
+#下載並載入套件
 install.packages("sqldf")
 library(sqldf)
+
 strawHatPirate6 <- sqldf("select name, occupation, bounty, age from strawHatPirate where age>19 order by bounty asc")
 sqldf("select gender, avg(age) as avgAge from strawHatPirate group by gender")
 sqldf("select strawHatPirate.name, devilFruitList.devilFruit from strawHatPirate inner join devilFruitList on strawHatPirate.name=devilFruitList.name2")
 ```
-
-### plyr套件
-
-* 對於SQL的使用者來說，就想成是GROUP BY的功能!
-* 對於EXCEL的使用者來說，就想成是樞紐分析表的功能!
-
-```{r}
-library(plyr)#載入plyr套件
-avgBountyByGender <- ddply(strawHatPirate, c("gender"), function(df)round(mean(df$bounty, na.rm=T),2))#寫法1
-avgAgeByGender <- ddply(strawHatPirate, c("gender"), summarise, avgAge=round(mean(age),2))#寫法2
-```
-
-上述示範使用ddply這個函數，dd代表輸入dataframe輸出dataframe，所以，使用ldply函數代表輸入list輸出dataframe。
 
 ### reshape2套件
 
@@ -205,8 +198,11 @@ avgAgeByGender <- ddply(strawHatPirate, c("gender"), summarise, avgAge=round(mea
 把兩個數值欄位轉到一個欄位底下，並多一個類別欄位來區隔這兩種數值。
 
 ```{r}
+#下載並載入套件
+install.packages("reshape2")
 library(reshape2)
 strawHatPirate8 <- melt(strawHatPirate, id=c("name"), measure=c("strength", "intelligence"))
+View(strawHatPirate8)
 ```
 
 #### dcast函數
@@ -215,10 +211,36 @@ strawHatPirate8 <- melt(strawHatPirate, id=c("name"), measure=c("strength", "int
 
 ```{r}
 strawHatPirate9 <- dcast(strawHatPirate8, name~variable)
+View(strawHatPirate9)
+```
+
+#### 應用
+
+* 圖一(轉置堆疊前)
+
+```{r}
+year <- c(1996, 1997,	1998,	1999,	2000,	2001,	2002,	2003,	2004,	2005,	2006,	2007,	2008,	2009,	2010,	2011,	2012,	2013,	2014)
+salaryReal <- c(42520, 44195, 44798, 46040, 46605, 46716, 46330, 47058, 46989, 46447, 46521, 46650, 45038, 43193, 44989, 45508, 44726, 44446, 45494)
+plot(year, salaryReal, type="l", main=paste(" 歷年工業及服務業受僱員工以100年價格衡量之實質薪資"), sub=paste("資料來源: 行政院主計總處","\n","https://www.dgbas.gov.tw/public/Attachment/5225164112198I9Y1K.pdf"),  lwd=1, xlab="", ylab="")
+points(year[1:4], salaryReal[1:4], col="blue", bg="blue", pch=15)
+points(year[5:12], salaryReal[5:12], col="darkgreen", bg="darkgreen", pch=16)
+points(year[13:length(year)], salaryReal[13:length(salaryReal)], col="blue", bg="blue", pch=17)
+```
+
+* 圖二(轉置堆疊後)
+
+```{r}
+nthyear <- c(5, 6,	7, 8,	1,	2,	3,	4,	5,	6,	7,	8,	1,	2,	3,	4,	5,	6,	7)
+lineDataFrame <- data.frame(nthyear, salaryReal)
+lineDataFrameCast <- dcast(lineDataFrame, nthyear~presidents, value.var = "salaryReal")
+par(mfrow=c(1,1))
+plot(lineDataFrameCast[, 2]~lineDataFrameCast[, 1], type="l", col="goldenrod", ylim=c(42000, 50000), lwd=1)
+lines(lineDataFrameCast[, 3], type="l", col="blue", lwd=1)
+lines(lineDataFrameCast[, 4], type="l", col="darkgreen", lwd=1)
 ```
 
 ## Reference
 * R in Action, Robert I. Kabacoff
 * The Art of R Programming, Norman Matloff
 
-&copy; Tony Yao-Jen Kuo 2015
+&copy; Tony Yao-Jen Kuo 2016
