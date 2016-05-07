@@ -8,30 +8,56 @@ This is the lecture notes for NTU Train Course of R Project Lecture 1_1
 * Vector可以包含數字、文字或二元邏輯資料
 * 如果包含不同類型的資料，會記錄成文字
 * 在R中我們可以使用`=`來指派變數，也可以使用`<-`
-* `<-`可以使用alt+減號快速鍵
+* R的使用者很廣泛使用`<-`，可能不希望使用者把`=`，`==`弄混
+* `<-`可以使用alt+減號這組快速鍵輸入
+* 我們先介紹使用`c()`來建造Vector，顧名思義是合併(Combine)
 
 ```{r}
+# 宣告一些測試的vectors
+# 輸入`?functionName`可以看函數的說明
+?c#查看一下c這個函數
 numericVector <- c(1, 2, 5, 3, 6, -2, 4)#數字Vector
 characterVector <- c("one", "two", "three")#文字Vector
 logicalVector <- c(TRUE, TRUE, TRUE, FALSE, TRUE, FALSE)#二元邏輯Vector
-mixedVector <- c(1, "two", TRUE)#文字Vector
-class(mixedVector)#檢查mixedVector的類別
-str(mixedVector)#檢查mixedVector的結構as in structure
+mixedVector <- c(1, "two", TRUE)#包含不同類型的資料就會被存成文字Vector
+
+# 使用class檢查vectors的類型
+?class#查看一下class這個函數
+class(numericVector)#檢查numericVector類型
+class(characterVector)#檢查characterVector類型
+class(logicalVector)#檢查logicalVector類型
+class(mixedVector)#檢查mixedVector的類型
 ```
 
 * Vector中的元素稱為Scalar
+* 在R語言中我們使用中括號`[]`將指定元素選擇出來
+* 中括號`[]`裡頭要放所謂的索引值(index)
+* 索引值由**1**開始，這一點不同於一些其他程式語言是從0開始
+* 實務中因為向量的長度可能是不固定的，所以我們很常使用`length()`來取得向量中最後一個元素的索引值
 
 ```{r}
-lengthNumVector <- length(numericVector)#指派數字Vector的長度給lengthNumVector
-numericVector[1]#取出數字Vector的第一個元素1
-numericVector[2:4]#取出數字Vector的第二、三與四個元素2、5、3
-numericVector[-1]#取出除了第一個元素以外的Scalars
-numericVector[2:lengthNumVector]#取出除了第一個元素以外的Scalars
+# 看一下numericVector長什麼樣子
+numericVector#把numericVector印出來
+
+# 用`[]`把指定元素選擇出來
+numericVector[1]#取出numericVector的第一個元素1
+numericVector[c(2, 3, 4)]#取出numericVector的第二、三與四個元素2、5、3
+numericVector[2:4]#取出numericVector的第二、三與四個元素2、5、3
+numericVector[-1]#取出除了第一個元素以外的其他元素
+
+# 使用`length`函數取得最後一個元素的索引值
+?length#查看一下length這個函數
+lengthNumVector <- length(numericVector)#指派numericVector的長度給lengthNumVector
+lengthNumVector#印出來看
+numericVector[2:lengthNumVector]#取出第二個到最後一個元素
 ```
 
-* 除了用c()，seq()、rep()也可以幫你輕鬆製作Vector
+* 除了用`c()`，R語言還有一些比較進階的函數例如`seq()`與`rep()`可以幫你輕鬆產出Vector
+* `seq()`是sequence，`rep()`是repetition
+* 顧名思義，`seq()`是產出等差的vector，`rep()`是產出包含相同元素的vector
 
 ```{r}
+# 練習使用`seq`的方式
 seq(from=12, to=90, by=3)#產生一個從12到90公差為3的向量, as in sequence
 seq(from=100, to=1000, length=10)#產生一個從100到1000，Scalar個數為10的向量
 rep(9,5)#產生一個有5個9的向量, as in repetition
@@ -50,11 +76,22 @@ rep(9,5)#產生一個有5個9的向量, as in repetition
 ### Factor
 
 * 你可以把Factor視作多了一些資訊的Vector，這些資訊就叫做Level
+* R語言預設讀入資料會將非連續型變數以Factor的格式儲存
 
 ```{r}
 status <- c("Poor", "Improved", "Excellent", "Poor")
 statusF <- factor(status)
 statusF
+class(statusF)
+```
+
+* 還可以增加順序的資訊
+
+```{r}
+speed <- c("Slow", "Fast", "Insane", "Slow")
+speedF <- factor(speed, ordered = TRUE, levels=c("Slow", "Fast", "Insane"))
+speedF
+class(speedF)
 ```
 
 ### Matrix
@@ -100,27 +137,6 @@ plot(noUsopp)#看看結果，好像沒有蓋好蓋滿QQ
 ```
 
 ![No Usopp](image/noUsopp.jpeg)
-
-### Array
-
-* Array就是多維的Matrice
-
-```{r}
-x <- c("X1", "X2")#每個matrix都有2列
-y <- c("Y1", "Y2", "Y3")#每個matrix都有3欄
-z <- c("Z1", "Z2", "Z3", "Z4")#有4個matrix
-array <- array(1:24, c(2, 3, 4), dimnames=list(x, y, z))
-array#把array印出來看看
-```
-
-* 讓我們用(x, y, z)的概念把matrix中的元素取出來
-
-```{r}
-array[1, , ]#取出四個matrice的第一列
-array[ ,2, ]#取出四個matrice的第二欄
-array[ , ,3]#取出第三個matrix
-array[1, 2, 3]#取出第三個matrix中位於第一列第二欄的元素
-```
 
 ### Data Frame
 
@@ -211,4 +227,4 @@ mean(nullExample)
 * R in Action, Robert I. Kabacoff
 * The Art of R Programming, Norman Matloff
 
-&copy; Tony Yao-Jen Kuo 2015
+&copy; Tony Yao-Jen Kuo 2016
