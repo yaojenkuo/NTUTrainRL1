@@ -3,6 +3,13 @@ This is the lecture notes for NTU Train Course of R Project Lecture 1_1
 
 ## Data Types
 
+* 我們今天會介紹R語言的基本資料類型:
+  * Vector(向量)
+  * Factor(因素向量)
+  * Matrix(矩陣)
+  * Data Frame(資料框)
+  * List(清單)
+
 ### Vector
 
 * Vector可以包含數字、文字或二元邏輯資料
