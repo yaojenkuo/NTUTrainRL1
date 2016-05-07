@@ -303,4 +303,4 @@ apply()是R語言中有名且好用的遞迴功能，apply()家族包含apply()�
 * R in Action, Robert I. Kabacoff
 * The Art of R Programming, Norman Matloff
 
-&copy; Tony Yao-Jen Kuo 2015
+&copy; Tony Yao-Jen Kuo 2016
