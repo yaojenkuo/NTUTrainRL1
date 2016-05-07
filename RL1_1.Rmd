@@ -57,41 +57,104 @@ numericVector[2:lengthNumVector]#取出第二個到最後一個元素
 * 顧名思義，`seq()`是產出等差的vector，`rep()`是產出包含相同元素的vector
 
 ```{r}
-# 練習使用`seq`的方式
-seq(from=12, to=90, by=3)#產生一個從12到90公差為3的向量, as in sequence
-seq(from=100, to=1000, length=10)#產生一個從100到1000，Scalar個數為10的向量
-rep(9,5)#產生一個有5個9的向量, as in repetition
+# 練習使用`seq`
+?seq#查看一下seq這個函數
+seq(from=12, to=90, by=3)#產生一個從12開始到90，等差為3的vector
+seq(from=100, to=1000, length=10)#產生一個從100開始到1000，元素個數為10的Vector
+
+# 練習使用`rep`
+?rep#查看一下rep這個函數
+rep(9, times = 5)#產生一個有5個9的Vector
 ```
 
-* Vector的應用
-  * 最常應用在迴圈中
-  ```{r}
-  str(mtcars)#看一下mtcars的結構
-  colNames <- names(mtcars)#把mtcars的欄位名抓出來
-  for (index in 1:length(colNames)){
-    print(colNames[index])
-  }
-  ```
+* Vector的應用 - 迴圈
+
+```{r}
+#把mtcars的欄位名印出來
+mtcars#R語言內建的的資料，印出來看看
+?str#查看一下str這個函數
+str(mtcars)#看一下mtcars的結構
+?names#查看一下names這個函數
+colNames <- names(mtcars)#把mtcars的欄位名抓出來
+colNames#印出來看看
+colNames[1]#第一個元素
+
+lengthColNames <- length(colNames)#總共有幾個欄位
+lengthColNames#印出來看看, mtcars有11個欄位，跟我們在str的輸出看到是一樣的
+
+# 我想要一次印一個欄位名稱出來
+colNames[1]#第一個元素
+colNames[2]
+colNames[3]
+colNames[4]
+colNames[5]
+colNames[6]
+colNames[7]
+colNames[8]
+colNames[9]
+colNames[10]
+colNames[lengthColNames]#這樣會很累
+
+# 可以寫成1:11，但是每換一個資料，就要重新修改程式
+for (i in 1:lengthColNames){
+  print(colNames[i])#第i個元素
+}
+```
 
 ### Factor
 
-* 你可以把Factor視作多了一些資訊的Vector，這些資訊就叫做Level
+* 你可以把Factor視作多了一些資訊的Vector
 * R語言預設讀入資料會將非連續型變數以Factor的格式儲存
+* 可以把它想成是字串向量，但是多了`levels`這樣的資訊
+* `levels`的資訊有點像是相異值(distinct)的概念
+* 有兩種類型的Factor，分別是名目型(Nominal)與順序型(Ordinal)
+* 名目型的Factor是沒有順序之分
 
 ```{r}
-status <- c("Poor", "Improved", "Excellent", "Poor")
-statusF <- factor(status)
-statusF
-class(statusF)
+# 目前還是跟前面是一樣的Vector
+gender <- c("Female", "Male", "Male", "Female", "Female")#建立一個3女2男的Vector
+gender#印出來看看
+str(gender)#看gender的結構
+?summary#查看一下summary這個函數
+summary(gender)#看gender的摘要
+class(gender)#看gender的類型
+
+# 轉換成名目型的Factor
+?factor#查看一下factor這個函數
+genderFactor <- factor(gender)
+genderFactor#印出來看看
+str(genderFactor)#看genderFactor的結構
+summary(genderFactor)#看genderFactor的摘要
+class(genderFactor)#看genderFactor的類型
+
+# 檢查是否有順序之分
+genderFactor[1]#這是女性Female
+genderFactor[2]#這是男性Male
+genderFactor[1]>genderFactor[2]#女性是否比男性優秀
 ```
 
-* 還可以增加順序的資訊
+* 相對順序型的Factor就有順序之分
+* 但是必須要在轉換為factor的函數中多增加2個參數，一個是`ordered = TRUE`，另一個是`levels`
+* 我們用速度(speed)與溫度(temperature)做2次練習
 
 ```{r}
-speed <- c("Slow", "Fast", "Insane", "Slow")
-speedF <- factor(speed, ordered = TRUE, levels=c("Slow", "Fast", "Insane"))
-speedF
-class(speedF)
+# 速度有快慢之分
+speed <- c("Slow", "Fast", "Insane", "Slow")#宣告一個文字Vector
+speedFactor <- factor(speed, ordered = TRUE, levels=c("Slow", "Fast", "Insane"))#轉換為Factor的時候要多加入2個參數
+speedFactor#印出來看看
+str(speedFactor)#看speedFactor的結構
+summary(speedFactor)#看speedFactor的摘要
+class(speedFactor)#看speedFactor的類型
+```
+
+```{r}
+# 溫度有高低之分
+temperature <- c("Cold", "Warm", "Hot", "Cold", "Hot")#宣告一個文字Vector
+temperatureFactor <- factor(temperature, ordered = TRUE, levels=c("Cold", "Warm", "Hot"))#轉換為Factor的時候要多加入2個參數
+temperatureFactor#印出來看看
+str(temperatureFactor)#看temperatureFactor的結構
+summary(temperatureFactor)#看temperatureFactor的摘要
+class(temperatureFactor)#看temperatureFactor的類型
 ```
 
 ### Matrix
@@ -99,7 +162,7 @@ class(speedF)
 * 一個m*n的matrix指的是matrix有m列、n欄
 
 ```{r}
-vector <- c(1:12)#這裡也可以使用seq(1:12), seq as in sequence
+vector <- c(1:12)#這裡也可以使用seq(1:12)
 matrix <- matrix(vector, nrow=4, ncol=3, byrow=TRUE)#預設byrow是FALSE
 matrix#把matrix印出來看看
 matrix <- matrix(vector, nrow=4, ncol=3)#byrow用預設
@@ -125,15 +188,16 @@ matrix[3,3]#取出matrix中位於第三列第三欄的元素
 ```{r}
 install.packages("pixmap")#這個範例需要使用pixmap套件
 library(pixmap)
-onePiece <- read.pnm("c:/NTUTrainRL1/image/onePiece.pgm")#把圖片指派給onePiece這個物件
+onePiece <- read.pnm("c:/NTUTrainRL1/image/onePiece.pgm")#把圖片指派給onePiece這個物件, read.pnm是pixmap中的函數
 onePiece#看看onePiece物件
+?plot#查看一下plot函數
 plot(onePiece)#把onePiece物件畫出來看看
 str(onePiece)#檢查onePiece物件的結構
 onePiece@grey[300, 600]#看一下(300, 600)這個像素的亮度
-locator()#這是R的內建函式，可以找到圖片坐標
-noUsopp <- onePiece
-noUsopp@grey[69.95408:310.19518, 203.237:314.3169] <- 1#把騙人布用國防布蓋掉
-plot(noUsopp)#看看結果，好像沒有蓋好蓋滿QQ
+locator()#這是R的內建函式，可以找到圖片坐標，點完兩個點後按ESC離開
+noUsopp <- onePiece#建立一個將會沒有騙人布的圖
+noUsopp@grey[71.64799:325.1334, 215.1314:300.81890] <- 1#1是白色, 把第二個坐標寫在前面，trial & error
+plot(noUsopp)#看看結果
 ```
 
 ![No Usopp](image/noUsopp.jpeg)
@@ -142,16 +206,20 @@ plot(noUsopp)#看看結果，好像沒有蓋好蓋滿QQ
 
 * Data Frame是非常重要的資料結構，如果你是SAS/SPSS/Stata的使用者，你可以想成是Dataset。
 * 一個Data Frame中可以包含不同資料類別的欄位
+* 在下一個章節中我們會針對data frame做資料的整理
 
 ```{r}
-patientID <- c("P01", "P02", "P03", "P04")
-age <- c(25, 34, 28, 52)
-diabetes <- c("Type1", "Type2", "Type1", "Type1")
-status <- c("Poor", "Improved", "Excellent", "Poor")
-patientData <- data.frame(patientID, age, diabetes, status)
+patientID <- c("P01", "P02", "P03", "P04")#建立病人ID
+age <- c(25, 34, 28, 52)#建立病人年齡
+diabetes <- c("Type1", "Type2", "Type1", "Type1")#建立糖尿病種類
+status <- c("Poor", "Improved", "Excellent", "Poor")#建立狀況
+?data.frame#查看data.frame函數
+patientData <- data.frame(patientID, age, diabetes, status)#組成一個data frame
+patientData#印出來看
+View(patientData)#用RStudio看
 ```
 
-* 讓我們用m*n的概念把Data Frame中的元素取出來
+* 同樣可以用`[]`把Data Frame中的元素取出來
 
 ```{r}
 patientData[, 1:2]#把patientData第一與第二欄取出來
@@ -184,43 +252,54 @@ summary(patientData$age)#把age變數的描述性統計印出來
 
 ```{r}
 length(mtcars)#mtcars有多少個欄位
+?dim#查看dim函數
 dim(mtcars)#mtcars有幾列幾欄as in dimension
 str(mtcars)#as in structure檢視mtcars的結構
 class(mtcars)#檢視mtcars的類別
+?head#查看head函數
 head(mtcars)#檢視mtcars的前六列
-tail(mtcars, 8)#檢視mtcars的後八列
+tail(mtcars, n = 8)#檢視mtcars的後八列
 names(mtcars)[9]#檢視mtcars的第九個欄位名稱
 ```
 
 ### Lists
 
-* 清單是R的資料類型中最複雜的，一般不太會用到
-* 清單可以包含Vectors, Matrice, Data Frame與Lists
+* Lists可以包含Vectors, Matrice與Data Frame
 
 ```{r}
-g <- "My First List"
-h <- c(25, 26, 18, 39)
-j <- matrix(1:10, nrow=5)
-k <- c("one", "two", "three")
-myList <- list(title=g, ages=h, j, k)#幫g, h命名
+# 宣告要放入List的物件
+myVector <- c(25, 26, 18, 39)
+myMatrix <- matrix(1:10, nrow=5)
+myDf <- head(mtcars, n=10)
+
+# 沒有名稱的List
+myList <- list(myVector, myMatrix, myDf)#建立myList
 myList#把mylist印出來看看
-myList[2]#第二個物件，包含名稱
-myList[[2]]#Vector h
-myList["ages"]#第二個物件，包含名稱
-myList[["ages"]]#Vector h
-myList[[3]][4,2]#第三個物件matrix j的第四列第二欄元素
+
+# 有名稱的List
+myList <- list(vec = myVector, mat = myMatrix, df = myDf)#這次加上名稱
+myList#再把mylist印出來看看
+
+myList[2]#第二個物件:矩陣，包含名稱
+myList[[2]]#第二個物件:矩陣，不含名稱
+myList["mat"]#第二個物件:矩陣，包含名稱
+myList[["mat"]]#第二個物件:矩陣，不含名稱
+myList[[3]][4,2]#第三個物件myDf的第四列第二欄元素
 ```
 
 ### NA與NULL
 
-* 在R中NA與NULL都是代表遺漏值，兩者最大的差異處在於是否會被運算函數包含運算
+* 在R中NA與NULL都是代表遺漏值，兩者最大的差異處在於是否會被運算函數包含做運算
+* NA會被包含，因此在運算函數中要另外使用`na.rm`這個參數
+* NULL不會被包含
 
 ```{r}
-naExample <- c(88, NA, 12, 92, 33)
-nullExample <- c(88, NULL, 12, 92, 33)
-mean(naExample)#無法運算
-mean(naExample, na.rm=TRUE)#na.rm as in NA removoe
-mean(nullExample)
+naExample <- c(88, NA, 12, 92, 33)#建立一個有NA的數字向量
+nullExample <- c(88, NULL, 12, 92, 33)#建立一個有NULL的數字向量
+?mean#查看mean函數
+mean(naExample)#無法計算平均值
+mean(naExample, na.rm=TRUE)#na.rm即為NA removoe
+mean(nullExample)#可以順利計算平均值
 ```
 
 ## Reference
