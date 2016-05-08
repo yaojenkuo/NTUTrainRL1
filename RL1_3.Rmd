@@ -215,7 +215,7 @@ countOdd <- function(x){
 countOdd(c(1:9))#計算1~9有幾個奇數
 ```
 
-### apply() Family
+### apply() Family(參考)
 
 apply()是R語言中有名且好用的遞迴功能，apply()家族包含apply()、lapply()、sapply()與tapply()，把apply()家族學好，對不愛寫迴圈的資料分析師有很大的幫助。
 
