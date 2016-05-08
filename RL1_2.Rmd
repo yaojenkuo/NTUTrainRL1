@@ -100,7 +100,7 @@ is.logical()|as.logical()
 ```{r}
 ?order
 strawHatPirate[order(strawHatPirate$age),]#用年齡遞增排序
-strawHatPirate[order(-strawHatPirate$intelligence, strawHatPirate$attack),]#先用智力遞減排序再用力量遞增排序
+strawHatPirate[order(-strawHatPirate$intelligence, strawHatPirate$strength),]#先用智力遞減排序再用力量遞增排序
 ```
 
 ### 加欄位
@@ -125,6 +125,7 @@ devilFruitList <- data.frame(name2, devilFruit, stringsAsFactors=FALSE)
 
 * Inner Join
 ```{r}
+?merge
 devilFruitStrawHatPirate <- merge(strawHatPirate, devilFruitList, by.x="name", by.y="name2")#預設就是inner join
 ```
 * Left Join
@@ -186,6 +187,8 @@ library(sqldf)
 strawHatPirate6 <- sqldf("select name, occupation, bounty, age from strawHatPirate where age>19 order by bounty asc")
 sqldf("select gender, avg(age) as avgAge from strawHatPirate group by gender")
 sqldf("select strawHatPirate.name, devilFruitList.devilFruit from strawHatPirate inner join devilFruitList on strawHatPirate.name=devilFruitList.name2")
+
+sqldf("select strawHatPirate.name, devilFruitList.devilFruit from strawHatPirate left join devilFruitList on strawHatPirate.name=devilFruitList.name2")
 ```
 
 ### reshape2套件(補充)
