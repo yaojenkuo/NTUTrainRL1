@@ -124,24 +124,42 @@ trapezium(height=100, bottom=7, upper=5)#可以改預設, 依命名
 
 * For Loop
 
+有兩種寫法，第一種簡便，不帶索引值的寫法為：
+
 ```{r}
 x <- 1:10
-for (index in x){
-  print(index^2)
+for (element in x){
+  print(element)
 }
 ```
 
-  * Nested Loop
+第二種帶索引值的寫法為：
+
+```{r}
+x <- 1:10
+for (i in 1:length(x)){
+  print(x[i])
+}
+```
+
+* Nested Loop
   
-  ```{r}
-  nestDemo <- matrix(numeric(), nrow=3, ncol=3)#創造一個3X3的空矩陣
-  for (index1 in 1:dim(nestDemo)[1]){
-    for (index2 in 1:dim(nestDemo)[2]){
-      nestDemo[index1, index2] <- index1*index2
-    }
+```{r}
+x <- 1:15
+nestMatrix <- matrix(x, nrow=3, byrow = TRUE)#創造一個3X5的矩陣
+for (i in 1:nrow(nestMatrix)){
+  for (j in 1:ncol(nestMatrix)){
+    print(paste("On row ", i, " and column ", j, " the element is ", nestMatrix[i, j]))
   }
-  nestDemo
-  ```
+}
+```
+
+觀察一下產出，我們的迴圈程式跑的方向也是`byrow = TRUE`，請你修改一下程式，讓迴圈程式跑的方向是`byrow = FALSE`但是同樣是從1, 2, ...印到15。
+
+```{r}
+# Nested Loop練習
+
+```
 
 * While Loop
 
@@ -223,7 +241,7 @@ countOdd <- function(x){
   }
   return (count)
 }
-countOdd(c(1:9))#計算1~9有幾個奇數
+countOdd(1:9)#計算1~9有幾個奇數
 ```
 
 ### apply() Family(參考)
