@@ -297,7 +297,7 @@ countOdd <- function(x){
 countOdd(1:9)#計算1~9有幾個奇數
 ```
 
-### apply() Family(參考)
+### apply() Family
 
 前面的課程已經教過各位怎麼撰寫迴圈，但有的時候我們不希望做一件簡單的事情都需要寫迴圈。例如把`taipei`這個清單中所有項目的類別印出來:
 
