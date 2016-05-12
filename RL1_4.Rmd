@@ -10,9 +10,11 @@ This is the lecture notes for NTU Train Course of R Project Lecture 1_4
 ```{r}
 setwd("C:/NTUTrainRL1")
 Sys.setlocale(category = "LC_ALL", locale = "cht")#csv檔是繁體中文
+?read.csv#常用的重要函數
 accidentList <- read.csv("data/funCoastAccident.csv", header=TRUE, sep=",")
 head(accidentList)#看看前6筆資料
 str(accidentList)#看看資料集結構
+summary(accidentList)#看看資料集的摘要
 ```
 
 欄位屬性可以在讀取資料時設定。
@@ -32,7 +34,6 @@ install.packages("xlsx")
 library(xlsx)
 accidentList <- read.xlsx("C:/NTUTrainRL1/data/funCoastAccident.xlsx", 1, encoding = "UTF-8")#encoding issue here
 View(accidentList)
-#有學員的rJava套件裝不起來
 ```
 
 ### 讀取sas資料集
@@ -48,6 +49,7 @@ accidentList <- sas.get(libraryName=datadir, member="funcoastaccident", sasprog=
 ```
 
 ### 抓取網頁資料
+
 網頁爬蟲是一個專門的研究領域，這裡只有時間很快地簡介，有興趣的學員可以去選修專門為蟲友開的課程。一個完整的爬蟲流程通常會有以下這三個程序:
 
 1. Connector
@@ -55,19 +57,21 @@ accidentList <- sas.get(libraryName=datadir, member="funcoastaccident", sasprog=
 3. Database(在本單元中不涵蓋)
 
 #### 工欲善其事
+
 我們要先裝一些好用的網頁瀏覽器外掛來幫助我們爬網頁。
+
 * CHROME
   * [Quick Javascript Switcher](https://chrome.google.com/webstore/detail/quick-javascript-switcher/geddoclleiomckbhadiaipdggiiccfje)
   * [XPATH Helper](https://chrome.google.com/webstore/detail/xpath-helper/hgimnogjllphhhkhlmebbmlgjoejdpjl?hl=zh-TW)
   * [JSONView](https://chrome.google.com/webstore/detail/jsonview/chklaanhfefbnpoihckbnefhakgolnmc?hl=zh-TW)
-  * [SelectorGadget](https://chrome.google.com/webstore/detail/selectorgadget/mhjhnkcfbdhnjickkkdbjoemdmbfginb?hl=en)
+
 * FIREFOX
-  * [Cookies Manager+](https://addons.mozilla.org/zh-tw/firefox/addon/cookies-manager-plus/)
   * [HackBar](https://addons.mozilla.org/zh-tw/firefox/addon/hackbar/)
 
 #### Connector
 
-網頁資料藏在哪裡? 首先在Chrome瀏覽網頁中按F12叫出Chrome開發者介面, 點選Network。
+網頁資料藏在哪裡? 首先在Chrome瀏覽網頁中按F12叫出Chrome開發者介面, 點選Network。通常你要爬的資料會藏在這4種資料類型中。
+
 * Doc(Documents)
 * XHR(XHR and Fetch)
 * JS(Scripts)
@@ -97,10 +101,9 @@ accidentList <- sas.get(libraryName=datadir, member="funcoastaccident", sasprog=
   * 可以看到XML格式的資料內容
 
 #### Parser
-我們已經知道整包資料在哪裡，但多數時候我們不需要其他雜七雜八的資料，可以使用兩種Selector方法只把我們想要的資料選取出來。
-* CSS Selector
-  * 使用SelectorGadget外掛
-  * 按F12叫出console使用`document.querySelectorAll("CSS Selector Here")`驗證
+
+我們已經知道整包資料在哪裡，但多數時候我們不需要其他雜七雜八的資料，可以使用XPath Selector只將我們想要的資料選取出來。
+
 * XPath Selector
   * 按Ctrl+Shift+X叫出XPath Helper
   * 按住Shift將滑鼠游標移至網頁欲抓取的資料處
@@ -108,19 +111,15 @@ accidentList <- sas.get(libraryName=datadir, member="funcoastaccident", sasprog=
 來練習一下!
 
 * [奇摩股市](https://tw.stock.yahoo.com/d/s/major_2330.html)
-  * CSS Selector抓個股當日買超券商: td.ttt:nth-child(1)
   * XPath Selector抓個股當日買超券商: //td[@class='ttt'][1]
     
 * [批踢踢八卦版](https://www.ptt.cc/ask/over18?from=%2Fbbs%2FGossiping%2Findex.html)
-  * CSS Selector抓文章標題: div.title>a
   * XPath Selector抓文章標題: //div[@class='title']/a
     
 * [PCHome購物中心](http://ecshweb.pchome.com.tw/search/v3.3/?q=sony&scope=all)
-  * CSS Selector抓商品價格: h6>strong
   * XPath Selector抓商品價格: //h6/strong
     
 * [7-11全國分店](http://emap.pcsc.com.tw/emap.aspx)
-  * CSS Selector抓門市情報: td>table.mytb_1
   * XPath Selector抓門市情報: //td[@class='alt'][2]
     
 #### R爬蟲工具箱
@@ -130,6 +129,42 @@ accidentList <- sas.get(libraryName=datadir, member="funcoastaccident", sasprog=
 * XML
 * xml2
 * RCurl
+
+#### 奇摩股市範例
+
+```{r}
+yahooStockRankParser <- function(n){
+  library(magrittr)
+  library(rvest)
+  Sys.setlocale(category = "LC_ALL", locale = "cht")
+  # 資料僅有股價排名前100的個股
+  if (!n %in% 1:100){
+    print("Parameter n should be a integer between 1 and 100")
+  }else{
+    URL <- "https://tw.stock.yahoo.com/d/i/rank.php?t=pri&e=tse&n=100" #網頁
+    xpathRank <- "//table[2]/tbody/tr/td[1]"#排名的xpath
+    xpathStock <- "//tbody/tr/td[@class='name']"#股票名稱的xpath
+    xpathPrice <- "//table[2]/tbody/tr/td[3]"#股價的xpath
+    doc <- read_html(URL, encoding="cp950")#將網頁讀進R
+    # 用相同的方式擷取出需要的資訊
+    rank <- doc %>% 
+      html_nodes(.,xpath = xpathRank) %>%
+      html_text
+    stock <- doc %>% 
+      html_nodes(.,xpath = xpathStock) %>%
+      html_text %>%
+      iconv(from = "UTF-8", to = "UTF-8")
+    price <- doc %>% 
+      html_nodes(.,xpath = xpathPrice) %>%
+      html_text
+    stockTmp <- data.frame(rank=as.integer(rank), stock=stock, price=as.numeric(price))
+    stockDF <- head(stockTmp, n)
+    assign('stockDF',stockDF,envir=.GlobalEnv)
+  }
+}
+yahooStockRankParser(n = 101)#回傳訊息
+yahooStockRankParser(n = 30)
+```
 
 #### 東森房屋範例
 
@@ -141,31 +176,32 @@ library(stringr)
 
 Sys.setlocale(category = "LC_ALL", locale = "")
 area <- "新北市"
-url <- sprintf("http://www.etwarm.com.tw/object_list.php?area=%s",URLencode(area))#把URLencode(area)代入%s
+urlArea <- URLencode(area)
+url <- sprintf("http://www.etwarm.com.tw/object_list.php?area=%s", urlArea)#把URLencode(area)代入%s
 
-# Get the max index看總共有幾頁要爬
+# 看總共有幾頁要爬
 max_index <- read_html(url) %>% 
-    html_nodes(.,xpath = "//div[@class='page']/a") %>% #使用xpath helper
-    html_text %>% #Extract contents inside tags取標籤中的內容
-    str_extract(.,"[0-9]+") %>% #使用Regular expression把數字抓出來
+    html_nodes(., xpath = "//div[@class='page']/a") %>% #使用xpath helper
+    html_text %>% #取出標籤中的內容
+    str_extract(., "[0-9]+") %>% #使用正規表示式Regular expression把數字抓出來
     as.integer %>% #化成整數
-    max(.,na.rm = TRUE) #取最大值
+    max(., na.rm = TRUE) #取最大值
 
-# Construct all urls做出'max_index'個URLs
-urls <- sprintf("http://www.etwarm.com.tw/object_list?area=%s&page=", URLencode(area))
+# 做出'max_index'個URLs
+urls <- sprintf("http://www.etwarm.com.tw/object_list?area=%s&page=", urlArea)
 urls <- paste0(urls, 1:max_index)#concatenate and remove blank
 
-# Get data開始抓資料
-houses <- data.frame()
+# 開始抓資料
+houses <- data.frame()# 建立一個空的data frame
 # for (i in 1:max_index) {
 # 先抓前3頁就好比較快
 for (i in 1:3) {
     etwarm <- read_html(urls[i]) 
     district <- etwarm %>% 
-        html_nodes(.,xpath = "//li[@class='obj_item']/div[@class='obj_info']/h3/a") %>% 
+        html_nodes(., xpath = "//li[@class='obj_item']/div[@class='obj_info']/h3/a") %>% 
         html_text %>%
-        iconv(from = "UTF-8", to = "UTF-8") %>% # to compatible in Windows  
-        str_extract(.,sprintf("%s.*區", area))# "台北市.*區"
+        iconv(from = "UTF-8", to = "UTF-8") %>% # Windows  
+        str_extract(.,sprintf("%s.*區", area))# "新北市.*區"
     price <- etwarm %>% 
         html_nodes(xpath = "//div[@class='price']") %>% 
         html_text %>% 
@@ -203,4 +239,4 @@ View(storeDaan)
 * The Art of R Programming, Norman Matloff
 * 木刻思RCrawler
 
-&copy; Tony Yao-Jen Kuo 2015
+&copy; Tony Yao-Jen Kuo 2016
