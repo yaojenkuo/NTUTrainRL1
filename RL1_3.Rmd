@@ -299,87 +299,92 @@ countOdd(1:9)#計算1~9有幾個奇數
 
 ### apply() Family(參考)
 
-前面的課程已經教過各位怎麼撰寫迴圈，但有的時候我們不希望做一件apply()是R語言中有名且好用的遞迴功能，apply()家族包含apply()、lapply()、sapply()與tapply()，把apply()家族學好，對不愛寫迴圈的資料分析師有很大的幫助。
+前面的課程已經教過各位怎麼撰寫迴圈，但有的時候我們不希望做一件簡單的事情都需要寫迴圈。例如把`taipei`這個清單中所有項目的類別印出來:
 
-* apply()
+```{r}
+# 建立清單taipei
+taipei <- list(population = 2703829,
+ districts = c("Songshan", "Hsinyi", "Daan", "Chungshan", "Chungcheng", "Datung", "Wanhua", "Wenshan", "Nankang", "Neihu", "Shilin", "Beitou"),
+ capital = TRUE)
 
-  * 最基本的的功能，它可以將函數應用到矩陣的列(參數設=1)或欄(參數設=2)。
+# 將清單中所有項目的類別印出來
+for(element in taipei) {
+ print(class(element))
+}
+```
 
-  ```{r}
-  matrix <- matrix(1:8, nrow=2)#創造一個2*4的矩陣做範例
-  sumRow <- apply(matrix, 1, sum)#把sum應用到各列
-  sumColumn <- apply(matrix, 2, sum)#把sum應用到各欄
-  meanRow <- apply(matrix, 1, mean)#把mean應用到各列
-  meanColumn <- apply(matrix, 2, mean)#把mean應用到各欄
-  ```
+apply()函數家族就是R語言因應這樣的需求，所開發出來具備迴圈功能的函數，在本堂課中我們會簡介其中三種的用法:
 
-  * 第三個argument不一定要內建的函數，可以使用自訂函數。
+* lapply()
+* sapply()
+* vapply()
 
-  ```{r}
-  #自己定義一個最大值的函數maximum
-  maximum <- function(x){
-    result <- sort(x, decreasing=TRUE)[1]
-    return(result)
-  }
-  maxRow <- apply(matrix, 1, maximum)#把maximum應用到各列
-  maxColumn <- apply(matrix, 2, maximum)#把maximum應用到各欄
-  ```
+#### lapply()
 
-  * 應用apply()尋找矩陣中各列的極端值
-  
-  ```{r}
-  findOutliers <- function(x){
-    findOutlier <- function(xrow){
-      medianXRow <- median(xrow)
-      distance <- abs(xrow-medianXRow)
-      return(which.max(distance))
-    }
-    return(apply(x, 1, findOutlier))
-  }
-  salesMatrix <- matrix(c(1,2,30,1,10,11,50,1,60), nrow=3, byrow=TRUE)
-  findOutliers(salesMatrix)#告訴你第一列的第三個元素、第二列的第一個、第三列的第二個元素是極端值
-  ```
+```{r}
+# 建立清單taipei
+taipei <- list(population = 2703829,
+ districts = c("Songshan", "Hsinyi", "Daan", "Chungshan", "Chungcheng", "Datung", "Wanhua", "Wenshan", "Nankang", "Neihu", "Shilin", "Beitou"),
+ capital = TRUE)
 
-* lapply() and sapply()
+# 利用lapply()將清單中所有項目的類別印出來
+lapply(taipei, FUN = class)
+```
 
-  * lapply()將函數應用到list。
-  
-  ```{r}
-  list1 <- list(1:5, 11:15)#創造一個包含兩個vector的list
-  lapply(list1, median)#應用median函數到list1
-  ```
-  
-  * sapply()的用法相似，但是產出vector而非list
-  
-  ```{r}
-  sapply(list1, median)#應用median函數到list1
-  ```
-  
-  * 應用lapply()或sapply()到data frame
-  ```{r}
-  #用草帽海賊團data frame來示範
-  name <- c("Monkey D. Luffy", "Roronoa Zoro", "Nami", "Sanji")
-  occupation <- c("Captain", "Swordsman", "Navigator", "Chef")
-  bounty <- c(500000000, 320000000, 66000000, NA)
-  age <- c(19, 21, 20, 21)
-  birthday <- c("5/5/1996", "11/11/1994", "7/3/1995", "3/2/1994")
-  strength <- c(99, 90, 15, 80)
-  intelligence <- c(20, 30, 90, 40)
-  strawHatPirate <- data.frame(name, occupation, bounty, age, birthday, strength, intelligence, stringsAsFactors=FALSE)
-  strawHatPirate$birthdayAsDate <- as.Date(strawHatPirate$birthday, "%m/%d/%Y")#Y for 4-digit, y for 2-digit
-  strawHatPirate <- strawHatPirate[ ,-5]
-  lapply(strawHatPirate, sort)#對每個變數都應用sort函數
-  ```
-  
-* tapply()
+lapply()的'l'代表'list'，它回傳的資料格式也是清單，我們可以使用`unlist()`函數將回傳的資料格式轉為向量。
 
-  * 樞紐分析表
-  
-  ```{r}
-  status <- factor(c("Poor", "Improved", "Excellent", "Poor", "Excellent"))
-  age <- c(20, 33, 55, 72, 61)
-  tapply(age, status, mean)
-  ```
+```{r}
+unlist(lapply(taipei, FUN = class))
+```
+
+在這裡練習一下`%>%`運算子。
+
+```{r}
+# 利用`%>%`做到跟上一段程式一模一樣的事情
+install.packages("magrittr")
+library(magrittr)
+
+```
+
+再做一個lapply()的練習:
+
+```{r}
+?nchar#檢視一下nchar()這個函數的內容
+cities <- list(c("Taipei", "New Taipei", "Taichung", "Tainan", "Kaohsiung"))
+lapply(cities, FUN = nchar)
+citiesNChar <- unlist(lapply(cities, FUN = nchar))
+citiesNChar
+```
+
+#### sapply()
+
+lapply()回傳的資料類型是清單。還記得清單最強的功能就是用來儲存不同格式的資料嗎? 但有時候我們的資料格式都相同，存在向量中就可以了，所以前面我們有使用`unlist()`，但每一次都要把結果再處理一次是否有點麻煩? 於是sapply就誕生了...'s'代表的是'simplify'。
+
+```{r}
+# 建立清單taipei
+taipei <- list(population = 2703829,
+ districts = c("Songshan", "Hsinyi", "Daan", "Chungshan", "Chungcheng", "Datung", "Wanhua", "Wenshan", "Nankang", "Neihu", "Shilin", "Beitou"),
+ capital = TRUE)
+
+# 利用sapply()將清單中所有項目的類別印出來
+unlist(lapply(taipei, FUN = class))#比較一下
+sapply(taipei, FUN = class)#跟使用lapply()再unlist之後的資料一模一樣
+```
+
+#### vapply()
+
+你可以把vapply()視為更嚴謹的sapply()，必須指定`FUN.VALUE`。
+
+```{r}
+# 建立清單taipei
+taipei <- list(population = 2703829,
+ districts = c("Songshan", "Hsinyi", "Daan", "Chungshan", "Chungcheng", "Datung", "Wanhua", "Wenshan", "Nankang", "Neihu", "Shilin", "Beitou"),
+ capital = TRUE)
+
+# 利用vapply()將清單中所有項目的類別印出來
+vapply(taipei, FUN = class)#沒有定義回傳的格式與長度會出現錯誤
+vapply(taipei, FUN = class, FUN.VALUE = character(1))
+```
 
 ## Reference
 * R in Action, Robert I. Kabacoff
