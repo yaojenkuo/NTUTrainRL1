@@ -179,13 +179,29 @@ strawHatPirate5 <- strawHatPirate2[strawHatPirate2$age>17 & strawHatPirate2$stre
 
 SQL的使用者在SAS中可以使用proc sql;在R中可以使用sqldf套件。
 
+基本SQL語法結構:
+
+```{sql}
+SELECT column_name(s),
+       SUM(group_column_name)
+FROM table_name
+  INNER|LEFT|RIGHT JOIN second_table_name
+    ON first_table_name.keyfield = second_table_name.foreign_keyfield
+WHERE column operator value
+ORDER BY column_name
+GROUP BY group_column_name
+HAVING SUM(group_column_name) condition value
+```
+
+使用sqldf套件:
+
 ```{r}
 #下載並載入套件
 install.packages("sqldf")
 library(sqldf)
 
-strawHatPirate6 <- sqldf("select name, occupation, bounty, age from strawHatPirate where age>19 order by bounty asc")
-sqldf("select gender, avg(age) as avgAge from strawHatPirate group by gender")
+sqldf("select name, occupation, bounty, age from strawHatPirate where age>19 order by bounty asc")
+
 sqldf("select strawHatPirate.name, devilFruitList.devilFruit from strawHatPirate inner join devilFruitList on strawHatPirate.name=devilFruitList.name2")
 
 sqldf("select strawHatPirate.name, devilFruitList.devilFruit from strawHatPirate left join devilFruitList on strawHatPirate.name=devilFruitList.name2")
