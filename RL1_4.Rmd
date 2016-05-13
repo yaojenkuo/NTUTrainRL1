@@ -9,7 +9,6 @@ This is the lecture notes for NTU Train Course of R Project Lecture 1_4
 
 ```{r}
 setwd("C:/NTUTrainRL1")
-Sys.setlocale(category = "LC_ALL", locale = "cht")#csv檔是繁體中文
 ?read.csv#常用的重要函數
 accidentList <- read.csv("data/funCoastAccident.csv", header=TRUE, sep=",")
 head(accidentList)#看看前6筆資料
@@ -23,29 +22,6 @@ summary(accidentList)#看看資料集的摘要
 accidentList <- read.csv("data/funCoastAccident.csv", header=TRUE, sep=",", row.names="編號", colClasses=c("character", "character", "character", "character", "character", "integer", "factor", "factor"))
 colnames(accidentList) <- c("county", "hospital", "gender", "nationality", "age", "woundType1", "woundType2")
 str(accidentList)
-```
-
-### 讀取excel
-
-我們需要仰賴xlsx套件才能夠讀取excel檔案。
-
-```{r}
-install.packages("xlsx")
-library(xlsx)
-accidentList <- read.xlsx("C:/NTUTrainRL1/data/funCoastAccident.xlsx", 1, encoding = "UTF-8")#encoding issue here
-View(accidentList)
-```
-
-### 讀取sas資料集
-
-我們需要仰賴Hmisc套件才能夠讀取sas資料集。
-
-```{r}
-install.packages("Hmisc")
-library(Hmisc)
-datadir <- "C:/NTUTrainRL1/data"
-sasexe <- "C:/Program Files/SASHome/SASFoundation/9.4/sas.exe"
-accidentList <- sas.get(libraryName=datadir, member="funcoastaccident", sasprog=sasexe)
 ```
 
 ### 抓取網頁資料
@@ -122,14 +98,6 @@ accidentList <- sas.get(libraryName=datadir, member="funcoastaccident", sasprog=
 * [7-11全國分店](http://emap.pcsc.com.tw/emap.aspx)
   * XPath Selector抓門市情報: //td[@class='alt'][2]
     
-#### R爬蟲工具箱
-
-* rvest
-* httr
-* XML
-* xml2
-* RCurl
-
 #### 奇摩股市範例
 
 ```{r}
