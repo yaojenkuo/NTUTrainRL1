@@ -179,7 +179,7 @@ for (element in x){
 第二種帶索引值的寫法為：
 
 ```{r}
-x <- 1:10
+x <- 1:100
 for (i in 1:length(x)){
   print(x[i])
 }
