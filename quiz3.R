@@ -13,10 +13,10 @@ strawHatDevilFruit <- data.frame(crew, devilFruit)
 # 將`strawHatPirate$birthday`利用`as.Date`轉換成日期格式
 
 
-# 新增一欄`age`，利用`Sys.Date()`跟轉換後的`strawHatPirate$birthday`相減
+# 以`cbind()`新增一欄`age`，利用`Sys.Date()`跟轉換後的`strawHatPirate$birthday`相減，除以365後以`round()`處理
 
 
-# 利用`sort()`將`strawHatPirate`以`age`做遞減排序
+# 利用`order()`將`strawHatPirate`以`age`做遞減排序
 
 
 # 使用`sqldf()`計算`strawHatPirate`男性與女性的平均年齡
