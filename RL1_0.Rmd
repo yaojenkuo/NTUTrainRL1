@@ -1,0 +1,97 @@
+---
+title: "淺談 R 語言與資料整理"
+author: "Yao-Jen Kuo"
+date: "July, 2016"
+output:
+  slidy_presentation:
+    fig_width: 8
+    fig_height: 5
+---
+
+## 簡單自我介紹
+
+- Senior Data Analyst at Coupang(We are hiring!)
+- Analytical Consultant at SAS
+- Assistant Manager at CTBC
+- http://yaojenkuo.github.io/
+- tonykuoyj@gmail.com
+
+## 系統訓練班
+
+- 今天上完課就得決定是否退費
+- 開車的同學記得到前面蓋停車章可以半價優惠
+- 加入社團跟同學認識、交流
+
+## 資料整理的重要性
+
+- 資料科學家花 **80%** 的時間在做資料整理
+
+Source: [For Big-Data Scientists, Janitor Work Is Key Hurdle to Insights](http://www.nytimes.com/2014/08/18/technology/for-big-data-scientists-hurdle-to-insights-is-janitor-work.html?_r=0)
+
+## 專題一會包含的內容
+
+- 基本資料類型
+- 整理資料框
+- 基本的程式與函數
+- 資料的載入
+
+## 開卷有益
+
+- [R in Action](https://www.manning.com/books/r-in-action-second-edition)
+
+![](image/rInAction.jpg)
+
+- [The Art of R Programming](http://www.amazon.com/The-Art-Programming-Statistical-Software/dp/1593273843)
+
+![](image/The-Art-of-R-Programming-Matloff-Norman.jpg)
+
+## 其他學習管道
+
+- [DataCamp](https://www.datacamp.com/courses/r-%E8%AA%9E%E8%A8%80%E5%B0%8E%E8%AB%96)
+- [swirl套件](http://swirlstats.com/)
+- [Coursera](https://www.coursera.org/)
+- [R-blogger](http://www.r-bloggers.com/)
+- [GitHub](https://github.com/)
+- Stackoverflow
+
+![](image/stackoverflowfunny.jpg)
+
+## 學習 R 語言的重點
+
+- 安裝**開發環境**
+- 如何宣告變數
+- 如何寫 if
+- 如何寫迴圈
+- 如何存取不同資料格式中的元素
+- 如何使用函數
+- 如何宣告函數
+
+## 安裝開發環境
+
+- R Base
+- RStudio
+- [R Getting Started](https://github.com/yaojenkuo/RGettingStarted/blob/master/R_Installation.md)
+
+## 除了語法基本功以外
+
+- R 語言的強項是什麼
+- R 語言可以做哪些事
+
+## R 語言強項有
+
+- Free!
+- 每隔幾天就有新的套件!
+- End-to-end 資料分析軟體，什麼都會
+- 很多 connector
+- 在 Windows、Mac 與 Linux 平台都可以運作
+- 有個很棒的 IDE:RStudio
+
+## R 語言可以做哪些事
+
+- 蒐集資料
+    - 從檔案
+    - 從網路
+- 整理資料
+- 視覺化
+- 建模型
+- 做報告
