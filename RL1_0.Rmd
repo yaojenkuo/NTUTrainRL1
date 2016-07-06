@@ -95,3 +95,7 @@ Source: [For Big-Data Scientists, Janitor Work Is Key Hurdle to Insights](http:/
 - 視覺化
 - 建模型
 - 做報告
+
+## 講義清單
+
+[R 語言玩資料](https://github.com/yaojenkuo/NTUTrainRL1)

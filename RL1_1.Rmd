@@ -1,23 +1,30 @@
-# NTUTrainRL1_1
-This is the lecture notes for NTU Train Course of R Project Lecture 1_1
+---
+title: "資料類型"
+author: "Yao-Jen Kuo"
+date: "July, 2016"
+output:
+  slidy_presentation:
+    fig_width: 8
+    fig_height: 5
+---
 
 ## Data Types
 
-* 我們今天會介紹R語言的基本資料類型:
-  * Vector(向量)
-  * Factor(因素向量)
-  * Matrix(矩陣)
-  * Data Frame(資料框)
-  * List(清單)
+* 我們今天會介紹 R 語言的基本資料類型:
+  * Vector (向量)
+  * Factor (因素向量)
+  * Matrix (矩陣)
+  * Data Frame (資料框)
+  * List (清單)
 
-### Vector
+## Vector
 
-* Vector可以包含數字、文字或二元邏輯資料
+* Vector 可以包含數字、文字或二元邏輯資料
 * 如果包含不同類型的資料，會記錄成文字
-* 在R中我們可以使用`=`來指派變數，也可以使用`<-`
-* R的使用者很廣泛使用`<-`，可能不希望使用者把`=`，`==`弄混
-* `<-`可以使用alt+減號這組快速鍵輸入
-* 我們先介紹使用`c()`來建造Vector，顧名思義是合併(Combine)
+* 在 R 中我們可以使用 `=` 來指派變數，也可以使用 `<-`
+* R 的使用者很廣泛使用 `<-`，可能不希望使用者把 `=` ， `==` 弄混
+* `<-` 可以使用 alt + 減號這組快速鍵輸入
+* 我們先介紹使用 `c()` 來建造Vector，顧名思義是合併 (Combine)
 
 ```{r}
 # 宣告一些測試的vectors
@@ -27,6 +34,7 @@ numericVector <- c(1, 2, 5, 3, 6, -2, 4)#數字Vector
 characterVector <- c("one", "two", "three")#文字Vector
 logicalVector <- c(TRUE, TRUE, TRUE, FALSE, TRUE, FALSE)#二元邏輯Vector
 mixedVector <- c(1, "two", TRUE)#包含不同類型的資料就會被存成文字Vector
+anotherVector <- c(1, 2, 3, TRUE, FALSE)#猜猜看?
 
 # 使用class檢查vectors的類型
 ?class#查看一下class這個函數
@@ -34,13 +42,16 @@ class(numericVector)#檢查numericVector類型
 class(characterVector)#檢查characterVector類型
 class(logicalVector)#檢查logicalVector類型
 class(mixedVector)#檢查mixedVector的類型
+class(anotherVector)#檢查anotherVector的類型
 ```
 
-* Vector中的元素稱為Scalar
-* 在R語言中我們使用中括號`[]`將指定元素選擇出來
-* 中括號`[]`裡頭要放所謂的索引值(index)
-* 索引值由**1**開始，這一點不同於一些其他程式語言是從0開始
-* 實務中因為向量的長度可能是不固定的，所以我們很常使用`length()`來取得向量中最後一個元素的索引值
+## Vector (2)
+
+* Vector 中的元素稱為 Scalar
+* 在 R 語言中我們使用中括號 `[]` 將指定元素選擇出來
+* 中括號 `[]` 裡頭要放所謂的索引值 (index)
+* 索引值由 **1** 開始，這一點不同於一些其他程式語言是從 0 開始
+* 實務中因為向量的長度可能是不固定的，所以我們很常使用 `length()` 來取得向量中最後一個元素的索引值
 
 ```{r}
 # 看一下numericVector長什麼樣子
@@ -59,9 +70,11 @@ lengthNumVector#印出來看
 numericVector[2:lengthNumVector]#取出第二個到最後一個元素
 ```
 
-* 除了用`c()`，R語言還有一些比較進階的函數例如`seq()`與`rep()`可以幫你輕鬆產出Vector
-* `seq()`是sequence，`rep()`是repetition
-* 顧名思義，`seq()`是產出等差的vector，`rep()`是產出包含相同元素的vector
+## Vector (3)
+
+* 除了用 `c()`，R 語言還有一些比較進階的函數例如 `seq()` 與 `rep()` 可以幫你輕鬆產出Vector
+* `seq()` 是sequence，`rep()` 是replicate
+* 顧名思義，`seq()` 是產出等差的 vector，`rep()` 是產出包含相同元素的vector
 
 ```{r}
 # 練習使用`seq`
@@ -74,11 +87,13 @@ seq(from=100, to=1000, length=10)#產生一個從100開始到1000，元素個數
 rep(9, times = 5)#產生一個有5個9的Vector
 ```
 
-* Vector的應用 - 迴圈
+## Vector (4)
+
+* Vector的應用
 
 ```{r}
 #把mtcars的欄位名印出來
-mtcars#R語言內建的的資料，印出來看看
+mtcars#R 語言內建的的資料，印出來看看
 ?str#查看一下str這個函數
 str(mtcars)#看一下mtcars的結構
 ?names#查看一下names這個函數
@@ -89,7 +104,7 @@ colNames[1]#第一個元素
 lengthColNames <- length(colNames)#總共有幾個欄位
 lengthColNames#印出來看看, mtcars有11個欄位，跟我們在str的輸出看到是一樣的
 
-# 我想要一次印一個欄位名稱出來
+#我想要一次印一個欄位名稱出來
 colNames[1]#第一個元素
 colNames[2]
 colNames[3]
@@ -102,28 +117,23 @@ colNames[9]
 colNames[10]
 colNames[lengthColNames]#這樣會很累
 
-# 可以寫成1:11，但是每換一個資料，就要重新修改程式
+#可以寫成1:11，但是每換一個資料，就要重新修改程式
 for (i in 1:lengthColNames){
   print(colNames[i])#第i個元素
 }
 
-# iris
-library(magrittr)
-irisColLength <- iris %>% names() %>% length()
-for (i in 1:irisColLength){
-  print(names(iris)[i])
-}
+#試試看把iris的欄位名稱印出來
 
 ```
 
-### Factor
+## Factor
 
-* 你可以把Factor視作多了一些資訊的Vector
-* R語言預設讀入資料會將非連續型變數以Factor的格式儲存
-* 可以把它想成是字串向量，但是多了`levels`這樣的資訊
-* `levels`的資訊有點像是相異值(distinct)的概念
-* 有兩種類型的Factor，分別是名目型(Nominal)與順序型(Ordinal)
-* 名目型的Factor是沒有順序之分
+* 你可以把 Factor 視作多了一些資訊的 Vector
+* R 語言預設讀入資料會將非連續型變數以 Factor 的格式儲存
+* 可以把它想成是字串向量，但是多了 `levels` 的資訊
+* `levels` 的資訊有點像是相異值的概念
+* 有兩種類型的 Factor，分別是名目型 (Nominal) 與順序型 (Ordinal)
+* 名目型的 Factor 是沒有順序之分
 
 ```{r}
 # 目前還是跟前面是一樣的Vector
@@ -148,9 +158,11 @@ genderFactor[2]#這是男性Male
 genderFactor[1] > genderFactor[2]#女性是否比男性優秀
 ```
 
-* 相對順序型的Factor就有順序之分
-* 但是必須要在轉換為factor的函數中多增加2個參數，一個是`ordered = TRUE`，另一個是`levels`
-* 我們用速度(speed)與溫度(temperature)做2次練習
+## Factor (2)
+
+* 相對順序型的 Factor 就有順序之分
+* 但是必須要在轉換為 `factor` 函數中多增加 2 個參數，一個是 `ordered = TRUE`，另一個是 `levels`
+* 我們用速度 (speed) 與溫度 (temperature) 做 2 次練習
 
 ```{r}
 # 速度有快慢之分
@@ -162,6 +174,8 @@ summary(speedFactor)#看speedFactor的摘要
 class(speedFactor)#看speedFactor的類型
 ```
 
+## Factor (3)
+
 ```{r}
 # 溫度有高低之分
 temperature <- c("Cold", "Warm", "Hot", "Cold", "Hot")#宣告一個文字Vector
@@ -172,18 +186,20 @@ summary(temperatureFactor)#看temperatureFactor的摘要
 class(temperatureFactor)#看temperatureFactor的類型
 ```
 
-### Matrix
+## Matrix
 
-* 一個m*n的matrix指的是matrix有m列、n欄
+* 一個 m*n 的 matrix 指的是有 m 列、n 欄
 
 ```{r}
 vector <- c(1:12)#這裡也可以使用seq(1:12)
 ?matrix
-matrix <- matrix(vector, nrow=4, ncol=3, byrow=TRUE)#預設byrow是FALSE
+matrix <- matrix(vector, nrow = 4, ncol = 3, byrow = TRUE)#預設byrow是FALSE
 matrix#把matrix印出來看看
-matrix <- matrix(vector, nrow=4, ncol=3)#byrow用預設
+matrix <- matrix(vector, nrow = 4, ncol = 3)#byrow用預設
 matrix#再把matrix印出來看看
 ```
+
+## Matrix (2)
 
 * 讓我們用(m, n)的概念把matrix中的元素取出來
 
@@ -193,18 +209,18 @@ matrix[, 2]#取出matrix中的第二欄
 matrix[3, 3]#取出matrix中位於第三列第三欄的元素
 ```
 
-* Matrix的應用 - 灰階圖片處理
-  * 圖片是天生的Matrix
+## Matrix (3)
+
+* Matrix 的應用 - 灰階圖片處理
+  * 圖片是天生的 Matrix
   * 在灰階圖片中，每個像素儲存亮度
   * 在彩色圖片中，每個像素儲存紅、綠、藍的強度
   * 為了簡化問題，我們使用Netpbm grayscale格式的圖片(.pgm)
 
-![One Piece Grayscale](image/onePiece.jpeg)
-
 ```{r}
-install.packages("pixmap")#這個範例需要使用pixmap套件
+#install.packages("pixmap")這個範例需要使用pixmap套件
 library(pixmap)
-onePiece <- read.pnm("c:/NTUTrainRL1/image/onePiece.pgm")#把圖片指派給onePiece這個物件, read.pnm是pixmap中的函數
+onePiece <- read.pnm("/Users/tkuo/ntu_train/NTUTrainRL1/image/onePiece.pgm")#把圖片指派給onePiece這個物件, read.pnm是pixmap中的函數
 onePiece#看看onePiece物件
 ?plot#查看一下plot函數
 plot(onePiece)#把onePiece物件畫出來看看
@@ -216,57 +232,53 @@ noUsopp@grey[71.64799:325.1334, 215.1314:300.81890] <- 1#1是白色, 把第二�
 plot(noUsopp)#看看結果
 ```
 
-![No Usopp](image/noUsopp.jpeg)
+## Data Frame
 
-### Data Frame
-
-* Data Frame是非常重要的資料結構，如果你是SAS/SPSS/Stata的使用者，你可以想成是Dataset。
-* 一個Data Frame中可以包含不同資料類別的欄位
-* 在下一個章節中我們會針對data frame做資料的整理
+* Data Frame 是非常重要的資料結構，如果你是 SAS/SPSS/Stata的使用者，你可以想成是 Dataset。
+* 一個 Data Frame 中可以包含不同資料類別的欄位
+* 在下一個章節中我們會針對 Data Frame 做資料的整理
 
 ```{r}
-patientID <- c("P01", "P02", "P03", "P04")#建立病人ID
-age <- c(25, 34, 28, 52)#建立病人年齡
-diabetes <- c("Type1", "Type2", "Type1", "Type1")#建立糖尿病種類
-status <- c("Poor", "Improved", "Excellent", "Poor") %>% factor(., ordered = TRUE, levels = c("Poor", "Improved", "Excellent"))#建立狀況
-# statusFactor <- factor(status, ordered = TRUE, levels = c("Poor", "Improved", "Excellent"))
-?data.frame#查看data.frame函數
-patientData <- data.frame(patientID, age, diabetes, status)#組成一個data frame
-patientData#印出來看
-View(patientData)#用RStudio看
-str(patientData)
+mtcars#印出來看
+View(mtcars)#用RStudio看
+str(mtcars)#觀察結構
 ```
+
+## Data Frame (2)
 
 * 同樣可以用`[]`把Data Frame中的元素取出來
 
 ```{r}
-patientData[, 1:2]#把patientData第一與第二欄取出來
-patientData[, "age"]#把patientData中的age變數取出來
-patientData[c("patientID", "age")]#把patientData第一與第二欄取出來
-patientData$age[1]#把patientData第二欄的第一筆資料取出來
-table(patientData$diabetes, patientData$status)#針對其中2個變數作樞紐分析表
-summary(patientData$age)#把age變數的描述性統計印出來
+mtcars[, 1:2]#把mtcars第一與第二欄取出來
+mtcars[, "mpg"]#把mtcars中的mpg變數取出來
+mtcars[, c("mpg", "cyl")]#把mtcars第一與第二欄取出來
+mtcars$cyl[1]#把mtcars第二欄的第一筆資料取出來
+summary(mtcars$mpg)#把mpg變數的描述性統計印出來
 ```
+
+## Data Frame (3)
 
 * 省略每次都要打資料集名稱的2種方法
 
   * 使用Attach, Detach
   
-  ```{r}
-  attach(patientData)
-  summary(age)
-  detach(patientData)
-  ```
+```{r}
+attach(mtcars)
+summary(mpg)
+detach(mtcars)
+```
   
   * 或使用With
   
-  ```{r}
-  with(patientData,{
-    summary(age)
-  })
-  ```
+```{r}
+with(mtcars,{
+  summary(mpg)
+})
+```
 
-* 整理一些好用的data frame函數
+## Data Frame (4)
+
+* 整理一些好用的 Data Frame函數
 
 ```{r}
 length(mtcars)#mtcars有多少個欄位
@@ -280,9 +292,9 @@ tail(mtcars, n = 8)#檢視mtcars的後八列
 names(mtcars)[9]#檢視mtcars的第九個欄位名稱
 ```
 
-### Lists
+## Lists
 
-* Lists可以包含Vectors, Matrice與Data Frame
+* Lists 可以包含 Vectors, Matrice 與 Data Frame
 
 ```{r}
 # 宣告要放入List的物件
@@ -306,11 +318,11 @@ myList[["mat"]]#第二個物件:矩陣，不含名稱
 myList[[3]][4,2]#第三個物件myDf的第四列第二欄元素
 ```
 
-### NA與NULL
+## NA 與 NULL
 
-* 在R中NA與NULL都是代表遺漏值，兩者最大的差異處在於是否會被運算函數包含做運算
-* NA會被包含，因此在運算函數中要另外使用`na.rm`這個參數
-* NULL不會被包含
+* 在 R 中 NA 與 NULL 都是代表遺漏值，兩者最大的差異處在於是否會被運算函數包含做運算
+* NA 會被包含，因此在運算函數中要另外使用`na.rm`這個參數
+* NULL 不會被包含
 
 ```{r}
 naExample <- c(88, NA, 12, 92, 33)#建立一個有NA的數字向量
