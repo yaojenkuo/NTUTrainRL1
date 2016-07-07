@@ -1,51 +1,91 @@
-# NTUTrainRL1_2
-This is the lecture notes for NTU Train Course of R Project Lecture 1_2
+---
+title: "整理資料框"
+author: "Yao-Jen Kuo"
+date: "July, 2016"
+output:
+  slidy_presentation:
+    fig_width: 8
+    fig_height: 5
+---
 
-## Data Manipulation
+## 整理資料框
 
-### 建立一個Data Frame來練習
+- 建立新的變數
+- 重新命名變數
+- 建立新的變數
+- 重新命名變數
+- 遺漏值
+- 日期值
+- 轉換格式
+- 排序
+- 新增變數
+- 新增列數
+- 保留變數
+- 刪除變數
+- 選擇列數
+- sqldf 套件
+- tidyr 套件
+
+## 建立一個Data Frame來練習
 
 ```{r}
 name <- c("Monkey D. Luffy", "Roronoa Zoro", "Nami", "Sanji")
 occupation <- c("Captain", "Swordsman", "Navigator", "Chef")
-bounty <- as.numeric(c(500000000, 320000000, 66000000, NA))
+bountyInMillion <- c(500, 320, 66, NA)
 age <- c(19, 21, 20, 21)
 birthday <- c("5/5/1996", "11/11/1994", "7/3/1995", "3/2/1994")
 strength <- c(99, 90, 15, 80)
 intelligence <- c(20, 30, 90, 40)
-strawHatPirate <- data.frame(name, occupation, bounty, age, birthday, strength, intelligence, stringsAsFactors=FALSE)
+?data.frame#查詢這個函數
+strawHatPirate <- data.frame(name, occupation, bountyInMillion, age, birthday, strength, intelligence)
 ```
 
-### 建立新的變數(欄位)
+## 建立新的變數
 
-* 數值欄位的運算
+- 數值變數的運算
 
 ```{r}
-?transform
-strawHatPirate <- transform(
-  strawHatPirate,
-  ratingSum = strength + intelligence,#這裡不能用 <- 因為是transform函式的option
-  ratingAvg = (strength + intelligence)/2#這裡不能用 <- 因為是transform函式的option
-  )
-strawHatPirate
+strawHatPirate$ratingSum <- strawHatPirate$strength + strawHatPirate$intelligence
+strawHatPirate$ratingAvg <- (strawHatPirate$strength + strawHatPirate$intelligence)/2
+View(strawHatPirate)
 ```
 
-* 數值欄位的歸類
-  * 如果你是SAS使用者，這就像if then else
-  * 如果你是SQL使用者，這就像case when
+## 建立新的變數 (2)
+
+- 改用 `transform` 函數也可以
 
 ```{r}
-strawHatPirate <- within(strawHatPirate, {
-  bountyLevel <- NA
-  bountyLevel[bounty<100000000] <- "Low"
-  bountyLevel[bounty>100000000 & bounty<500000000] <- "Medium"
-  bountyLevel[bounty>=500000000] <- "High"
-}
-  )
-strawHatPirate
+strawHatPirate <- strawHatPirate[, -c(8, 9)]#把剛才新建出來的變數刪除
+?transform#查詢一下transform函數
+strawHatPirate <- transform(strawHatPirate, ratingSum = strength + intelligence, ratingAvg = (strength + intelligence)/2)
+View(strawHatPirate)
 ```
 
-### 重新命名變數(欄位)
+## 建立新的變數 (3)
+
+- 數值欄位的歸類
+    - 如果你是 SAS 使用者，這就像 if then else
+    - 如果你是 SQL 使用者，這就像 case when
+- 歸類成**兩類**賞金級別
+
+```{r}
+strawHatPirate$bountyLevel <- ifelse(strawHatPirate$bountyInMillion >= 500, "High", "Low")
+View(strawHatPirate)
+```
+
+## 建立新的變數 (4)
+
+- 歸類成**三類**賞金級別
+
+```{r}
+strawHatPirate <- strawHatPirate[, -c(10)]#把剛才新建出來的級別刪除
+strawHatPirate$bountyLevel[strawHatPirate$bountyInMillion >= 500] <- "High"
+strawHatPirate$bountyLevel[strawHatPirate$bountyInMillion > 100 & strawHatPirate$bountyInMillion < 500] <- "Medium"
+strawHatPirate$bountyLevel[strawHatPirate$bountyInMillion <= 100] <- "Low"
+View(strawHatPirate)
+```
+
+## 重新命名變數
 
 ```{r}
 names(strawHatPirate)#印出所有的變數
@@ -55,15 +95,15 @@ names(strawHatPirate)[8:9] <- c("sumRating", "avgRating")#一次重新命名2個
 strawHatPirate
 ```
 
-### 遺漏值
+## 遺漏值
 
 ```{r}
-is.na(strawHatPirate$bounty)#檢視bounty有沒有遺漏值
-sum(strawHatPirate$bounty)#有NA不能算
-sum(strawHatPirate$bounty, na.rm=TRUE)#as in remove
+is.na(strawHatPirate$bountyInMillion)#檢視bountyInMillion有沒有遺漏值
+sum(strawHatPirate$bountyInMillion)#有NA不能算
+sum(strawHatPirate$bountyInMillion, na.rm=TRUE)#as in remove
 ```
 
-### 日期值
+## 日期值
 
 ```{r}
 str(strawHatPirate$birthday)#轉換前先看原本日期的結構
@@ -74,7 +114,26 @@ max(strawHatPirate$birthdayAsDate)#轉換成日期格式後可以下max
 min(strawHatPirate$birthdayAsDate)#轉換成日期格式後可以下min
 ```
 
-### 轉換格式
+|符號|定義          |範例   |
+|----|--------------|-------|
+|%d  |天數          |01-31  |
+|%a  |星期幾縮寫    |Mon    |
+|%A  |星期幾        |Monday |
+|%m  |月份數字      |01-12  |
+|%b  |月份文字縮寫  |Jan    |
+|%B  |月份文字      |January|
+|%y  |兩位數年      |16     |
+|%Y  |四位數年      |2016   |
+
+```{r}
+race_date_chr <- "Apr 18 2016"#這是第120屆波士頓馬拉松的比賽日期
+class(race_date_chr)
+race_date <- as.Date(race_date_chr, "%b %d %Y")
+race_date
+class(race_date)
+```
+
+## 轉換格式
 
 ```{r}
 is.numeric(age)#判斷age變數是否為數值
@@ -93,145 +152,159 @@ is.data.frame()|as.data.frame()
 is.factor()|as.factor()
 is.logical()|as.logical()
 
-### 排序
+## 排序
 
 預設是遞增排序，加負號可以改為遞減排序
 
 ```{r}
 ?order
 strawHatPirate[order(strawHatPirate$age),]#用年齡遞增排序
-strawHatPirate[order(-strawHatPirate$intelligence, strawHatPirate$strength),]#先用智力遞減排序再用力量遞增排序
+#strawHatPirate[order(-strawHatPirate$intelligence, strawHatPirate$strength),]#用智力遞減排序再用力量遞增排序
 ```
 
-### 加欄位
+## 新增變數
 
-#### 單純加欄位
+- 單純新增變數
 
 ```{r}
 favoriteFood <- c("Meat", "Sea King Meat", "Orange", "Pasta")#新增喜歡的食物
 ?cbind
-strawHatPirate2 <- cbind(strawHatPirate, favoriteFood)#cbind即是column bind
+strawHatPirateNew <- cbind(strawHatPirate, favoriteFood)#cbind即是column bind
 ```
 
-#### Join
+## 新增變數 (2)
 
-創造一個惡魔果實清單的dataframe
+- 接著我們要講的是一種資料庫串接表格的概念: `Join`
+- 首先創造一個惡魔果實的 Data Frame
 
 ```{r}
-name2 <- c("Monkey D. Luffy", "Tony Tony Chopper", "Nico Robin", "Brook")
+name <- c("Monkey D. Luffy", "Tony Tony Chopper", "Nico Robin", "Brook")
 devilFruit <- c("Rubber", "Human", "Flower", "Underworld")
-devilFruitList <- data.frame(name2, devilFruit, stringsAsFactors=FALSE)
+devilFruitList <- data.frame(name, devilFruit)
 ```
 
-* Inner Join
+## 新增變數 (3)
+
+- Inner Join
+- 交集
+
 ```{r}
 ?merge
-devilFruitStrawHatPirate <- merge(strawHatPirate, devilFruitList, by.x="name", by.y="name2")#預設就是inner join
-```
-* Left Join
-```{r}
-devilFruitStrawHatPirate <- merge(strawHatPirate, devilFruitList, by.x="name", by.y="name2", all.x=TRUE)#使用all.x=TRUE的option
-```
-* Right Join
-```{r}
-devilFruitStrawHatPirate <- merge(strawHatPirate, devilFruitList, by.x="name", by.y="name2", all.y=TRUE)#使用all.y=TRUE的option
-```
-* Full Join
-```{r}
-devilFruitStrawHatPirate <- merge(strawHatPirate, devilFruitList, by.x="name", by.y="name2", all.x=TRUE, all.y=TRUE)#使用all.x=TRUE與all.y=TRUE的option
+devilFruitStrawHatPirate <- merge(strawHatPirate, devilFruitList, by.x="name", by.y="name")#預設就是inner join
 ```
 
-### 加列數(Append)
+## 新增變數 (4)
+
+- Left Join
+- 以表格 `X` 為主
 
 ```{r}
+devilFruitStrawHatPirate <- merge(strawHatPirate, devilFruitList, by.x="name", by.y="name", all.x=TRUE)#使用all.x=TRUE的option
+```
+
+## 新增變數 (5)
+
+- Right Join
+- 以表格 `Y` 為主
+
+```{r}
+devilFruitStrawHatPirate <- merge(strawHatPirate, devilFruitList, by.x="name", by.y="name", all.y=TRUE)#使用all.y=TRUE的option
+```
+
+## 新增變數 (6)
+
+- Full Join
+
+```{r}
+devilFruitStrawHatPirate <- merge(strawHatPirate, devilFruitList, by.x="name", by.y="name", all.x=TRUE, all.y=TRUE)#使用all.x=TRUE與all.y=TRUE的option
+```
+
+## 新增列數
+
+```{r}
+# 先重新建一個資料框
+strawHatPirate <- data.frame(name, occupation, bountyInMillion, age, birthday, strength, intelligence, stringsAsFactors = FALSE)
 chopper <- c("Tony Tony Chopper", "Doctor", 50, 17, "12/24/1998", 50, 80)#加入喬巴
 ?rbind
-strawHatPirate2 <- rbind(strawHatPirate, chopper)#rbind即是row bind
+strawHatPirate <- rbind(strawHatPirate, chopper)#rbind即是row bind
 ```
 
-### 篩選(Subset)
-
-* 保留變數(Keep variables)
+## 保留變數
 
 ```{r}
-strawHatPirate3 <- strawHatPirate2[, c(1:3)]#取前3個變數
-strawHatPirate3 <- strawHatPirate2[, c("name", "occupation", "bounty")]#取前3個變數
+strawHatPirateNew <- strawHatPirate[, c(1:3)]#取前3個變數
+strawHatPirateNew <- strawHatPirate[, c("name", "occupation", "bountyInMillion")]#取前3個變數
 ```
 
-* 刪除變數(Drop vairables)
+## 刪除變數
 
 ```{r}
-strawHatPirate4 <- strawHatPirate2[, c(-1:-3)]#刪除前3個變數
+strawHatPirateNew <- strawHatPirate[, c(-1:-3)]#刪除前3個變數
 # 進階的方法可以用邏輯運算子
-deleteVars <- names(strawHatPirate2) %in% c("name", "occupation", "bounty")#logical test
-strawHatPirate4 <- strawHatPirate2[!deleteVars]#刪除前3個變數
+deleteVars <- names(strawHatPirate) %in% c("name", "occupation", "bountyInMillion")#logical test
+strawHatPirateNew <- strawHatPirate[!deleteVars]#只留下FALSE
 ```
 
-* 選擇列數(Select rows)
+## 選擇列數
 
 ```{r}
-strawHatPirate5 <- strawHatPirate2[1:3, ]#選擇前3列
-strawHatPirate5 <- strawHatPirate2[strawHatPirate2$occupation=='Captain', ]
-strawHatPirate5 <- strawHatPirate2[strawHatPirate2$age>17 & strawHatPirate2$strength>30, ]#2個篩選條件使用`&`連接
+strawHatPirateNew <- strawHatPirate[1:3, ]#選擇前3列
+View(strawHatPirateNew)
+strawHatPirateNew <- strawHatPirate[strawHatPirate$occupation=='Captain', ]
+View(strawHatPirateNew)
+strawHatPirateNew <- strawHatPirate[strawHatPirate$age>17 & strawHatPirate$strength>30, ]#2個篩選條件使用`&`連接
 ```
 
-### 在R中使用SQL語法 - sqldf套件
+## sqldf 套件
 
-SQL的使用者在SAS中可以使用proc sql;在R中可以使用sqldf套件。
+SQL 的使用者在 SAS 中可以使用 proc sql;在 R 中可以使用 `sqldf` 套件。
 
-基本SQL語法結構:
+基本 SQL 語法結構:
 
-```{sql}
-SELECT column_name(s),
-       SUM(group_column_name)
+```
+SELECT column_name, ...
 FROM table_name
   INNER|LEFT|RIGHT JOIN second_table_name
     ON first_table_name.keyfield = second_table_name.foreign_keyfield
-WHERE column operator value
-ORDER BY column_name
-GROUP BY group_column_name
-HAVING SUM(group_column_name) condition value
+WHERE column operator
+GROUP BY column_name...
+HAVING aggregate() operator
+ORDER BY column_name...
 ```
 
 使用sqldf套件:
 
 ```{r}
 #下載並載入套件
-install.packages("sqldf")
+#install.packages("sqldf")
 library(sqldf)
-
-sqldf("select name, occupation, bounty, age from strawHatPirate where age>19 order by bounty asc")
-
-sqldf("select strawHatPirate.name, devilFruitList.devilFruit from strawHatPirate inner join devilFruitList on strawHatPirate.name=devilFruitList.name2")
-
-sqldf("select strawHatPirate.name, devilFruitList.devilFruit from strawHatPirate left join devilFruitList on strawHatPirate.name=devilFruitList.name2")
+sqldf("select name, occupation, age from strawHatPirate where age>19 order by age asc")
+sqldf("select strawHatPirate.name, devilFruitList.devilFruit from strawHatPirate inner join devilFruitList on strawHatPirate.name=devilFruitList.name")
 ```
 
-### reshape2套件(補充)
+## tidyr 套件
 
-* 資料分析人員常常面臨資料集轉置(transpose)的問題
-* SQL的使用者可能是使用union, SAS的使用者可能是使用proc transpose
-* R的使用者利用reshape2套件透過melt函數與dcast函數能夠幫助我們處理資料轉置的問題，說明也許很抽象，讓我們來看一下怎麼轉置草帽海賊團的資料集。
+* 資料分析人員常常面臨資料集轉置 (transpose) 的問題
+* SQL 的使用者可能是使用 union/sub-query, SAS 的使用者可能是使用 proc transpose
+* R 的使用者可以利用 `tidyr` 套件(只是其中一個)透過 `gather` 函數與 `spread` 函數能夠幫助我們處理資料轉置的問題，說明也許很抽象，讓我們來看一下怎麼轉置草帽海賊團的資料集。
 
-#### melt函數
+## tidyr 套件 (2)
 
-把兩個數值欄位轉到一個欄位底下，並多一個類別欄位來區隔這兩種數值。
+- gather 函數: 把兩個數值欄位轉到一個欄位底下，並多一個類別欄位來區隔這兩種數值。
 
 ```{r}
 #下載並載入套件
-install.packages("reshape2")
-library(reshape2)
-strawHatPirate8 <- melt(strawHatPirate, id=c("name"), measure=c("strength", "intelligence"))
-View(strawHatPirate8)
+#install.packages("tidyr")
+library(tidyr)
+strawHatPirateGathered <- gather(strawHatPirate[, c(1, 6:7)], key = metricType, value = metric, strength, intelligence)
 ```
 
-#### dcast函數
+## tidyr 套件 (3)
 
-還原為兩個數值欄位。
+- spread 函數: 還原為兩個數值欄位。
 
 ```{r}
-strawHatPirate9 <- dcast(strawHatPirate8, name~variable)
-View(strawHatPirate9)
+#strawHatPirateSpread <- spread(strawHatPirateGathered,key = metricType, value = metric)
 ```
 
 ## Reference

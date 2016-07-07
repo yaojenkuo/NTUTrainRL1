@@ -1,5 +1,5 @@
 ---
-title: "資料類型"
+title: "基本資料類型"
 author: "Yao-Jen Kuo"
 date: "July, 2016"
 output:
@@ -8,7 +8,7 @@ output:
     fig_height: 5
 ---
 
-## Data Types
+## 基本資料類型
 
 * 我們今天會介紹 R 語言的基本資料類型:
   * Vector (向量)
@@ -260,7 +260,7 @@ summary(mtcars$mpg)#把mpg變數的描述性統計印出來
 
 * 省略每次都要打資料集名稱的2種方法
 
-  * 使用Attach, Detach
+使用Attach, Detach
   
 ```{r}
 attach(mtcars)
@@ -268,7 +268,7 @@ summary(mpg)
 detach(mtcars)
 ```
   
-  * 或使用With
+或使用with
   
 ```{r}
 with(mtcars,{

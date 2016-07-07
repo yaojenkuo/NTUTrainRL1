@@ -59,7 +59,7 @@ Source: [For Big-Data Scientists, Janitor Work Is Key Hurdle to Insights](http:/
 ## 學習 R 語言的重點
 
 - 安裝**開發環境**
-- 如何宣告變數
+- 如何宣告變數(重要!)
 - 如何寫 if
 - 如何寫迴圈
 - 如何存取不同資料格式中的元素
@@ -94,7 +94,18 @@ Source: [For Big-Data Scientists, Janitor Work Is Key Hurdle to Insights](http:/
 - 整理資料
 - 視覺化
 - 建模型
-- 做報告
+- 報告
+
+## 評分標準
+
+- 出席(100%): 每次上課 25%
+- 作業(Bonus): 25%
+
+## 在開始之前
+
+- 安裝 R base
+- 安裝 RStudio
+- 註冊一個 GitHub 帳號
 
 ## 講義清單
 

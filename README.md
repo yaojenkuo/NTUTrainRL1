@@ -5,19 +5,19 @@ This is the lecture notes for NTU Train Course of R Project Lecture 1
 
 
 
-## 資料類型
+## 基本資料類型
 
 https://github.com/yaojenkuo/NTUTrainRL1/blob/master/RL1_1.Rmd
 
-## Data Manipulation
+## 整理資料框
 
 https://github.com/yaojenkuo/NTUTrainRL1/blob/master/RL1_2.Rmd
 
-## Basic Programming
+## 基本的程式與函數
 
 https://github.com/yaojenkuo/NTUTrainRL1/blob/master/RL1_3.Rmd
 
-## Data Collection
+## 資料的載入
 
 https://github.com/yaojenkuo/NTUTrainRL1/blob/master/RL1_4.Rmd
 
