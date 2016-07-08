@@ -87,6 +87,13 @@ strength &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv
 intelligence &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">20</span>, <span class="dv">30</span>, <span class="dv">90</span>, <span class="dv">40</span>)
 ?data.frame<span class="co">#查詢這個函數</span>
 strawHatPirate &lt;-<span class="st"> </span><span class="kw">data.frame</span>(name, occupation, bountyInMillion, age, birthday, strength, intelligence)</code></pre></div>
+<ul>
+<li>記得幾個我們上一節課教的函數可以觀察資料框嗎？在這裡練習一下吧！</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">dim</span>(strawHatPirate)
+<span class="kw">str</span>(strawHatPirate)
+<span class="kw">summary</span>(strawHatPirate)
+<span class="kw">View</span>(strawHatPirate)</code></pre></div>
 </div>
 <div class="slide section level2">
 <h1>建立新的變數</h1>
@@ -94,14 +101,15 @@ strawHatPirate &lt;-<span class="st"> </span><span class="kw">data.frame</span>(
 <li>數值變數的運算</li>
 </ul>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">strawHatPirate$ratingSum &lt;-<span class="st"> </span>strawHatPirate$strength +<span class="st"> </span>strawHatPirate$intelligence
-strawHatPirate$ratingAvg &lt;-<span class="st"> </span>(strawHatPirate$strength +<span class="st"> </span>strawHatPirate$intelligence)/<span class="dv">2</span></code></pre></div>
+strawHatPirate$ratingAvg &lt;-<span class="st"> </span>(strawHatPirate$strength +<span class="st"> </span>strawHatPirate$intelligence)/<span class="dv">2</span>
+<span class="kw">View</span>(strawHatPirate)</code></pre></div>
 </div>
 <div id="-2" class="slide section level2">
 <h1>建立新的變數 (2)</h1>
 <ul>
 <li>改用 <code>transform</code> 函數也可以</li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">strawHatPirate &lt;-<span class="st"> </span>strawHatPirate[, -<span class="kw">c</span>(<span class="dv">8</span>, <span class="dv">9</span>)]<span class="co">#把剛才新建出來的變數刪除</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">strawHatPirate &lt;-<span class="st"> </span><span class="kw">data.frame</span>(name, occupation, bountyInMillion, age, birthday, strength, intelligence)
 ?transform<span class="co">#查詢一下transform函數</span>
 strawHatPirate &lt;-<span class="st"> </span><span class="kw">transform</span>(strawHatPirate, <span class="dt">ratingSum =</span> strength +<span class="st"> </span>intelligence, <span class="dt">ratingAvg =</span> (strength +<span class="st"> </span>intelligence)/<span class="dv">2</span>)
 <span class="kw">View</span>(strawHatPirate)</code></pre></div>
@@ -116,73 +124,42 @@ strawHatPirate &lt;-<span class="st"> </span><span class="kw">transform</span>(s
 </ul></li>
 <li>歸類成<strong>兩類</strong>賞金級別</li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">strawHatPirate$bountyLevel &lt;-<span class="st"> </span><span class="kw">ifelse</span>(strawHatPirate$bountyInMillion &gt;=<span class="st"> </span><span class="dv">500</span>, <span class="st">&quot;High&quot;</span>, <span class="st">&quot;Low&quot;</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">strawHatPirate &lt;-<span class="st"> </span><span class="kw">data.frame</span>(name, occupation, bountyInMillion, age, birthday, strength, intelligence)
+strawHatPirate$bountyLevel &lt;-<span class="st"> </span><span class="kw">ifelse</span>(strawHatPirate$bountyInMillion &gt;=<span class="st"> </span><span class="dv">500</span>, <span class="st">&quot;High&quot;</span>, <span class="st">&quot;Low&quot;</span>)
+<span class="kw">View</span>(strawHatPirate)</code></pre></div>
 </div>
 <div id="-4" class="slide section level2">
 <h1>建立新的變數 (4)</h1>
 <ul>
 <li>歸類成<strong>三類</strong>賞金級別</li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">strawHatPirate &lt;-<span class="st"> </span>strawHatPirate[, -<span class="kw">c</span>(<span class="dv">10</span>)]<span class="co">#把剛才新建出來的級別刪除</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">strawHatPirate &lt;-<span class="st"> </span><span class="kw">data.frame</span>(name, occupation, bountyInMillion, age, birthday, strength, intelligence)
 strawHatPirate$bountyLevel[strawHatPirate$bountyInMillion &gt;=<span class="st"> </span><span class="dv">500</span>] &lt;-<span class="st"> &quot;High&quot;</span>
 strawHatPirate$bountyLevel[strawHatPirate$bountyInMillion &gt;<span class="st"> </span><span class="dv">100</span> &amp;<span class="st"> </span>strawHatPirate$bountyInMillion &lt;<span class="st"> </span><span class="dv">500</span>] &lt;-<span class="st"> &quot;Medium&quot;</span>
 strawHatPirate$bountyLevel[strawHatPirate$bountyInMillion &lt;=<span class="st"> </span><span class="dv">100</span>] &lt;-<span class="st"> &quot;Low&quot;</span>
-
 <span class="kw">View</span>(strawHatPirate)</code></pre></div>
 </div>
 <div class="slide section level2">
 <h1>重新命名變數</h1>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">names</span>(strawHatPirate)<span class="co">#印出所有的變數</span></code></pre></div>
-<pre><code>##  [1] &quot;name&quot;            &quot;occupation&quot;      &quot;bountyInMillion&quot;
-##  [4] &quot;age&quot;             &quot;birthday&quot;        &quot;strength&quot;       
-##  [7] &quot;intelligence&quot;    &quot;ratingSum&quot;       &quot;ratingAvg&quot;      
-## [10] &quot;bountyLevel&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">names</span>(strawHatPirate)[<span class="dv">6</span>] &lt;-<span class="st"> &quot;attack&quot;</span><span class="co">#將strength改名為attack</span>
-strawHatPirate</code></pre></div>
-<pre><code>##              name occupation bountyInMillion age   birthday attack
-## 1 Monkey D. Luffy    Captain             500  19   5/5/1996     99
-## 2    Roronoa Zoro  Swordsman             320  21 11/11/1994     90
-## 3            Nami  Navigator              66  20   7/3/1995     15
-## 4           Sanji       Chef              NA  21   3/2/1994     80
-##   intelligence ratingSum ratingAvg bountyLevel
-## 1           20       119      59.5        High
-## 2           30       120      60.0      Medium
-## 3           90       105      52.5         Low
-## 4           40       120      60.0        &lt;NA&gt;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">names</span>(strawHatPirate)[<span class="dv">8</span>:<span class="dv">9</span>] &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;sumRating&quot;</span>, <span class="st">&quot;avgRating&quot;</span>)<span class="co">#一次重新命名2個變數名</span>
-strawHatPirate</code></pre></div>
-<pre><code>##              name occupation bountyInMillion age   birthday attack
-## 1 Monkey D. Luffy    Captain             500  19   5/5/1996     99
-## 2    Roronoa Zoro  Swordsman             320  21 11/11/1994     90
-## 3            Nami  Navigator              66  20   7/3/1995     15
-## 4           Sanji       Chef              NA  21   3/2/1994     80
-##   intelligence sumRating avgRating bountyLevel
-## 1           20       119      59.5        High
-## 2           30       120      60.0      Medium
-## 3           90       105      52.5         Low
-## 4           40       120      60.0        &lt;NA&gt;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">strawHatPirate &lt;-<span class="st"> </span><span class="kw">data.frame</span>(name, occupation, bountyInMillion, age, birthday, strength, intelligence)
+<span class="kw">names</span>(strawHatPirate)<span class="co">#印出所有的變數</span>
+<span class="kw">names</span>(strawHatPirate)[<span class="dv">6</span>] &lt;-<span class="st"> &quot;attack&quot;</span><span class="co">#將strength改名為attack</span>
+<span class="kw">View</span>(strawHatPirate)</code></pre></div>
 </div>
 <div class="slide section level2">
 <h1>遺漏值</h1>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">is.na</span>(strawHatPirate$bountyInMillion)<span class="co">#檢視bountyInMillion有沒有遺漏值</span></code></pre></div>
-<pre><code>## [1] FALSE FALSE FALSE  TRUE</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sum</span>(strawHatPirate$bountyInMillion)<span class="co">#有NA不能算</span></code></pre></div>
-<pre><code>## [1] NA</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sum</span>(strawHatPirate$bountyInMillion, <span class="dt">na.rm=</span><span class="ot">TRUE</span>)<span class="co">#as in remove</span></code></pre></div>
-<pre><code>## [1] 886</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">strawHatPirate &lt;-<span class="st"> </span><span class="kw">data.frame</span>(name, occupation, bountyInMillion, age, birthday, strength, intelligence)
+<span class="kw">is.na</span>(strawHatPirate$bountyInMillion)<span class="co">#檢視bountyInMillion有沒有遺漏值</span>
+<span class="kw">sum</span>(strawHatPirate$bountyInMillion)<span class="co">#有NA不能算</span>
+<span class="kw">sum</span>(strawHatPirate$bountyInMillion, <span class="dt">na.rm=</span><span class="ot">TRUE</span>)<span class="co">#as in remove</span></code></pre></div>
 </div>
 <div class="slide section level2">
 <h1>日期值</h1>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str</span>(strawHatPirate$birthday)<span class="co">#轉換前先看原本日期的結構</span></code></pre></div>
-<pre><code>##  Factor w/ 4 levels &quot;11/11/1994&quot;,&quot;3/2/1994&quot;,..: 3 1 4 2</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">?as.Date
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str</span>(strawHatPirate$birthday)<span class="co">#轉換前先看原本日期的結構</span>
+?as.Date
 strawHatPirate$birthdayAsDate &lt;-<span class="st"> </span><span class="kw">as.Date</span>(strawHatPirate$birthday, <span class="st">&quot;%m/%d/%Y&quot;</span>)<span class="co">#大寫Y是4位數年份, 小寫y是2位數年份</span>
-<span class="kw">str</span>(strawHatPirate$birthdayAsDate)<span class="co">#轉換後看日期的結構</span></code></pre></div>
-<pre><code>##  Date[1:4], format: &quot;1996-05-05&quot; &quot;1994-11-11&quot; &quot;1995-07-03&quot; &quot;1994-03-02&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">max</span>(strawHatPirate$birthdayAsDate)<span class="co">#轉換成日期格式後可以下max</span></code></pre></div>
-<pre><code>## [1] &quot;1996-05-05&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">min</span>(strawHatPirate$birthdayAsDate)<span class="co">#轉換成日期格式後可以下min</span></code></pre></div>
-<pre><code>## [1] &quot;1994-03-02&quot;</code></pre>
+<span class="kw">str</span>(strawHatPirate$birthdayAsDate)<span class="co">#轉換後看日期的結構</span>
+<span class="kw">max</span>(strawHatPirate$birthdayAsDate)<span class="co">#轉換成日期格式後可以下max or min</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -235,23 +212,17 @@ strawHatPirate$birthdayAsDate &lt;-<span class="st"> </span><span class="kw">as.
 </tbody>
 </table>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">race_date_chr &lt;-<span class="st"> &quot;Apr 18 2016&quot;</span><span class="co">#這是第120屆波士頓馬拉松的比賽日期</span>
-<span class="kw">class</span>(race_date_chr)</code></pre></div>
-<pre><code>## [1] &quot;character&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">race_date &lt;-<span class="st"> </span><span class="kw">as.Date</span>(race_date_chr, <span class="st">&quot;%b %d %Y&quot;</span>)
-race_date</code></pre></div>
-<pre><code>## [1] &quot;2016-04-18&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">class</span>(race_date)</code></pre></div>
-<pre><code>## [1] &quot;Date&quot;</code></pre>
+<span class="kw">class</span>(race_date_chr)
+race_date &lt;-<span class="st"> </span><span class="kw">as.Date</span>(race_date_chr, <span class="st">&quot;%b %d %Y&quot;</span>)
+race_date
+<span class="kw">class</span>(race_date)</code></pre></div>
 </div>
 <div class="slide section level2">
 <h1>轉換格式</h1>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">is.numeric</span>(age)<span class="co">#判斷age變數是否為數值</span></code></pre></div>
-<pre><code>## [1] TRUE</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ageChar &lt;-<span class="st"> </span><span class="kw">as.character</span>(age)<span class="co">#轉換age為字串</span>
-<span class="kw">is.numeric</span>(ageChar)<span class="co">#判斷ageChar變數是否為數值</span></code></pre></div>
-<pre><code>## [1] FALSE</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">is.character</span>(ageChar)<span class="co">#判斷ageChar變數是否為字串</span></code></pre></div>
-<pre><code>## [1] TRUE</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">is.numeric</span>(age)<span class="co">#判斷age變數是否為數值</span>
+ageChar &lt;-<span class="st"> </span><span class="kw">as.character</span>(age)<span class="co">#轉換age為字串</span>
+<span class="kw">is.numeric</span>(ageChar)<span class="co">#判斷ageChar變數是否為數值</span>
+<span class="kw">is.character</span>(ageChar)<span class="co">#判斷ageChar變數是否為字串</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -295,18 +266,8 @@ race_date</code></pre></div>
 <h1>排序</h1>
 <p>預設是遞增排序，加負號可以改為遞減排序</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">?order
-strawHatPirate[<span class="kw">order</span>(strawHatPirate$age),]<span class="co">#用年齡遞增排序</span></code></pre></div>
-<pre><code>##              name occupation bountyInMillion age   birthday attack
-## 1 Monkey D. Luffy    Captain             500  19   5/5/1996     99
-## 3            Nami  Navigator              66  20   7/3/1995     15
-## 2    Roronoa Zoro  Swordsman             320  21 11/11/1994     90
-## 4           Sanji       Chef              NA  21   3/2/1994     80
-##   intelligence sumRating avgRating bountyLevel birthdayAsDate
-## 1           20       119      59.5        High     1996-05-05
-## 3           90       105      52.5         Low     1995-07-03
-## 2           30       120      60.0      Medium     1994-11-11
-## 4           40       120      60.0        &lt;NA&gt;     1994-03-02</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#strawHatPirate[order(-strawHatPirate$intelligence, strawHatPirate$strength),]#用智力遞減排序再用力量遞增排序</span></code></pre></div>
+strawHatPirate[<span class="kw">order</span>(strawHatPirate$age),]<span class="co">#用年齡遞增排序</span>
+strawHatPirate[<span class="kw">order</span>(-strawHatPirate$age),]<span class="co">#用年齡遞減排序</span></code></pre></div>
 </div>
 <div class="slide section level2">
 <h1>新增變數</h1>
@@ -315,7 +276,8 @@ strawHatPirate[<span class="kw">order</span>(strawHatPirate$age),]<span class="c
 </ul>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">favoriteFood &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Meat&quot;</span>, <span class="st">&quot;Sea King Meat&quot;</span>, <span class="st">&quot;Orange&quot;</span>, <span class="st">&quot;Pasta&quot;</span>)<span class="co">#新增喜歡的食物</span>
 ?cbind
-strawHatPirateNew &lt;-<span class="st"> </span><span class="kw">cbind</span>(strawHatPirate, favoriteFood)<span class="co">#cbind即是column bind</span></code></pre></div>
+strawHatPirateNew &lt;-<span class="st"> </span><span class="kw">cbind</span>(strawHatPirate, favoriteFood)<span class="co">#cbind即是column bind</span>
+<span class="kw">View</span>(strawHatPirateNew)</code></pre></div>
 </div>
 <div id="-2" class="slide section level2">
 <h1>新增變數 (2)</h1>
@@ -323,9 +285,9 @@ strawHatPirateNew &lt;-<span class="st"> </span><span class="kw">cbind</span>(st
 <li>接著我們要講的是一種資料庫串接表格的概念: <code>Join</code></li>
 <li>首先創造一個惡魔果實的 Data Frame</li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">name &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Monkey D. Luffy&quot;</span>, <span class="st">&quot;Tony Tony Chopper&quot;</span>, <span class="st">&quot;Nico Robin&quot;</span>, <span class="st">&quot;Brook&quot;</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">name2 &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Monkey D. Luffy&quot;</span>, <span class="st">&quot;Tony Tony Chopper&quot;</span>, <span class="st">&quot;Nico Robin&quot;</span>, <span class="st">&quot;Brook&quot;</span>)
 devilFruit &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Rubber&quot;</span>, <span class="st">&quot;Human&quot;</span>, <span class="st">&quot;Flower&quot;</span>, <span class="st">&quot;Underworld&quot;</span>)
-devilFruitList &lt;-<span class="st"> </span><span class="kw">data.frame</span>(name, devilFruit)</code></pre></div>
+devilFruitList &lt;-<span class="st"> </span><span class="kw">data.frame</span>(name2, devilFruit)</code></pre></div>
 </div>
 <div id="-3" class="slide section level2">
 <h1>新增變數 (3)</h1>
@@ -333,51 +295,61 @@ devilFruitList &lt;-<span class="st"> </span><span class="kw">data.frame</span>(
 <li>Inner Join</li>
 <li>交集</li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">?merge
-devilFruitStrawHatPirate &lt;-<span class="st"> </span><span class="kw">merge</span>(strawHatPirate, devilFruitList, <span class="dt">by.x=</span><span class="st">&quot;name&quot;</span>, <span class="dt">by.y=</span><span class="st">&quot;name&quot;</span>)<span class="co">#預設就是inner join</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">strawHatPirate &lt;-<span class="st"> </span><span class="kw">data.frame</span>(name, occupation, bountyInMillion, age, birthday, strength, intelligence)
+?merge
+devilFruitStrawHatPirate &lt;-<span class="st"> </span><span class="kw">merge</span>(strawHatPirate, devilFruitList, <span class="dt">by.x =</span> <span class="st">&quot;name&quot;</span>, <span class="dt">by.y =</span> <span class="st">&quot;name2&quot;</span>)<span class="co">#預設就是inner join</span>
+<span class="kw">View</span>(devilFruitStrawHatPirate)</code></pre></div>
 </div>
 <div id="-4" class="slide section level2">
 <h1>新增變數 (4)</h1>
 <ul>
 <li>Left Join</li>
-<li>以表格 <code>X</code> 為主</li>
+<li>以表格 <code>X</code> 的觀測值為主</li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">devilFruitStrawHatPirate &lt;-<span class="st"> </span><span class="kw">merge</span>(strawHatPirate, devilFruitList, <span class="dt">by.x=</span><span class="st">&quot;name&quot;</span>, <span class="dt">by.y=</span><span class="st">&quot;name&quot;</span>, <span class="dt">all.x=</span><span class="ot">TRUE</span>)<span class="co">#使用all.x=TRUE的option</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">devilFruitStrawHatPirate &lt;-<span class="st"> </span><span class="kw">merge</span>(strawHatPirate, devilFruitList, <span class="dt">by.x=</span><span class="st">&quot;name&quot;</span>, <span class="dt">by.y=</span><span class="st">&quot;name2&quot;</span>, <span class="dt">all.x=</span><span class="ot">TRUE</span>)<span class="co">#使用all.x=TRUE的option</span>
+<span class="kw">View</span>(devilFruitStrawHatPirate)</code></pre></div>
 </div>
 <div id="-5" class="slide section level2">
 <h1>新增變數 (5)</h1>
 <ul>
 <li>Right Join</li>
-<li>以表格 <code>Y</code> 為主</li>
+<li>以表格 <code>Y</code> 的觀測值為主</li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">devilFruitStrawHatPirate &lt;-<span class="st"> </span><span class="kw">merge</span>(strawHatPirate, devilFruitList, <span class="dt">by.x=</span><span class="st">&quot;name&quot;</span>, <span class="dt">by.y=</span><span class="st">&quot;name&quot;</span>, <span class="dt">all.y=</span><span class="ot">TRUE</span>)<span class="co">#使用all.y=TRUE的option</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">devilFruitStrawHatPirate &lt;-<span class="st"> </span><span class="kw">merge</span>(strawHatPirate, devilFruitList, <span class="dt">by.x=</span><span class="st">&quot;name&quot;</span>, <span class="dt">by.y=</span><span class="st">&quot;name2&quot;</span>, <span class="dt">all.y=</span><span class="ot">TRUE</span>)<span class="co">#使用all.y=TRUE的option</span>
+<span class="kw">View</span>(devilFruitStrawHatPirate)</code></pre></div>
 </div>
 <div id="-6" class="slide section level2">
 <h1>新增變數 (6)</h1>
 <ul>
 <li>Full Join</li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">devilFruitStrawHatPirate &lt;-<span class="st"> </span><span class="kw">merge</span>(strawHatPirate, devilFruitList, <span class="dt">by.x=</span><span class="st">&quot;name&quot;</span>, <span class="dt">by.y=</span><span class="st">&quot;name&quot;</span>, <span class="dt">all.x=</span><span class="ot">TRUE</span>, <span class="dt">all.y=</span><span class="ot">TRUE</span>)<span class="co">#使用all.x=TRUE與all.y=TRUE的option</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">devilFruitStrawHatPirate &lt;-<span class="st"> </span><span class="kw">merge</span>(strawHatPirate, devilFruitList, <span class="dt">by.x=</span><span class="st">&quot;name&quot;</span>, <span class="dt">by.y=</span><span class="st">&quot;name2&quot;</span>, <span class="dt">all.x=</span><span class="ot">TRUE</span>, <span class="dt">all.y=</span><span class="ot">TRUE</span>)<span class="co">#使用all.x=TRUE與all.y=TRUE的option</span>
+<span class="kw">View</span>(devilFruitStrawHatPirate)</code></pre></div>
 </div>
 <div class="slide section level2">
 <h1>新增列數</h1>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># 先重新建一個資料框</span>
 strawHatPirate &lt;-<span class="st"> </span><span class="kw">data.frame</span>(name, occupation, bountyInMillion, age, birthday, strength, intelligence, <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>)
+<span class="kw">View</span>(strawHatPirate)<span class="co">#先看一下</span>
+
 chopper &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Tony Tony Chopper&quot;</span>, <span class="st">&quot;Doctor&quot;</span>, <span class="dv">50</span>, <span class="dv">17</span>, <span class="st">&quot;12/24/1998&quot;</span>, <span class="dv">50</span>, <span class="dv">80</span>)<span class="co">#加入喬巴</span>
 ?rbind
-strawHatPirate &lt;-<span class="st"> </span><span class="kw">rbind</span>(strawHatPirate, chopper)<span class="co">#rbind即是row bind</span></code></pre></div>
+strawHatPirate &lt;-<span class="st"> </span><span class="kw">rbind</span>(strawHatPirate, chopper)<span class="co">#rbind即是row bind</span>
+<span class="kw">View</span>(strawHatPirate)<span class="co">#再看一次</span></code></pre></div>
 </div>
 <div class="slide section level2">
 <h1>保留變數</h1>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">strawHatPirateNew &lt;-<span class="st"> </span>strawHatPirate[, <span class="kw">c</span>(<span class="dv">1</span>:<span class="dv">3</span>)]<span class="co">#取前3個變數</span>
-strawHatPirateNew &lt;-<span class="st"> </span>strawHatPirate[, <span class="kw">c</span>(<span class="st">&quot;name&quot;</span>, <span class="st">&quot;occupation&quot;</span>, <span class="st">&quot;bountyInMillion&quot;</span>)]<span class="co">#取前3個變數</span></code></pre></div>
+strawHatPirateNew &lt;-<span class="st"> </span>strawHatPirate[, <span class="kw">c</span>(<span class="st">&quot;name&quot;</span>, <span class="st">&quot;occupation&quot;</span>, <span class="st">&quot;bountyInMillion&quot;</span>)]<span class="co">#取前3個變數</span>
+<span class="kw">View</span>(strawHatPirateNew)</code></pre></div>
 </div>
 <div class="slide section level2">
 <h1>刪除變數</h1>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">strawHatPirateNew &lt;-<span class="st"> </span>strawHatPirate[, <span class="kw">c</span>(-<span class="dv">1</span>:-<span class="dv">3</span>)]<span class="co">#刪除前3個變數</span>
 <span class="co"># 進階的方法可以用邏輯運算子</span>
 deleteVars &lt;-<span class="st"> </span><span class="kw">names</span>(strawHatPirate) %in%<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;name&quot;</span>, <span class="st">&quot;occupation&quot;</span>, <span class="st">&quot;bountyInMillion&quot;</span>)<span class="co">#logical test</span>
-strawHatPirateNew &lt;-<span class="st"> </span>strawHatPirate[!deleteVars]<span class="co">#只留下FALSE</span></code></pre></div>
+strawHatPirateNew &lt;-<span class="st"> </span>strawHatPirate[, !deleteVars]<span class="co">#留下FALSE的欄位</span>
+<span class="kw">View</span>(strawHatPirateNew)</code></pre></div>
 </div>
 <div class="slide section level2">
 <h1>選擇列數</h1>
@@ -385,7 +357,8 @@ strawHatPirateNew &lt;-<span class="st"> </span>strawHatPirate[!deleteVars]<span
 <span class="kw">View</span>(strawHatPirateNew)
 strawHatPirateNew &lt;-<span class="st"> </span>strawHatPirate[strawHatPirate$occupation==<span class="st">'Captain'</span>, ]
 <span class="kw">View</span>(strawHatPirateNew)
-strawHatPirateNew &lt;-<span class="st"> </span>strawHatPirate[strawHatPirate$age&gt;<span class="dv">17</span> &amp;<span class="st"> </span>strawHatPirate$strength&gt;<span class="dv">30</span>, ]<span class="co">#2個篩選條件使用`&amp;`連接</span></code></pre></div>
+strawHatPirateNew &lt;-<span class="st"> </span>strawHatPirate[strawHatPirate$age&gt;<span class="dv">17</span> &amp;<span class="st"> </span>strawHatPirate$strength&gt;<span class="dv">30</span>, ]<span class="co">#2個篩選條件使用`&amp;`連接</span>
+<span class="kw">View</span>(strawHatPirateNew)</code></pre></div>
 </div>
 <div id="sqldf-" class="slide section level2">
 <h1>sqldf 套件</h1>
@@ -398,28 +371,21 @@ FROM table_name
 WHERE column operator
 GROUP BY column_name...
 HAVING aggregate() operator
-ORDER BY column_name...</code></pre>
+ORDER BY column_name...;</code></pre>
 <p>使用sqldf套件:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#下載並載入套件</span>
 <span class="co">#install.packages(&quot;sqldf&quot;)</span>
-<span class="kw">library</span>(sqldf)</code></pre></div>
-<pre><code>## Loading required package: gsubfn</code></pre>
-<pre><code>## Loading required package: proto</code></pre>
-<pre><code>## Loading required package: RSQLite</code></pre>
-<pre><code>## Loading required package: DBI</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sqldf</span>(<span class="st">&quot;select name, occupation, age from strawHatPirate where age&gt;19 order by age asc&quot;</span>)</code></pre></div>
-<pre><code>## Loading required package: tcltk</code></pre>
-<pre><code>##                name occupation age
-## 1        Nico Robin  Navigator  20
-## 2 Tony Tony Chopper  Swordsman  21
-## 3             Brook       Chef  21</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sqldf</span>(<span class="st">&quot;select strawHatPirate.name, devilFruitList.devilFruit from strawHatPirate inner join devilFruitList on strawHatPirate.name=devilFruitList.name&quot;</span>)</code></pre></div>
-<pre><code>##                name devilFruit
-## 1   Monkey D. Luffy     Rubber
-## 2 Tony Tony Chopper      Human
-## 3        Nico Robin     Flower
-## 4             Brook Underworld
-## 5 Tony Tony Chopper      Human</code></pre>
+<span class="kw">library</span>(sqldf)
+<span class="kw">sqldf</span>(<span class="st">&quot;select name, occupation, age from strawHatPirate where age&gt;19 order by age asc&quot;</span>)
+<span class="kw">sqldf</span>(<span class="st">&quot;select strawHatPirate.name, devilFruitList.devilFruit from strawHatPirate inner join devilFruitList on strawHatPirate.name=devilFruitList.name2&quot;</span>)</code></pre></div>
+</div>
+<div id="sqldf--2" class="slide section level2">
+<h1>sqldf 套件 (2)</h1>
+<p>SQL 的學習網站:</p>
+<ul>
+<li><a href="http://sqlzoo.net/">SQL ZOO</a></li>
+<li><a href="https://www.codecademy.com/">Codecademy</a></li>
+</ul>
 </div>
 <div id="tidyr-" class="slide section level2">
 <h1>tidyr 套件</h1>
@@ -437,14 +403,17 @@ ORDER BY column_name...</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#下載並載入套件</span>
 <span class="co">#install.packages(&quot;tidyr&quot;)</span>
 <span class="kw">library</span>(tidyr)
-strawHatPirateGathered &lt;-<span class="st"> </span><span class="kw">gather</span>(strawHatPirate[, <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">6</span>:<span class="dv">7</span>)], <span class="dt">key =</span> metricType, <span class="dt">value =</span> metric, strength, intelligence)</code></pre></div>
+strawHatPirateNew &lt;-<span class="st"> </span>strawHatPirate[, <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">6</span>:<span class="dv">7</span>)]
+strawHatPirateGathered &lt;-<span class="st"> </span><span class="kw">gather</span>(strawHatPirateNew, <span class="dt">key =</span> metricType, <span class="dt">value =</span> metric, strength, intelligence)
+<span class="kw">View</span>(strawHatPirateGathered)</code></pre></div>
 </div>
 <div id="tidyr--3" class="slide section level2">
 <h1>tidyr 套件 (3)</h1>
 <ul>
 <li>spread 函數: 還原為兩個數值欄位。</li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#strawHatPirateSpread &lt;- spread(strawHatPirateGathered,key = metricType, value = metric)</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">strawHatPirateSpread &lt;-<span class="st"> </span><span class="kw">spread</span>(strawHatPirateGathered,<span class="dt">key =</span> metricType, <span class="dt">value =</span> metric)
+<span class="kw">View</span>(strawHatPirateSpread)</code></pre></div>
 </div>
 <div id="reference" class="slide section level2">
 <h1>Reference</h1>
