@@ -3,22 +3,22 @@ This is the lecture notes for NTU Train Course of R Project Lecture 1
 
 ## 淺談 R 語言與資料整理
 
-
+http://yaojenkuo.github.io/dmwR/RL1_0
 
 ## 基本資料類型
 
-https://github.com/yaojenkuo/NTUTrainRL1/blob/master/RL1_1.Rmd
+http://yaojenkuo.github.io/dmwR/RL1_1
 
 ## 整理資料框
 
-https://github.com/yaojenkuo/NTUTrainRL1/blob/master/RL1_2.Rmd
+http://yaojenkuo.github.io/dmwR/RL1_2
 
 ## 基本的程式與函數
 
-https://github.com/yaojenkuo/NTUTrainRL1/blob/master/RL1_3.Rmd
+http://yaojenkuo.github.io/dmwR/RL1_3
 
 ## 資料的載入
 
-https://github.com/yaojenkuo/NTUTrainRL1/blob/master/RL1_4.Rmd
+http://yaojenkuo.github.io/dmwR/RL1_4
 
 &copy; Tony Yao-Jen Kuo 2016
