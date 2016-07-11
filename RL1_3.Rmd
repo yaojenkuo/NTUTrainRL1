@@ -1,27 +1,38 @@
-# NTUTrainRL1_3
-This is the lecture notes for NTU Train Course of R Project Lecture 1_3
+---
+title: "基本的程式與函數"
+author: "Yao-Jen Kuo"
+date: "July, 2016"
+output:
+  slidy_presentation:
+    fig_width: 8
+    fig_height: 5
+---
 
-## Basic Programming
+## 函數
 
-### Function
+- Almost **Everything** that happens in R is a function call!
+- 你在 R 語言中做的事情幾乎都在使用函數!
+- 基本的函數語法為:
 
-* Almost **Everything** that happens in R is a function call!
-* SAS的使用者可以想成是Macro，基本的函數語法為:
-
-```{r}
+```
 functionName <- function(parameter1, parameter2, ...){
   #Some statements here
   return() #Return something
 }
 ```
 
-如果沒有下`return()`，函數會回傳最後一行程式的產出。
+## 函數 (2)
 
-要呼叫函數的時候有兩種方式:
+- 如果沒有下`return()`，函數會回傳最後一行程式的產出。
+- 呼叫函數的時候有兩種方式:
+    - 傳統方式
+    - Pipe
 
-* 傳統方式
+## 函數 (3)
 
-```{r}
+- 傳統方式
+
+```{r, results='hide'}
 # 有一個f(x)=5x的函數
 f <- function(x){
   answer <- 5*x
@@ -32,22 +43,27 @@ g <- function(x){
   answer <- x+10
   return(answer)
 }
-f(2)#5x
-g(f(2))#5x+10
+f(2)#5*2
+g(f(2))#5*2+10
 ```
 
-* Forward-Pipe方式`%>%`
+## 函數 (4)
 
-```{r}
-install.packages("magrittr")
+- `Pipe`
+- 使用 `magrittr` 套件
+
+```{r, results='hide'}
+#install.packages("magrittr")
 library(magrittr)
-2 %>% f#5x
-2 %>% f %>% g#5x+10
+2 %>% f#5*2
+2 %>% f %>% g#5*2+10
 ```
 
-畢氏定理的例子:
+## 函數 (5)
 
-```{r}
+- 畢氏定理的例子:
+
+```{r, results='hide'}
 #有下return()
 pythagorean <- function(a, b){
   c <- sqrt(a^2 + b^2)
@@ -59,7 +75,7 @@ pythagorean(5, 12)
 12 %>% pythagorean(5,.)
 ```
 
-```{r}
+```{r, results='hide'}
 #沒有下return()
 pythagorean <- function(a, b){
   sqrt(a^2 + b^2)
@@ -70,9 +86,11 @@ pythagorean(5, 12)
 12 %>% pythagorean(5,.)
 ```
 
-平均數的例子:
+## 函數 (6)
 
-```{r}
+- 平均數的例子:
+
+```{r, results='hide'}
 meanFunction <- function(input){
   inputLength <- length(input)
   avg <- sum(input)/inputLength
@@ -83,9 +101,11 @@ meanFunction(vector1)
 vector1 %>% meanFunction()#forward-pipe
 ```
 
-最小值的例子:
+## 函數 (7)
 
-```{r}
+- 最小值的例子:
+
+```{r, results='hide'}
 minimumFunction <- function(input){
   result <- sort(input, decreasing=FALSE)[1]
   return(result)
@@ -94,9 +114,10 @@ vector1 <- 10:100
 minimumFunction(vector1)
 vector1 %>% minimumFunction()#forward-pipe
 ```
-```
 
-正方形面積的例子:
+## 函數 (8)
+
+- 正方形面積的例子:
 
 ```{r}
 squareArea <- function(n){
@@ -106,7 +127,9 @@ squareArea <- function(n){
 squareArea(6)
 ```
 
-梯形面積的例子:
+## 函數 (9)
+
+- 梯形面積的例子:
 
 ```{r}
 trapezium <- function(upper, bottom, height=10){
@@ -116,16 +139,14 @@ trapezium <- function(upper, bottom, height=10){
 trapezium(5, 7)#依照順序
 5 %>% trapezium(., 7)#forward-pipe
 trapezium(height=100, bottom=7, upper=5)#可以改預設, 依命名
-7 %>% trapezium(height=100, bottom=., upper=5)#forward-pipe
+7 %>% trapezium(height=100, bottom=., upper=5)
 ```
 
-### 流程控制
+## 流程控制
 
-#### if-else
+- 基本的 if-else 語法為:
 
-基本的if-else語法為:
-
-```{r}
+```
 if (an expression returns TRUE or FALSE) {
     # do something
 } else if (another expression returns TRUE or FALSE) {
@@ -135,7 +156,9 @@ if (an expression returns TRUE or FALSE) {
 }
 ```
 
-計算圓形的面積或是圓周(結合function與if-else的例子):
+## 流程控制 (2)
+
+計算圓形的面積或是圓周(結合函數與if-else的例子):
 
 ```{r}
 # 宣告circleCalculate函數
@@ -154,7 +177,9 @@ circleCalculate(areaCal=FALSE, radius=3)#areaCal=FALSE計算圓周
 FALSE %>% circleCalculate(3, .)#forward-pipe
 ```
 
-這裡我們要依樣畫葫蘆，請你參考前面一個範例，寫一個可以計算正方體的體積、表面積或邊長總合的函數，預設計算是體積:
+## 流程控制 (3)
+
+- 這裡我們要依樣畫葫蘆，請你參考前面一個範例，寫一個可以計算正方體的體積、表面積或邊長總合的函數，預設計算是體積:
 
 ```{r}
 # 宣告cubeCalculate函數
@@ -163,29 +188,32 @@ FALSE %>% circleCalculate(3, .)#forward-pipe
 
 ```
 
-#### 迴圈
+## 迴圈
 
-* For Loop
+- For Loop
+- 有兩種寫法，第一種簡便，不帶索引值的寫法為：
 
-有兩種寫法，第一種簡便，不帶索引值的寫法為：
-
-```{r}
+```{r, results='hide'}
 x <- 1:10
 for (element in x){
   print(element)
 }
 ```
 
-第二種帶索引值的寫法為：
+## 迴圈 (2)
 
-```{r}
+- 第二種帶索引值的寫法為：
+
+```{r, results='hide'}
 x <- 1:100
 for (i in 1:length(x)){
   print(x[i])
 }
 ```
 
-* Nested Loop
+## 迴圈 (3)
+
+- 巢狀迴圈
   
 ```{r}
 x <- 1:15
@@ -197,20 +225,20 @@ for (i in 1:nrow(nestMatrix)){
 }
 ```
 
-觀察一下產出，我們的迴圈程式跑的方向也是`byrow = TRUE`，請你修改一下程式，讓迴圈程式跑的方向是`byrow = FALSE`但是同樣是從1, 2, ...印到15。
+- 觀察一下產出，我們的迴圈程式跑的方向也是`byrow = TRUE`，請你修改一下程式，讓迴圈程式跑的方向是`byrow = FALSE`但是同樣是從1, 2, ...印到15。
 
 ```{r}
 # Nested Loop練習
 
 ```
 
-* For Loop with statements
+## 迴圈 (4)
 
-For迴圈中可以加入兩種敘述`break`與`next`讓你的迴圈程式更有彈性。
+- 更有彈性的迴圈
+- For 迴圈中可以加入兩種敘述 `break` 與 `next` 讓你更有彈性。
+- 在For迴圈中加入`break`
 
-** 在For迴圈中加入`break`
-
-```{r}
+```{r, results='hide'}
 x <- 1:10
 for (i in 1:length(x)){
   if (i == 4){
@@ -220,9 +248,9 @@ for (i in 1:length(x)){
 }
 ```
 
-** 在For迴圈中加入`next`
+- 在For迴圈中加入`next`
 
-```{r}
+```{r, results = 'hide'}
 x <- 1:10
 for (i in 1:length(x)){
   if (i == 4){
@@ -232,18 +260,19 @@ for (i in 1:length(x)){
 }
 ```
 
-觀察上面這兩個例子並且寫一個For迴圈與`next`印出1:100中所有的數字但必須略過7的倍數，使用`%%`運算子幫你計算餘數。
+- 觀察上面這兩個例子並且寫一個For迴圈與`next`印出1:100中所有的數字但必須略過7的倍數，使用`%%`運算子幫你計算餘數。
 
 ```{r}
 # For Loop with next練習
 
 ```
 
-* While Loop
+## 迴圈 (5)
 
-我們要改為使用While迴圈將1:10的元素印出。
+- While Loop
+- 我們要改為使用While迴圈將1:10的元素印出。
 
-```{r}
+```{r, results='hide'}
 x <- 1
 while(x <= 10){
   print(x)
@@ -252,11 +281,12 @@ while(x <= 10){
 x#檢查迴圈結束以後x為多少
 ```
 
-** 無窮迴圈
+## 迴圈 (6)
 
-如果前面的程式少寫一行`x <- x + 1`會怎麼樣?
+- 無窮迴圈
+- 如果前面的程式少寫一行`x <- x + 1`會怎麼樣?
 
-```{r}
+```
 x <- 1
 while(x <= 10){
   print(x)
@@ -265,11 +295,13 @@ while(x <= 10){
 #使用`Esc`中斷程式的執行
 ```
 
-因為while的條件`x <= 10`永遠為`TRUE`(x等於1)。
+- 因為while的條件 `x <= 10` 永遠為 `TRUE` (x 永遠等於 1)。
 
-** 在While迴圈中加入`break`
+## 迴圈 (7)
 
-```{r}
+- 在While迴圈中加入`break`
+
+```{r, results='hide'}
 x <- 1
 while(x <= 10){
   if (x == 4){
@@ -280,9 +312,9 @@ while(x <= 10){
 }
 ```
 
-* 綜合練習
+## 綜合練習
 
-計算一個Vector中的奇數個數(結合function、if-else與for迴圈的例子):
+- 計算一個Vector中的奇數個數(結合function、if-else與for迴圈的例子):
 
 ```{r}
 countOdd <- function(x){
@@ -297,7 +329,7 @@ countOdd <- function(x){
 countOdd(1:9)#計算1~9有幾個奇數
 ```
 
-### apply() Family
+## apply() 家族
 
 前面的課程已經教過各位怎麼撰寫迴圈，但有的時候我們不希望做一件簡單的事情都需要寫迴圈。例如把`taipei`這個清單中所有項目的類別印出來:
 
@@ -313,35 +345,34 @@ for(element in taipei) {
 }
 ```
 
-apply()函數家族就是R語言因應這樣的需求，所開發出來具備迴圈功能的函數，在本堂課中我們會簡介其中三種的用法:
+## apply() 家族 (2)
 
-* lapply()
-* sapply()
-* vapply()
+- apply()函數家族就是R語言因應這樣的需求，所開發出來具備迴圈功能的函數，在本堂課中我們會簡介其中三種的用法:
 
-#### lapply()
+    - lapply()
+    - sapply()
+    - vapply()
 
-```{r}
-# 建立清單taipei
-taipei <- list(population = 2703829,
- districts = c("Songshan", "Hsinyi", "Daan", "Chungshan", "Chungcheng", "Datung", "Wanhua", "Wenshan", "Nankang", "Neihu", "Shilin", "Beitou"),
- capital = TRUE)
+## lapply
 
+```{r, results='hide'}
 # 利用lapply()將清單中所有項目的類別印出來
 lapply(taipei, FUN = class)
 ```
 
-lapply()的'l'代表'list'，它回傳的資料格式也是清單，我們可以使用`unlist()`函數將回傳的資料格式轉為向量。
+- lapply()的'l'代表'list'，它回傳的資料格式也是清單，我們可以使用`unlist()`函數將回傳的資料格式轉為向量。
 
-```{r}
+```{r, results='hide'}
 unlist(lapply(taipei, FUN = class))
 ```
 
-在這裡練習一下`%>%`運算子。
+## lapply (2)
+
+- 在這裡練習一下`%>%`運算子。
 
 ```{r}
 # 利用`%>%`做到跟上一段程式一模一樣的事情
-install.packages("magrittr")
+#install.packages("magrittr")
 library(magrittr)
 
 ```
@@ -356,33 +387,23 @@ citiesNChar <- unlist(lapply(cities, FUN = nchar))
 citiesNChar
 ```
 
-#### sapply()
+## sapply
 
-lapply()回傳的資料類型是清單。還記得清單最強的功能就是用來儲存不同格式的資料嗎? 但有時候我們的資料格式都相同，存在向量中就可以了，所以前面我們有使用`unlist()`，但每一次都要把結果再處理一次是否有點麻煩? 於是sapply就誕生了...'s'代表的是'simplify'。
+`lapply()`回傳的資料類型是清單。還記得清單最強的功能就是用來儲存不同格式的資料嗎? 但有時候我們的資料格式都相同，存在向量中就可以了，所以前面我們有使用`unlist()`，但每一次都要把結果再處理一次是否有點麻煩? 於是`sapply`就誕生了...'s'代表的是'simplify'。
 
 ```{r}
-# 建立清單taipei
-taipei <- list(population = 2703829,
- districts = c("Songshan", "Hsinyi", "Daan", "Chungshan", "Chungcheng", "Datung", "Wanhua", "Wenshan", "Nankang", "Neihu", "Shilin", "Beitou"),
- capital = TRUE)
-
 # 利用sapply()將清單中所有項目的類別印出來
 unlist(lapply(taipei, FUN = class))#比較一下
 sapply(taipei, FUN = class)#跟使用lapply()再unlist之後的資料一模一樣
 ```
 
-#### vapply()
+## vapply
 
 你可以把vapply()視為更嚴謹的sapply()，必須指定`FUN.VALUE`。
 
 ```{r}
-# 建立清單taipei
-taipei <- list(population = 2703829,
- districts = c("Songshan", "Hsinyi", "Daan", "Chungshan", "Chungcheng", "Datung", "Wanhua", "Wenshan", "Nankang", "Neihu", "Shilin", "Beitou"),
- capital = TRUE)
-
 # 利用vapply()將清單中所有項目的類別印出來
-vapply(taipei, FUN = class)#沒有定義回傳的格式與長度會出現錯誤
+#vapply(taipei, FUN = class)#沒有定義回傳的格式與長度會出現錯誤
 vapply(taipei, FUN = class, FUN.VALUE = character(1))
 ```
 
