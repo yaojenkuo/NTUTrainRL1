@@ -10,7 +10,9 @@ output:
 
 ## 函數
 
-- Almost **Everything** that happens in R is a function call!
+- Everything that exists is an object
+- Everything that happens is a function call
+- Quoted: [John Chambers](https://en.wikipedia.org/wiki/John_Chambers_(statistician))
 - 你在 R 語言中做的事情幾乎都在使用函數!
 - 基本的函數語法為:
 
@@ -119,7 +121,7 @@ vector1 %>% minimumFunction()#forward-pipe
 
 - 正方形面積的例子:
 
-```{r}
+```{r, results='hide'}
 squareArea <- function(n){
   area <- n * n
   return(area)
@@ -131,7 +133,7 @@ squareArea(6)
 
 - 梯形面積的例子:
 
-```{r}
+```{r, results='hide'}
 trapezium <- function(upper, bottom, height=10){
   area <- (upper+bottom)*height/2
   return(area)
@@ -160,7 +162,7 @@ if (an expression returns TRUE or FALSE) {
 
 計算圓形的面積或是圓周(結合函數與if-else的例子):
 
-```{r}
+```{r, results='hide'}
 # 宣告circleCalculate函數
 circleCalculate <- function(radius, areaCal=TRUE){
   circleArea <- pi*(radius^2)
@@ -225,7 +227,7 @@ for (i in 1:nrow(nestMatrix)){
 }
 ```
 
-- 觀察一下產出，我們的迴圈程式跑的方向也是`byrow = TRUE`，請你修改一下程式，讓迴圈程式跑的方向是`byrow = FALSE`但是同樣是從1, 2, ...印到15。
+- 觀察一下產出，我們的迴圈程式跑的方向也是`byrow = TRUE`，請你修改一下程式，讓迴圈程式跑的方向是`byrow = FALSE`但是同樣是從1, 2, ...印到15
 
 ```{r}
 # Nested Loop練習
@@ -295,7 +297,7 @@ while(x <= 10){
 #使用`Esc`中斷程式的執行
 ```
 
-- 因為while的條件 `x <= 10` 永遠為 `TRUE` (x 永遠等於 1)。
+- 因為while的條件 `x <= 10` 永遠為 `TRUE` (x 永遠等於 1)
 
 ## 迴圈 (7)
 
@@ -316,7 +318,7 @@ while(x <= 10){
 
 - 計算一個Vector中的奇數個數(結合function、if-else與for迴圈的例子):
 
-```{r}
+```{r, results='hide'}
 countOdd <- function(x){
   count <- 0
   for(index in x){
@@ -333,7 +335,7 @@ countOdd(1:9)#計算1~9有幾個奇數
 
 前面的課程已經教過各位怎麼撰寫迴圈，但有的時候我們不希望做一件簡單的事情都需要寫迴圈。例如把`taipei`這個清單中所有項目的類別印出來:
 
-```{r}
+```{r, results='hide'}
 # 建立清單taipei
 taipei <- list(population = 2703829,
  districts = c("Songshan", "Hsinyi", "Daan", "Chungshan", "Chungcheng", "Datung", "Wanhua", "Wenshan", "Nankang", "Neihu", "Shilin", "Beitou"),
@@ -347,11 +349,10 @@ for(element in taipei) {
 
 ## apply() 家族 (2)
 
-- apply()函數家族就是R語言因應這樣的需求，所開發出來具備迴圈功能的函數，在本堂課中我們會簡介其中三種的用法:
+- apply()函數家族就是R語言因應這樣的需求，所開發出來具備迴圈功能的函數，在本堂課中我們會簡介其中兩種的用法:
 
-    - lapply()
-    - sapply()
-    - vapply()
+1. lapply()
+2. sapply()
 
 ## lapply
 
@@ -370,16 +371,15 @@ unlist(lapply(taipei, FUN = class))
 
 - 在這裡練習一下`%>%`運算子。
 
-```{r}
+```{r, message=FALSE}
 # 利用`%>%`做到跟上一段程式一模一樣的事情
 #install.packages("magrittr")
 library(magrittr)
-
 ```
 
-再做一個lapply()的練習:
+- 再做一個lapply()的練習:
 
-```{r}
+```{r, results='hide'}
 ?nchar#檢視一下nchar()這個函數的內容
 cities <- list(c("Taipei", "New Taipei", "Taichung", "Tainan", "Kaohsiung"))
 lapply(cities, FUN = nchar)
@@ -389,22 +389,13 @@ citiesNChar
 
 ## sapply
 
-`lapply()`回傳的資料類型是清單。還記得清單最強的功能就是用來儲存不同格式的資料嗎? 但有時候我們的資料格式都相同，存在向量中就可以了，所以前面我們有使用`unlist()`，但每一次都要把結果再處理一次是否有點麻煩? 於是`sapply`就誕生了...'s'代表的是'simplify'。
+- `lapply()`回傳的資料類型是清單。還記得清單最強的功能就是用來儲存不同格式的資料嗎?
+- 但有時候我們的資料格式都相同，存在向量中就可以了，所以前面我們有使用`unlist()`，但每一次都要把結果再處理一次是否有點麻煩? 於是`sapply`就誕生了...'s'代表的是'simplify'。
 
-```{r}
+```{r, results='hide'}
 # 利用sapply()將清單中所有項目的類別印出來
 unlist(lapply(taipei, FUN = class))#比較一下
 sapply(taipei, FUN = class)#跟使用lapply()再unlist之後的資料一模一樣
-```
-
-## vapply
-
-你可以把vapply()視為更嚴謹的sapply()，必須指定`FUN.VALUE`。
-
-```{r}
-# 利用vapply()將清單中所有項目的類別印出來
-#vapply(taipei, FUN = class)#沒有定義回傳的格式與長度會出現錯誤
-vapply(taipei, FUN = class, FUN.VALUE = character(1))
 ```
 
 ## Reference
