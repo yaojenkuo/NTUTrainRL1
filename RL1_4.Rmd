@@ -1,72 +1,111 @@
-# NTUTrainRL1_4
-This is the lecture notes for NTU Train Course of R Project Lecture 1_4
+---
+title: "資料的載入"
+author: "Yao-Jen Kuo"
+date: "July, 2016"
+output:
+  slidy_presentation:
+    fig_width: 8
+    fig_height: 5
+---
 
-## Data Collection
+## 讀取 csv
 
-### 讀取csv
-
-這是實務中最常運用的方法，csv as in comma-separated values。
+- 這是實務中最常運用的方法，csv 是 comma-separated values 的縮寫
+- 學會使用絕對路徑或者相對路徑
 
 ```{r}
-setwd("C:/NTUTrainRL1")
 ?read.csv#常用的重要函數
-accidentList <- read.csv("data/funCoastAccident.csv", header=TRUE, sep=",")
-head(accidentList)#看看前6筆資料
-str(accidentList)#看看資料集結構
-summary(accidentList)#看看資料集的摘要
-```
-
-欄位屬性可以在讀取資料時設定。
-
-```{r}
-accidentList <- read.csv("data/funCoastAccident.csv", header=TRUE, sep=",", row.names="編號", colClasses=c("character", "character", "character", "character", "character", "integer", "factor", "factor"))
-colnames(accidentList) <- c("county", "hospital", "gender", "nationality", "age", "woundType1", "woundType2")
+accidentList <- read.csv("/Users/tkuo/ntu_train/NTUTrainRL1/data/accident_list.csv", header=TRUE)
 str(accidentList)
 ```
 
-### 抓取網頁資料
+## 讀取 csv (2)
 
-網頁爬蟲是一個專門的研究領域，這裡只有時間很快地簡介，有興趣的學員可以去選修專門為蟲友開的課程。一個完整的爬蟲流程通常會有以下這三個程序:
+- 欄位屬性可以在讀取資料時設定
+- 練習用相對路徑
+
+```{r}
+setwd("/Users/tkuo/ntu_train/NTUTrainRL1")#set working directory
+accidentList <- read.csv("data/accident_list.csv", header=TRUE, sep=",", colClasses=c("character", "factor", "factor", "factor", "factor", "integer", "factor", "factor"))
+str(accidentList)
+```
+
+## 載入 Excel 試算表
+
+- 使用 `readxl` 套件
+- `excel_sheets()` 函數可以顯示試算表清單
+
+```{r, results='hide'}
+#install.packages("readxl")
+library(readxl)
+excel_sheets("data/accident_list.xlsx")
+```
+
+## 載入 Excel 試算表 (2)
+
+- `read_excel()` 函數可以載入試算表
+
+```{r, results='hide'}
+sheet <- read_excel("data/accident_list.xlsx")
+?read_excel
+```
+
+## 載入 SAS 資料集
+
+- 使用 `haven()` 套件
+- `read_sas()` 函數可以載入 SAS 資料集
+
+```{r}
+#install.packages("haven")
+library(haven)
+#sasdat <- read_sas("data/accident_list.sas7bdat")
+```
+
+## 抓取網頁資料
+
+- 網頁爬蟲是一個專門的研究領域，這裡只有時間很快地簡介，有興趣的學員可以去選修專門為蟲友開的課程。一個完整的爬蟲流程通常會有以下程序:
 
 1. Connector
 2. Parser
-3. Database(在本單元中不涵蓋)
 
-#### 工欲善其事
+## 工欲善其事
 
 我們要先裝一些好用的網頁瀏覽器外掛來幫助我們爬網頁。
 
-* CHROME
-  * [Quick Javascript Switcher](https://chrome.google.com/webstore/detail/quick-javascript-switcher/geddoclleiomckbhadiaipdggiiccfje)
-  * [XPATH Helper](https://chrome.google.com/webstore/detail/xpath-helper/hgimnogjllphhhkhlmebbmlgjoejdpjl?hl=zh-TW)
-  * [JSONView](https://chrome.google.com/webstore/detail/jsonview/chklaanhfefbnpoihckbnefhakgolnmc?hl=zh-TW)
+- CHROME
+    - [Quick Javascript Switcher](https://chrome.google.com/webstore/detail/quick-javascript-switcher/geddoclleiomckbhadiaipdggiiccfje)
+    - [XPATH Helper](https://chrome.google.com/webstore/detail/xpath-helper/hgimnogjllphhhkhlmebbmlgjoejdpjl?hl=zh-TW)
+    - [JSONView](https://chrome.google.com/webstore/detail/jsonview/chklaanhfefbnpoihckbnefhakgolnmc?hl=zh-TW)
 
-* FIREFOX
-  * [HackBar](https://addons.mozilla.org/zh-tw/firefox/addon/hackbar/)
+- FIREFOX
+    - [HackBar](https://addons.mozilla.org/zh-tw/firefox/addon/hackbar/)
 
-#### Connector
+## Connector
 
-網頁資料藏在哪裡? 首先在Chrome瀏覽網頁中按F12叫出Chrome開發者介面, 點選Network。通常你要爬的資料會藏在這4種資料類型中。
+- 網頁資料藏在哪裡? 首先在Chrome瀏覽網頁中按F12叫出Chrome開發者介面, 點選Network。通常你要爬的資料會藏在這4種資料類型中。
 
-* Doc(Documents)
-* XHR(XHR and Fetch)
-* JS(Scripts)
-* WS(Websockets)
+- Doc(Documents)
+- XHR(XHR and Fetch)
+- JS(Scripts)
+- WS(Websockets)
 
-來練習一下！
+## 來練習一下！
 
 * [奇摩股市](https://tw.stock.yahoo.com/d/s/major_2330.html)
   * Doc
   * major_2330.html
+  
 * [批踢踢八卦版](https://www.ptt.cc/ask/over18?from=%2Fbbs%2FGossiping%2Findex.html)
   * Doc
   * index.html
+  
 * [PCHome購物中心](http://ecshweb.pchome.com.tw/search/v3.3/?q=sony&scope=all)
   * XHR
   * results?q=sony&page=1&sort=rnk/dc
   * Request Method:GET(較簡單可以看到資料內容)
   * http://ecshweb.pchome.com.tw/search/v3.3/all/results?q=sony&page=1&sort=rnk/dc
   * 可以看到JSON格式的資料內容
+  
 * [7-11全國分店](http://emap.pcsc.com.tw/emap.aspx)
   * XHR
   * EMapSDK.aspx
@@ -76,26 +115,26 @@ str(accidentList)
   * Post data處貼Form Data view source
   * 可以看到XML格式的資料內容
 
-#### Parser
+## Parser
 
-我們已經知道整包資料在哪裡，但多數時候我們不需要其他雜七雜八的資料，可以使用XPath Selector只將我們想要的資料選取出來。
+- 我們已經知道整包資料在哪裡，但多數時候我們不需要其他雜七雜八的資料，可以使用XPath Selector只將我們想要的資料選取出來。
 
-* XPath Selector
-  * 按Ctrl+Shift+X叫出XPath Helper
-  * 按住Shift將滑鼠游標移至網頁欲抓取的資料處
+- XPath Selector
+  - 按Ctrl+Shift+X叫出XPath Helper
+  - 按住Shift將滑鼠游標移至網頁欲抓取的資料處
 
-來練習一下!
+## 來練習一下!
 
-* [奇摩股市](https://tw.stock.yahoo.com/d/s/major_2330.html)
-  * XPath Selector抓個股當日買超券商: //td[@class='ttt'][1]
+- [奇摩股市](https://tw.stock.yahoo.com/d/s/major_2330.html)
+  - XPath Selector抓個股當日買超券商: //td[@class='ttt'][1]
     
-* [批踢踢八卦版](https://www.ptt.cc/ask/over18?from=%2Fbbs%2FGossiping%2Findex.html)
-  * XPath Selector抓文章標題: //div[@class='title']/a
+- [批踢踢八卦版](https://www.ptt.cc/ask/over18?from=%2Fbbs%2FGossiping%2Findex.html)
+  - XPath Selector抓文章標題: //div[@class='title']/a
     
-* [PCHome購物中心](http://ecshweb.pchome.com.tw/search/v3.3/?q=sony&scope=all)
-  * XPath Selector抓商品價格: //h6/strong/i
+- [PCHome購物中心](http://ecshweb.pchome.com.tw/search/v3.3/?q=sony&scope=all)
+  - XPath Selector抓商品價格: //h6/strong/i
 
-#### 奇摩股市範例
+## 奇摩股市範例
 
 ```{r}
 yahooStockRankParser <- function(n){
@@ -130,9 +169,9 @@ yahooStockRankParser(n = 101)#回傳訊息
 yahooStockRankParser(n = 30)
 ```
 
-#### 7-Eleven門市資訊範例
+## 7-Eleven門市資訊範例
 
-```{r}
+```
 library(httr)
 library(XML)
 library(stringr)
