@@ -58,7 +58,7 @@ sheet <- read_excel("data/accident_list.xlsx")
 ```{r}
 #install.packages("haven")
 library(haven)
-#sasdat <- read_sas("data/accident_list.sas7bdat")
+sasdat <- read_sas("data/accident_list.sas7bdat")
 ```
 
 ## 抓取網頁資料
@@ -70,20 +70,16 @@ library(haven)
 
 ## 工欲善其事
 
-我們要先裝一些好用的網頁瀏覽器外掛來幫助我們爬網頁。
+我們要先裝一些好用的 Chrome 外掛來幫助我們爬網頁。
 
-- CHROME
-    - [Quick Javascript Switcher](https://chrome.google.com/webstore/detail/quick-javascript-switcher/geddoclleiomckbhadiaipdggiiccfje)
-    - [XPATH Helper](https://chrome.google.com/webstore/detail/xpath-helper/hgimnogjllphhhkhlmebbmlgjoejdpjl?hl=zh-TW)
-    - [JSONView](https://chrome.google.com/webstore/detail/jsonview/chklaanhfefbnpoihckbnefhakgolnmc?hl=zh-TW)
-
-- FIREFOX
-    - [HackBar](https://addons.mozilla.org/zh-tw/firefox/addon/hackbar/)
+- [Quick Javascript Switcher](https://chrome.google.com/webstore/detail/quick-javascript-switcher/geddoclleiomckbhadiaipdggiiccfje)
+- [XPATH Helper](https://chrome.google.com/webstore/detail/xpath-helper/hgimnogjllphhhkhlmebbmlgjoejdpjl?hl=zh-TW)
+- [JSONView](https://chrome.google.com/webstore/detail/jsonview/chklaanhfefbnpoihckbnefhakgolnmc?hl=zh-TW)
 
 ## Connector
 
-- 網頁資料藏在哪裡? 首先在Chrome瀏覽網頁中按F12叫出Chrome開發者介面, 點選Network。通常你要爬的資料會藏在這4種資料類型中。
-
+- 網頁資料藏在哪裡?
+- 首先在 Chrome 瀏覽網頁中按 F12 叫出 Chrome 開發者介面, 點選 Network。通常你要爬的資料會藏在這 4 種資料中。
 - Doc(Documents)
 - XHR(XHR and Fetch)
 - JS(Scripts)
@@ -92,47 +88,37 @@ library(haven)
 ## 來練習一下！
 
 * [奇摩股市](https://tw.stock.yahoo.com/d/s/major_2330.html)
-  * Doc
-  * major_2330.html
+* Doc
+* major_2330.html
   
 * [批踢踢八卦版](https://www.ptt.cc/ask/over18?from=%2Fbbs%2FGossiping%2Findex.html)
-  * Doc
-  * index.html
+* Doc
+* index.html
   
 * [PCHome購物中心](http://ecshweb.pchome.com.tw/search/v3.3/?q=sony&scope=all)
-  * XHR
-  * results?q=sony&page=1&sort=rnk/dc
-  * Request Method:GET(較簡單可以看到資料內容)
-  * http://ecshweb.pchome.com.tw/search/v3.3/all/results?q=sony&page=1&sort=rnk/dc
-  * 可以看到JSON格式的資料內容
-  
-* [7-11全國分店](http://emap.pcsc.com.tw/emap.aspx)
-  * XHR
-  * EMapSDK.aspx
-  * Request Method:POST(較複雜才可以看到資料內容)
-  * 打開Firefox按F9打開開發者介面
-  * URL處貼Request URL
-  * Post data處貼Form Data view source
-  * 可以看到XML格式的資料內容
+* XHR
+* results?q=sony&page=1&sort=rnk/dc
+* Request Method:GET(較簡單可以看到資料內容)
+* http://ecshweb.pchome.com.tw/search/v3.3/all/results?q=sony&page=1&sort=rnk/dc
+* 可以看到JSON格式的資料內容
 
 ## Parser
 
-- 我們已經知道整包資料在哪裡，但多數時候我們不需要其他雜七雜八的資料，可以使用XPath Selector只將我們想要的資料選取出來。
+- 我們已經知道整包資料在哪裡，但多數時候我們不需要其他雜七雜八的資料，可以使用 XPath Selector 只將我們想要的資料選取出來。
 
-- XPath Selector
-  - 按Ctrl+Shift+X叫出XPath Helper
-  - 按住Shift將滑鼠游標移至網頁欲抓取的資料處
+- 按 Ctrl + Shift + X 叫出 XPath Helper
+- 按住 Shift 將滑鼠游標移至網頁欲抓取的資料處
 
 ## 來練習一下!
 
 - [奇摩股市](https://tw.stock.yahoo.com/d/s/major_2330.html)
-  - XPath Selector抓個股當日買超券商: //td[@class='ttt'][1]
+- XPath Selector抓個股當日買超券商: //td[@class='ttt'][1]
     
 - [批踢踢八卦版](https://www.ptt.cc/ask/over18?from=%2Fbbs%2FGossiping%2Findex.html)
-  - XPath Selector抓文章標題: //div[@class='title']/a
+- XPath Selector抓文章標題: //div[@class='title']/a
     
 - [PCHome購物中心](http://ecshweb.pchome.com.tw/search/v3.3/?q=sony&scope=all)
-  - XPath Selector抓商品價格: //h6/strong/i
+- XPath Selector抓商品價格: //h6/strong/i
 
 ## 奇摩股市範例
 
@@ -167,24 +153,6 @@ yahooStockRankParser <- function(n){
 }
 yahooStockRankParser(n = 101)#回傳訊息
 yahooStockRankParser(n = 30)
-```
-
-## 7-Eleven門市資訊範例
-
-```
-library(httr)
-library(XML)
-library(stringr)
-
-get_stores <- function(city, town) {
-    pcsc <- POST("http://emap.pcsc.com.tw/EMapSDK.aspx", body = list(commandid = "SearchStore", city = city, town = town))
-    stores <- xmlParse(content(pcsc, as = "text")) %>% 
-              .["//GeoPosition"] %>% 
-              xmlToDataFrame
-    return(stores)
-}
-storeDaan <- get_stores("台北市", "大安區")
-View(storeDaan)
 ```
 
 ## Reference
