@@ -118,7 +118,7 @@ sasdat <- read_sas("data/accident_list.sas7bdat")
 - XPath Selector抓文章標題: //div[@class='title']/a
     
 - [PCHome購物中心](http://ecshweb.pchome.com.tw/search/v3.3/?q=sony&scope=all)
-- XPath Selector抓商品價格: //h6/strong/i
+- XPath Selector抓商品價格: //li/span/span
 
 ## 奇摩股市範例
 
@@ -148,11 +148,11 @@ yahooStockRankParser <- function(n){
       html_text
     stockTmp <- data.frame(rank=as.integer(rank), stock=stock, price=as.numeric(price))
     stockDF <- head(stockTmp, n)
-    assign('stockDF',stockDF,envir=.GlobalEnv)
+    return(stockDF)
   }
 }
-yahooStockRankParser(n = 101)#回傳訊息
-yahooStockRankParser(n = 30)
+stockDF <- yahooStockRankParser(n = 101)#回傳訊息
+stockDF <- yahooStockRankParser(n = 30)
 ```
 
 ## Reference
